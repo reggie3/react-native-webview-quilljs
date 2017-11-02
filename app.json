@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "react-native-webview-quilljs-test-app",
+    "description": "Development and test application for a react native webview component incorporating Quill JS",
+    "slug": "react-native-webview-quilljs-test-app",
+    "privacy": "public",
+    "sdkVersion": "22.0.0",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#cccccc",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf", "mp4"]
+    },
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}
