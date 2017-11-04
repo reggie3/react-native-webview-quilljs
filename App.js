@@ -7,7 +7,7 @@ export default class App extends React.Component {
     return (
       <View
         style={{
-          paddingVertical: 40,
+          marginVertical: 40,
           paddingHorizontal: 20,
           backgroundColor: `#ffffff`,
           flex: 1
