@@ -23,6 +23,11 @@ export default class WebViewQuill extends React.Component {
   registerMessageListeners = () => {
     const { messagesChannel } = this.webview;
 
+    messagesChannel.on('RECEIVE_CONTENT', event => {
+      console.log('RECEIVE_CONTENT');
+      console.log(event);      
+      //this.receiveContent(event);
+    });
     /* messagesChannel.on('RETRIEVE_NONCE_PENDING', event => {
           this.setState({ showGetNonceActivityIndicator: true });
           console.log('RETRIEVE_NONCE_PENDING');
@@ -49,6 +54,10 @@ export default class WebViewQuill extends React.Component {
     // we'll receive a nonce once the requestPaymentMethodComplete is completed
     console.log('wbvw WebViewQuill mounted');
   }
+  getContent=(a)=>{
+    console.log('getting contents');
+    this.webview.emit('GET_CONTENT');
+  }
 
   render = () => {
     return (
@@ -56,11 +65,13 @@ export default class WebViewQuill extends React.Component {
         style={{
           flex: 1,
           backgroundColor: 'green',
-          paddingHorizontal: 5
         }}
       >
         <WebView
           onLoad={this.sendClientTokenToHTML}
+          style={{
+            flex: 1
+          }}
           source={require('./dist/index.html')}
           ref={component => (this.webview = component)}
         />

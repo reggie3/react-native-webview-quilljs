@@ -21200,6 +21200,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _quill = __webpack_require__(34);
 
 var _quill2 = _interopRequireDefault(_quill);
@@ -21228,6 +21230,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var util = __webpack_require__(46);
 
+// print passed information in an html element; useful for debugging
+// since console.log and debug statements won't work in a conventional way
+var PrintElement = function PrintElement(data) {
+  if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
+    var el = document.createElement('pre');
+    el.innerHTML = util.inspect(data, { showHidden: false, depth: null });
+    document.getElementById('messages').appendChild(el);
+  } else if (typeof data === 'string') {
+    var _el = document.createElement('pre');
+    _el.innerHTML = data;
+    document.getElementById('messages').appendChild(_el);
+  }
+};
+
 var ReactQuillHTML = function (_React$Component) {
   _inherits(ReactQuillHTML, _React$Component);
 
@@ -21236,7 +21252,22 @@ var ReactQuillHTML = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (ReactQuillHTML.__proto__ || Object.getPrototypeOf(ReactQuillHTML)).call(this, props));
 
-    _this.state = { editor: null }; // You can also pass a Quill Delta here
+    _this.registerMessageListeners = function () {
+      PrintElement('registering message listeners');
+
+      // will receive client token as a prop immediately upon mounting
+      _reactNativeWebviewMessaging2.default.on('GET_CONTENT', function (event) {
+        PrintElement('GET_CONTENT');
+        var deltaContent = _this.state.editor.getContents();
+        // const HTML = this.quillGetHTML(deltaContent);
+        // PrintElement(HTML);
+        PrintElement(deltaContent);
+      });
+    };
+
+    _this.state = {
+      editor: null
+    }; // You can also pass a Quill Delta here
     return _this;
   }
 
@@ -21248,26 +21279,44 @@ var ReactQuillHTML = function (_React$Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var toolbarOptions = ['bold', 'italic', 'underline', 'strike'];
       this.setState({
         editor: new _quill2.default('#editor', {
           modules: { toolbar: '#toolbar' },
-          theme: 'snow'
+          theme: 'snow',
+          bounds: '#Quill-Container'
         })
       });
+
+      this.registerMessageListeners();
     }
+  }, {
+    key: 'quillGetHTML',
+    value: function quillGetHTML(inputDelta) {
+      var tempCont = document.createElement('div');
+      new _quill2.default(tempCont).setContents([{ insert: "Hello\n" }, { insert: "This is colorful", attributes: { color: '#f00' } }]);
+      return tempCont.getElementsByClassName('editor')[0].innerHTML;
+    }
+
+    /*******************************
+     * register message listeners to receive events from parent
+    */
+
   }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
         {
+          id: 'Quill-Container',
           style: {
             height: '100%',
-            backgroundColor: 'red',
+            backgroundColor: '#dddddd',
             display: 'flex',
             flexDirection: 'column'
           }
         },
+        _react2.default.createElement('div', { id: 'messages' }),
         _react2.default.createElement(
           'div',
           { id: 'toolbar' },
@@ -21280,15 +21329,37 @@ var ReactQuillHTML = function (_React$Component) {
             'button',
             { className: 'ql-italic' },
             'Italic'
+          ),
+          _react2.default.createElement(
+            'button',
+            { className: 'ql-underline' },
+            'Underline'
           )
         ),
         _react2.default.createElement(
           'div',
-          { id: 'editor' },
+          {
+            style: {
+              height: '100%',
+              backgroundColor: 'orange',
+              display: 'flex',
+              flexDirection: 'column'
+            }
+          },
           _react2.default.createElement(
-            'p',
-            null,
-            'Hello World!'
+            'div',
+            {
+              id: 'editor',
+              style: {
+                height: '100%',
+                backgroundColor: '#eeeeee'
+              }
+            },
+            _react2.default.createElement(
+              'p',
+              null,
+              'Hello World!'
+            )
           )
         )
       );

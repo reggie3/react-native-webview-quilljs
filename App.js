@@ -1,20 +1,43 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import WebViewQuill from './WebViewQuill';
 
 export default class App extends React.Component {
+  getEditorContent=()=>{
+    this.webViewQuill.getContent();
+  }
   render() {
     return (
       <View
         style={{
-          marginVertical: 40,
-          paddingHorizontal: 20,
-          backgroundColor: `#ffffff`,
-          flex: 1
+          marginTop: 40,
+          backgroundColor: `#dddddd`,
+          flex: 1,
+          padding: 10
         }}
       >
         <Text>react-native-webview-quilljs-test-app</Text>
-        <WebViewQuill />
+        <View
+          style={{
+            flex: 1
+          }}
+        >
+          <WebViewQuill ref={component => (this.webViewQuill = component)} />
+          <View
+            style={{
+              display: 'flex',
+              flex: 1
+            }}
+          >
+            <Text>Spacing test</Text>
+            <Button
+              onPress={this.getEditorContent}
+              title="Get Text"
+              color="#841584"
+              accessibilityLabel="Learn more about this purple button"
+            />
+          </View>
+        </View>
       </View>
     );
   }
