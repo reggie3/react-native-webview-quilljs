@@ -3,6 +3,7 @@ import './quill.snow.css';
 import RNMessageChannel from 'react-native-webview-messaging';
 import React from 'react';
 import PropTypes from 'prop-types';
+const QuillRender = require('quill-render');
 const util = require('util');
 
 // print passed information in an html element; useful for debugging
@@ -44,16 +45,6 @@ export default class ReactQuillHTML extends React.Component {
     this.registerMessageListeners();
   }
 
-  quillGetHTML(inputDelta) {    
-    var tempCont = document.createElement('div');
-    new Quill(tempCont).setContents([
-      {insert: "Hello\n"},
-      {insert: "This is colorful", attributes: {color: '#f00'}}
-  ]);
-    return tempCont.getElementsByClassName('editor')[0].innerHTML;
-  }
-
-
   /*******************************
    * register message listeners to receive events from parent
   */
@@ -63,10 +54,24 @@ export default class ReactQuillHTML extends React.Component {
     // will receive client token as a prop immediately upon mounting
     RNMessageChannel.on('GET_CONTENT', event => {
       PrintElement('GET_CONTENT');
+      RNMessageChannel.emit('RECEIVE_CONTENT', {
+        payload: {
+          type: 'success',
+          deltaContent
+        }
+      });
+    });
+
+    RNMessageChannel.on('GET_HTML', event => {
+      PrintElement('GET_HTML');
       const deltaContent = this.state.editor.getContents();
-      // const HTML = this.quillGetHTML(deltaContent);
-      // PrintElement(HTML);
-      PrintElement(deltaContent);
+      const HTML = QuillRender(deltaContent.ops);
+      RNMessageChannel.emit('RECEIVE_HTML', {
+        payload: {
+          type: 'success',
+          HTML
+        }
+      });
     });
   };
 

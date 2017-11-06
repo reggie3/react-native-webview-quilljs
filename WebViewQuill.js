@@ -25,38 +25,24 @@ export default class WebViewQuill extends React.Component {
 
     messagesChannel.on('RECEIVE_CONTENT', event => {
       console.log('RECEIVE_CONTENT');
-      console.log(event);      
-      //this.receiveContent(event);
+      console.log(event.payload.deltaContent);      
     });
-    /* messagesChannel.on('RETRIEVE_NONCE_PENDING', event => {
-          this.setState({ showGetNonceActivityIndicator: true });
-          console.log('RETRIEVE_NONCE_PENDING');
-        });
-    
-        messagesChannel.on('RETRIEVE_NONCE_FULFILLED', event => {
-          console.log('RETRIEVE_NONCE_FULFILLED');
-          this.setState({ showGetNonceActivityIndicator: false });
-          this.setState({ showSubmitPaymentActivityIndicator: true });
-          this.props.nonceObtainedCallback(event.payload.response.nonce);
-        });
-    
-        messagesChannel.on('RETRIEVE_NONCE_REJECTED', event => {
-          console.log('RETRIEVE_NONCE_REJECTED');
-          this.setState({ showGetNonceActivityIndicator: false });
-        });
-    
-        messagesChannel.on('GO_BACK', () => {
-          this.props.navigationBackCallback();
-        }); */
+
+    messagesChannel.on('RECEIVE_HTML', event => {
+      console.log('RECEIVE_HTML');
+      //console.log(event.payload.HTML);  
+      this.props.getHTMLCallback(event.payload.HTML)    
+    });
   };
-  componentDidMount() {
-    // register listeners to listen for events from the html
-    // we'll receive a nonce once the requestPaymentMethodComplete is completed
-    console.log('wbvw WebViewQuill mounted');
-  }
+
   getContent=(a)=>{
     console.log('getting contents');
     this.webview.emit('GET_CONTENT');
+  }
+
+  getHTML=(a)=>{
+    console.log('getting HTML');
+    this.webview.emit('GET_HTML');
   }
 
   render = () => {
