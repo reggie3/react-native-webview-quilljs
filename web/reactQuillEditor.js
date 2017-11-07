@@ -12,15 +12,15 @@ const PrintElement = data => {
   if (typeof data === 'object') {
     let el = document.createElement('pre');
     el.innerHTML = util.inspect(data, { showHidden: false, depth: null });
-    document.getElementById('messages').appendChild(el);
+    document.getElementById('editor-messages').appendChild(el);
   } else if (typeof data === 'string') {
     let el = document.createElement('pre');
     el.innerHTML = data;
-    document.getElementById('messages').appendChild(el);
+    document.getElementById('editor-messages').appendChild(el);
   }
 };
 
-export default class ReactQuillHTML extends React.Component {
+export default class ReactQuillEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,12 +33,10 @@ export default class ReactQuillHTML extends React.Component {
   }
 
   componentDidMount() {
-    const toolbarOptions = ['bold', 'italic', 'underline', 'strike'];
     this.setState({
       editor: new Quill('#editor', {
-        modules: { toolbar: '#toolbar' },
         theme: 'snow',
-        bounds: '#Quill-Container'
+        bounds: '#Quill-Editor-Container'
       })
     });
 
@@ -49,11 +47,11 @@ export default class ReactQuillHTML extends React.Component {
    * register message listeners to receive events from parent
   */
   registerMessageListeners = () => {
-    PrintElement('registering message listeners');
+    // PrintElement('registering message listeners');
 
     // will receive client token as a prop immediately upon mounting
     RNMessageChannel.on('GET_CONTENT', event => {
-      PrintElement('GET_CONTENT');
+      // PrintElement('GET_CONTENT');
       RNMessageChannel.emit('RECEIVE_CONTENT', {
         payload: {
           type: 'success',
@@ -63,8 +61,9 @@ export default class ReactQuillHTML extends React.Component {
     });
 
     RNMessageChannel.on('GET_HTML', event => {
-      PrintElement('GET_HTML');
+      // PrintElement('GET_HTML');
       const deltaContent = this.state.editor.getContents();
+      PrintElement(deltaContent);
       const HTML = QuillRender(deltaContent.ops);
       RNMessageChannel.emit('RECEIVE_HTML', {
         payload: {
@@ -73,12 +72,29 @@ export default class ReactQuillHTML extends React.Component {
         }
       });
     });
+
+    RNMessageChannel.on('GET_DELTA', event => {
+      PrintElement('GET_DELTA');
+      PrintElement(this.state.editor.getContents());
+      RNMessageChannel.emit('RECEIVE_DELTA', {
+        payload: {
+          type: 'success',
+          delta: this.state.editor.getContents()
+        }
+      });
+    });
+
+    RNMessageChannel.on('SET_CONTENTS', event => {
+      PrintElement('SET_CONTENTS');
+      PrintElement(event.payload.ops);
+      this.state.editor.setContents(event.payload.delta);
+    });
   };
 
   render() {
     return (
       <div
-        id="Quill-Container"
+        id="Quill-Editor-Container"
         style={{
           height: '100%',
           backgroundColor: '#dddddd',
@@ -86,16 +102,12 @@ export default class ReactQuillHTML extends React.Component {
           flexDirection: 'column'
         }}
       >
-        <div id="messages" />
-        <div id="toolbar">
-          <button className="ql-bold">Bold</button>
-          <button className="ql-italic">Italic</button>
-          <button className="ql-underline">Underline</button>
-        </div>
+        <div id="editor-messages" />
+
         <div
           style={{
             height: '100%',
-            backgroundColor: 'orange',
+            backgroundColor: '#dddddd',
             display: 'flex',
             flexDirection: 'column'
           }}
@@ -104,7 +116,8 @@ export default class ReactQuillHTML extends React.Component {
             id="editor"
             style={{
               height: '100%',
-              backgroundColor: '#eeeeee'
+              backgroundColor: '#eeeeee',
+              fontSize: '20px'
             }}
           >
             <p>Hello World!</p>

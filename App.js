@@ -1,19 +1,44 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import WebViewQuill from './WebViewQuill';
+import WebViewQuillEditor from './WebViewQuillEditor';
+import WebViewQuillViewer from './WebViewQuillViewer';
+
+const contentToDisplay = {
+  ops: [
+    { insert: 'Hello\n' },
+    { insert: 'This is colorful', attributes: { color: '#f00' } }
+  ]
+};
 
 export default class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      messageHTML: '',
+      messageDelta: {}
+    };
+  }
   getEditorContent = () => {
-    this.webViewQuill.getContent();
+    this.webViewQuillEditor.getContent();
   };
 
   getEditorHTML = () => {
-    this.webViewQuill.getHTML();
+    this.webViewQuillEditor.getHTML();
   };
-
   getHTMLCallback = HTML => {
     console.log('getHTMLCallback');
     console.log(HTML);
+    this.setState({ messageHTML: HTML });
+  };
+
+  getEditorDelta=()=>{
+    this.webViewQuillEditor.getDelta();
+  }
+
+  getDeltaCallback = delta => {
+    console.log('getDeltaCallback');
+    console.log(delta);
+    this.webViewQuillViewer.sendContentToDisplay(delta);
   };
 
   render() {
@@ -32,9 +57,10 @@ export default class App extends React.Component {
             flex: 1
           }}
         >
-          <WebViewQuill
-            ref={component => (this.webViewQuill = component)}
-            getHTMLCallback={this.getHTMLCallback}
+          <WebViewQuillEditor
+            ref={component => (this.webViewQuillEditor = component)}
+            getDeltaCallback={this.getDeltaCallback}
+            contentToDisplay={contentToDisplay}
           />
           <View
             style={{
@@ -42,13 +68,24 @@ export default class App extends React.Component {
               flex: 1
             }}
           >
-            <Text>Spacing test</Text>
             <Button
-              onPress={this.getEditorHTML}
+              onPress={this.getEditorDelta}
               title="Get Text"
               color="#841584"
               accessibilityLabel="Learn more about this purple button"
             />
+            <View
+              style={{
+                margin: 5,
+                backgroundColor: 'goldenrod',
+                flex:1
+              }}
+            >
+            <WebViewQuillViewer
+            ref={component => (this.webViewQuillViewer = component)}
+            contentToDisplay={this.state.messageDelta}
+          />
+            </View>
           </View>
         </View>
       </View>

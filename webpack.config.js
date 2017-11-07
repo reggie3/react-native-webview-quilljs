@@ -1,39 +1,46 @@
-const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
+  name: 'commons', // Just name it
+  filename: 'common.js' // Name of the output file
+  // There are more options, but we don't need them yet.
+});
 module.exports = {
-  entry: "./web/component.js",
+  entry: {
+    editor: './web/componentEditor.js',
+    viewer: './web/componentViewer.js'
+  },
   output: {
-    path: path.join(__dirname, "./dist"),
-    filename: "[name].bundle.js"
+    path: path.join(__dirname, './dist'),
+    filename: '[name].bundle.js'
   },
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.js$/,
-        include: [path.resolve(__dirname, "web")],
+        include: [path.resolve(__dirname, 'web')],
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: [
               [
-                "env",
+                'env',
                 {
                   targets: {
-                    browsers: ["last 2 versions", "safari >= 7"]
+                    browsers: ['last 2 versions', 'safari >= 7']
                   }
                 }
               ],
-              "react",
-              "stage-2"
+              'react',
+              'stage-2'
             ],
-            plugins: ["babel-plugin-transform-object-rest-spread"],
+            plugins: ['babel-plugin-transform-object-rest-spread'],
             babelrc: false
           }
         }
@@ -42,8 +49,18 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./web/reactQuill.html",
-      inject: "body"
-    })
+      template: './web/reactQuillEditor.html',
+      chunks: ['editor', 'commons'],
+      inject: 'body',
+      filename: './reactQuillEditor-index.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: './web/reactQuillViewer.html',
+      chunks: ['viewer', 'commons'],
+      inject: 'body',
+      filename: './reactQuillViewer-index.html'
+      
+    }),
+    commonsPlugin
   ]
 };
