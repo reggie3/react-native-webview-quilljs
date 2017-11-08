@@ -3,7 +3,6 @@ import './quill.snow.css';
 import RNMessageChannel from 'react-native-webview-messaging';
 import React from 'react';
 import PropTypes from 'prop-types';
-const QuillRender = require('quill-render');
 const util = require('util');
 
 // print passed information in an html element; useful for debugging
@@ -28,14 +27,10 @@ export default class ReactQuillViewer extends React.Component {
     }; // You can also pass a Quill Delta here
   }
 
-  handleChange(value) {
-    this.setState({ text: value });
-  }
-
   componentDidMount() {
     this.setState({
       editor: new Quill('#viewer', {
-        modules: { toolbar: false },        
+        modules: { toolbar: false },
         readOnly: true,
         theme: null,
         bounds: '#Quill-Viewer-Container'
@@ -69,18 +64,16 @@ export default class ReactQuillViewer extends React.Component {
           flexDirection: 'column'
         }}
       >
+        {/*       div to contain debugger information from PrintElement */}
         <div id="viewer-messages" />
-
-        
-          <div
-            id="viewer"
-            style={{
-              height: '100%',
-              backgroundColor: '#FAEBD7',
-              fontSize: '20px'
-            }}
-          />
-
+        <div
+          id="viewer"
+          style={{
+            height: '100%',
+            backgroundColor: '#FAEBD7',
+            fontSize: '20px'
+          }}
+        />
       </div>
     );
   }

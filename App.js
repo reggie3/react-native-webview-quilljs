@@ -31,14 +31,14 @@ export default class App extends React.Component {
     this.setState({ messageHTML: HTML });
   };
 
-  getEditorDelta=()=>{
+  getEditorDelta = () => {
     this.webViewQuillEditor.getDelta();
-  }
+  };
 
   getDeltaCallback = delta => {
     console.log('getDeltaCallback');
     console.log(delta);
-    this.webViewQuillViewer.sendContentToDisplay(delta);
+    this.webViewQuillViewer.sendContentToViewer(delta);
   };
 
   render() {
@@ -62,31 +62,29 @@ export default class App extends React.Component {
             getDeltaCallback={this.getDeltaCallback}
             contentToDisplay={contentToDisplay}
           />
-          <View
-            style={{
-              display: 'flex',
-              flex: 1
-            }}
-          >
-            <Button
-              onPress={this.getEditorDelta}
-              title="Get Text"
-              color="#841584"
-              accessibilityLabel="Learn more about this purple button"
-            />
-            <View
-              style={{
-                margin: 5,
-                backgroundColor: 'goldenrod',
-                flex:1
-              }}
-            >
-            <WebViewQuillViewer
+        </View>
+        <View
+          style={{
+            marginVertical: 5
+          }}
+        >
+          <Button
+            onPress={this.getEditorDelta}
+            title="Get Text"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: 'goldenrod',
+            flex: 1
+          }}
+        >
+          <WebViewQuillViewer
             ref={component => (this.webViewQuillViewer = component)}
             contentToDisplay={this.state.messageDelta}
           />
-            </View>
-          </View>
         </View>
       </View>
     );

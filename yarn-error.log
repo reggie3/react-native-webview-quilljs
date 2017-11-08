@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\regin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add quill-delta-to-html
+  C:\Program Files\nodejs\node.exe C:\Users\regin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add render-if
 
 PATH: 
   %SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Android;C:\Windows\System32;C:\Users\regin\AppData\Local\Microsoft\WindowsApps;C:\Users\regin\AppData\Roaming\npm;C:\Program Files\Microsoft VS Code\bin
@@ -25,6 +25,8 @@ npm manifest:
     "dependencies": {
       "expo": "^22.0.0",
       "prop-types": "^15.6.0",
+      "quill-delta-to-html": "^0.5.1",
+      "quill-render": "^1.0.5",
       "react": "16.0.0-beta.5",
       "react-dom": "^16.0.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-22.0.1.tar.gz",
@@ -1757,6 +1759,16 @@ Lockfile:
       upper-case "^1.1.1"
       upper-case-first "^1.1.0"
   
+  cheerio@^0.19.0:
+    version "0.19.0"
+    resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-0.19.0.tgz#772e7015f2ee29965096d71ea4175b75ab354925"
+    dependencies:
+      css-select "~1.0.0"
+      dom-serializer "~0.1.0"
+      entities "~1.1.1"
+      htmlparser2 "~3.8.1"
+      lodash "^3.2.0"
+  
   cheerio@^1.0.0-rc.2:
     version "1.0.0-rc.2"
     resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0-rc.2.tgz#4b9f53a81b27e4d5dac31c0ffd0cfa03cc6830db"
@@ -2184,6 +2196,15 @@ Lockfile:
       domutils "1.5.1"
       nth-check "~1.0.1"
   
+  css-select@~1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/css-select/-/css-select-1.0.0.tgz#b1121ca51848dd264e2244d058cee254deeb44b0"
+    dependencies:
+      boolbase "~1.0.0"
+      css-what "1.0"
+      domutils "1.4"
+      nth-check "~1.0.0"
+  
   css-selector-tokenizer@^0.7.0:
     version "0.7.0"
     resolved "https://registry.yarnpkg.com/css-selector-tokenizer/-/css-selector-tokenizer-0.7.0.tgz#e6988474ae8c953477bf5e7efecfceccd9cf4c86"
@@ -2191,6 +2212,10 @@ Lockfile:
       cssesc "^0.1.0"
       fastparse "^1.1.1"
       regexpu-core "^1.0.0"
+  
+  css-what@1.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/css-what/-/css-what-1.0.0.tgz#d7cc2df45180666f99d2b14462639469e00f736c"
   
   css-what@2.1:
     version "2.1.0"
@@ -2471,6 +2496,12 @@ Lockfile:
     dependencies:
       domelementtype "1"
   
+  domhandler@2.3:
+    version "2.3.0"
+    resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-2.3.0.tgz#2de59a0822d5027fabff6f032c2b25a2a8abe738"
+    dependencies:
+      domelementtype "1"
+  
   domhandler@^2.3.0:
     version "2.4.1"
     resolved "https://registry.yarnpkg.com/domhandler/-/domhandler-2.4.1.tgz#892e47000a99be55bbf3774ffea0561d8879c259"
@@ -2483,7 +2514,13 @@ Lockfile:
     dependencies:
       domelementtype "1"
   
-  domutils@1.5.1:
+  domutils@1.4:
+    version "1.4.3"
+    resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.4.3.tgz#0865513796c6b306031850e175516baf80b72a6f"
+    dependencies:
+      domelementtype "1"
+  
+  domutils@1.5, domutils@1.5.1:
     version "1.5.1"
     resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.5.1.tgz#dcd8488a26f563d61079e48c9f7b7e32373682cf"
     dependencies:
@@ -2568,6 +2605,10 @@ Lockfile:
       memory-fs "^0.4.0"
       object-assign "^4.0.1"
       tapable "^0.2.7"
+  
+  entities@1.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/entities/-/entities-1.0.0.tgz#b2987aa3821347fcde642b24fdfc9e4fb712bf26"
   
   entities@^1.1.1, entities@~1.1.1:
     version "1.1.1"
@@ -2728,7 +2769,7 @@ Lockfile:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.2.tgz#d77d32fa98e38c2f41ae85e9278e0e0e6ba1022c"
   
-  escape-html@~1.0.3:
+  escape-html@^1.0.3, escape-html@~1.0.3:
     version "1.0.3"
     resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   
@@ -3616,6 +3657,16 @@ Lockfile:
       domhandler "2.1"
       domutils "1.1"
       readable-stream "1.0"
+  
+  htmlparser2@~3.8.1:
+    version "3.8.3"
+    resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-3.8.3.tgz#996c28b191516a8be86501a7d79757e5c70c1068"
+    dependencies:
+      domelementtype "1"
+      domhandler "2.3"
+      domutils "1.5"
+      entities "1.0"
+      readable-stream "1.1"
   
   http-errors@1.6.2, http-errors@~1.6.2:
     version "1.6.2"
@@ -4707,7 +4758,7 @@ Lockfile:
     version "4.1.3"
     resolved "https://registry.yarnpkg.com/lodash.zipobject/-/lodash.zipobject-4.1.3.tgz#b399f5aba8ff62a746f6979bf20b214f964dbef8"
   
-  lodash@^3.5.0:
+  lodash@^3.2.0, lodash@^3.5.0:
     version "3.10.1"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   
@@ -5270,7 +5321,7 @@ Lockfile:
       gauge "~2.7.3"
       set-blocking "~2.0.0"
   
-  nth-check@~1.0.1:
+  nth-check@~1.0.0, nth-check@~1.0.1:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/nth-check/-/nth-check-1.0.1.tgz#9929acdf628fc2c41098deab82ac580cf149aae4"
     dependencies:
@@ -6085,6 +6136,10 @@ Lockfile:
     version "0.2.0"
     resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
   
+  quill-delta-to-html@^0.5.1:
+    version "0.5.1"
+    resolved "https://registry.yarnpkg.com/quill-delta-to-html/-/quill-delta-to-html-0.5.1.tgz#c4097f21185a008690d02599388cc72e2c405cce"
+  
   quill-delta@3.6.2:
     version "3.6.2"
     resolved "https://registry.yarnpkg.com/quill-delta/-/quill-delta-3.6.2.tgz#76eed0163b8b09a076fba6ade29307c42b40b8d8"
@@ -6092,6 +6147,13 @@ Lockfile:
       deep-equal "^1.0.1"
       extend "^3.0.1"
       fast-diff "1.1.2"
+  
+  quill-render@^1.0.5:
+    version "1.0.5"
+    resolved "https://registry.yarnpkg.com/quill-render/-/quill-render-1.0.5.tgz#532870df74cd9ae8992a3ea194f1c86ab494a2dc"
+    dependencies:
+      cheerio "^0.19.0"
+      escape-html "^1.0.3"
   
   quill@^1.2.6:
     version "1.3.3"
@@ -6426,6 +6488,15 @@ Lockfile:
   readable-stream@1.0:
     version "1.0.34"
     resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
+    dependencies:
+      core-util-is "~1.0.0"
+      inherits "~2.0.1"
+      isarray "0.0.1"
+      string_decoder "~0.10.x"
+  
+  readable-stream@1.1:
+    version "1.1.13"
+    resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.13.tgz#f6eef764f514c89e2b9e23146a75ba106756d23e"
     dependencies:
       core-util-is "~1.0.0"
       inherits "~2.0.1"
@@ -8105,5 +8176,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/yesno/-/yesno-0.0.1.tgz#ffbc04ff3d6f99dad24f7463134e9b92ae41bef6"
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'C:\Users\regin\OneDrive\Development\react-native-webview-quilljs-test-app\node_modules\@expo\json-file\node_modules\.bin'
-      at Error (native)
+  Error: connect ETIMEDOUT 104.16.59.173:443
+      at Object.exports._errnoException (util.js:1020:11)
+      at exports._exceptionWithHostPort (util.js:1043:20)
+      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1086:14)

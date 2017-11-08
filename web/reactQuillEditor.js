@@ -3,7 +3,6 @@ import './quill.snow.css';
 import RNMessageChannel from 'react-native-webview-messaging';
 import React from 'react';
 import PropTypes from 'prop-types';
-const QuillRender = require('quill-render');
 const util = require('util');
 
 // print passed information in an html element; useful for debugging
@@ -25,11 +24,7 @@ export default class ReactQuillEditor extends React.Component {
     super(props);
     this.state = {
       editor: null
-    }; // You can also pass a Quill Delta here
-  }
-
-  handleChange(value) {
-    this.setState({ text: value });
+    };
   }
 
   componentDidMount() {
@@ -40,6 +35,8 @@ export default class ReactQuillEditor extends React.Component {
       })
     });
 
+    // send a message to parent that the component is loaded
+    // RNMessageChannel.send('EDITOR_MOUNTED', {});
     this.registerMessageListeners();
   }
 
@@ -47,35 +44,11 @@ export default class ReactQuillEditor extends React.Component {
    * register message listeners to receive events from parent
   */
   registerMessageListeners = () => {
-    // PrintElement('registering message listeners');
-
-    // will receive client token as a prop immediately upon mounting
-    RNMessageChannel.on('GET_CONTENT', event => {
-      // PrintElement('GET_CONTENT');
-      RNMessageChannel.emit('RECEIVE_CONTENT', {
-        payload: {
-          type: 'success',
-          deltaContent
-        }
-      });
-    });
-
-    RNMessageChannel.on('GET_HTML', event => {
-      // PrintElement('GET_HTML');
-      const deltaContent = this.state.editor.getContents();
-      PrintElement(deltaContent);
-      const HTML = QuillRender(deltaContent.ops);
-      RNMessageChannel.emit('RECEIVE_HTML', {
-        payload: {
-          type: 'success',
-          HTML
-        }
-      });
-    });
+    /* PrintElement('registering message listeners'); */
 
     RNMessageChannel.on('GET_DELTA', event => {
-      PrintElement('GET_DELTA');
-      PrintElement(this.state.editor.getContents());
+      /* PrintElement('GET_DELTA');
+      PrintElement(this.state.editor.getContents()); */
       RNMessageChannel.emit('RECEIVE_DELTA', {
         payload: {
           type: 'success',
@@ -85,8 +58,8 @@ export default class ReactQuillEditor extends React.Component {
     });
 
     RNMessageChannel.on('SET_CONTENTS', event => {
-      PrintElement('SET_CONTENTS');
-      PrintElement(event.payload.ops);
+      /*  PrintElement('SET_CONTENTS');
+      PrintElement(event.payload.ops); */
       this.state.editor.setContents(event.payload.delta);
     });
   };
@@ -102,22 +75,23 @@ export default class ReactQuillEditor extends React.Component {
           flexDirection: 'column'
         }}
       >
-        <div id="editor-messages" />
-
+        {/*       div to contain debugger information from PrintElement */}
+        {/*         <div id="editor-messages" /> */}
         <div
           style={{
             height: '100%',
-            backgroundColor: '#dddddd',
+            backgroundColor: '#eeeeee',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            paddingVertical: 5
           }}
         >
           <div
             id="editor"
             style={{
-              height: '100%',
-              backgroundColor: '#eeeeee',
-              fontSize: '20px'
+              backgroundColor: '#FAEBD7',
+              fontSize: '20px',
+              height: 'calc(100% - 42px)'
             }}
           >
             <p>Hello World!</p>

@@ -1,5 +1,12 @@
+/********************************************
+ * WebViewQuillViewer.js
+ * A Delta viewer suitable for viewing output from a Quill.js
+ * editor.  The Delta format is discussed here: https://quilljs.com/docs/delta/
+ * This component is useful for applications that must avoid using native code
+ *  
+ */
 import React from './web/react.production.min.js';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview-messaging/WebView';
 import PropTypes from 'prop-types';
 
@@ -16,7 +23,7 @@ export default class WebViewQuillViewer extends React.Component {
 
   };
 
-  sendContentToDisplay = (delta) => {
+  sendContentToViewer = (delta) => {
     if (this.props.hasOwnProperty('contentToDisplay')) {
       this.webview.emit('SET_CONTENTS', {
         payload: {
@@ -36,7 +43,7 @@ export default class WebViewQuillViewer extends React.Component {
         }}
       >
         <WebView
-          onLoad={this.sendContentToDisplay}
+          onLoad={this.sendContentToViewer}
           style={{
             flex: 1
           }}

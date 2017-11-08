@@ -1,20 +1,20 @@
 webpackJsonp([0],{
 
-/***/ 142:
+/***/ 49:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _reactDom = __webpack_require__(32);
+var _reactDom = __webpack_require__(11);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactQuillViewer = __webpack_require__(143);
+var _reactQuillViewer = __webpack_require__(50);
 
 var _reactQuillViewer2 = _interopRequireDefault(_reactQuillViewer);
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -24,7 +24,7 @@ _reactDom2.default.render(_react2.default.createElement(_reactQuillViewer2.defau
 
 /***/ }),
 
-/***/ 143:
+/***/ 50:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38,21 +38,21 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _quill = __webpack_require__(38);
+var _quill = __webpack_require__(17);
 
 var _quill2 = _interopRequireDefault(_quill);
 
-__webpack_require__(40);
+__webpack_require__(19);
 
-var _reactNativeWebviewMessaging = __webpack_require__(41);
+var _reactNativeWebviewMessaging = __webpack_require__(20);
 
 var _reactNativeWebviewMessaging2 = _interopRequireDefault(_reactNativeWebviewMessaging);
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(25);
+var _propTypes = __webpack_require__(10);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -64,8 +64,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var QuillRender = __webpack_require__(42);
-var util = __webpack_require__(9);
+var util = __webpack_require__(21);
 
 // print passed information in an html element; useful for debugging
 // since console.log and debug statements won't work in a conventional way
@@ -106,11 +105,6 @@ var ReactQuillViewer = function (_React$Component) {
   }
 
   _createClass(ReactQuillViewer, [{
-    key: 'handleChange',
-    value: function handleChange(value) {
-      this.setState({ text: value });
-    }
-  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.setState({
@@ -163,4 +157,4 @@ exports.default = ReactQuillViewer;
 
 /***/ })
 
-},[142]);
+},[49]);

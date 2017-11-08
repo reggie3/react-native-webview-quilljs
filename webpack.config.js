@@ -49,13 +49,13 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './web/reactQuillEditor.html',
+      template: './web/reactNativeComponentTemplate.html',
       chunks: ['editor', 'commons'],
       inject: 'body',
       filename: './reactQuillEditor-index.html'
     }),
     new HtmlWebpackPlugin({
-      template: './web/reactQuillViewer.html',
+      template: './web/reactNativeComponentTemplate.html',
       chunks: ['viewer', 'commons'],
       inject: 'body',
       filename: './reactQuillViewer-index.html'

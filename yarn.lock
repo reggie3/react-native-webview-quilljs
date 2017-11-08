@@ -6558,6 +6558,10 @@ remove-trailing-slash@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/remove-trailing-slash/-/remove-trailing-slash-0.1.0.tgz#1498e5df0984c27e49b76ebf06887ca2d01150d2"
 
+render-if@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/render-if/-/render-if-0.1.1.tgz#f255a47bf973814ac077735b994b95fa3d1cd42e"
+
 renderkid@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/renderkid/-/renderkid-2.0.1.tgz#898cabfc8bede4b7b91135a3ffd323e58c0db319"
