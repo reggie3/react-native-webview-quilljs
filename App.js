@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import WebViewQuillEditor from './WebViewQuillEditor';
-import WebViewQuillViewer from './WebViewQuillViewer';
+import {WebViewQuillEditor, WebViewQuillViewer} from 'react-native-webview-quilljs';
 
+// example content to display
 const contentToDisplay = {
   ops: [
     { insert: 'Hello\n' },
-    { insert: 'This is colorful', attributes: { color: '#f00' } }
+    { insert: 'This is another line' }
   ]
 };
 
@@ -18,18 +18,6 @@ export default class App extends React.Component {
       messageDelta: {}
     };
   }
-  getEditorContent = () => {
-    this.webViewQuillEditor.getContent();
-  };
-
-  getEditorHTML = () => {
-    this.webViewQuillEditor.getHTML();
-  };
-  getHTMLCallback = HTML => {
-    console.log('getHTMLCallback');
-    console.log(HTML);
-    this.setState({ messageHTML: HTML });
-  };
 
   getEditorDelta = () => {
     this.webViewQuillEditor.getDelta();
@@ -45,10 +33,9 @@ export default class App extends React.Component {
     return (
       <View
         style={{
-          marginTop: 40,
-          backgroundColor: `#dddddd`,
-          flex: 1,
-          padding: 10
+             ...StyleSheet.absoluteFillObject,
+             padding: 5,
+             marginTop: 15             
         }}
       >
         <Text>react-native-webview-quilljs-test-app</Text>
