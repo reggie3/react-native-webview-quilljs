@@ -7,11 +7,11 @@
   "private": false,
   "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
-    "expo": "^22.0.0",
+    "expo": "^24.0.2",
     "prop-types": "^15.6.0",
-    "react": "16.0.0-beta.5",
+    "react": "16.0.0",
     "react-dom": "^16.0.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-22.0.1.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz",
     "react-native-webview-messaging": "^1.2.1",
     "react-native-webview-quilljs": "^0.1.1",
     "render-if": "^0.1.1"
