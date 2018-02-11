@@ -25,7 +25,8 @@ export default class ReactQuillViewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editor: null
+      editor: null,
+      readyToSendNextMessage: true
     }; // You can also pass a Quill Delta here
   }
 

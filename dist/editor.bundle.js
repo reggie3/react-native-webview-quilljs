@@ -177,7 +177,8 @@ var ReactQuillEditor = function (_React$Component) {
     };
 
     _this.state = {
-      editor: null
+      editor: null,
+      readyToSendNextMessage: true
     };
     return _this;
   }

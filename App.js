@@ -61,7 +61,7 @@ export default class App extends React.Component {
         </View>
         <View
           style={{
-            marginVertical: 5
+            margin: 5
           }}
         >
           <Button

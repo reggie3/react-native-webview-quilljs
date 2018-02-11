@@ -164,7 +164,8 @@ var ReactQuillViewer = function (_React$Component) {
     };
 
     _this.state = {
-      editor: null
+      editor: null,
+      readyToSendNextMessage: true
     }; // You can also pass a Quill Delta here
     return _this;
   }

@@ -27,7 +27,8 @@ export default class ReactQuillEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editor: null
+      editor: null,
+      readyToSendNextMessage: true
     };
   }
   // print passed information in an html element; useful for debugging
