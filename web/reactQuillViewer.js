@@ -7,7 +7,7 @@ import renderIf from 'render-if';
 
 const util = require('util');
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
-const SHOW_DEBUG_INFORMATION = true;
+const SHOW_DEBUG_INFORMATION = false;
 let messageQueue = [];
 let messageCounter = 0;
 
@@ -18,7 +18,8 @@ const MessagesDiv = glamorous.div({
   position: 'absolute',
   bottom: 0,
   left: 0,
-  right: 0
+  right: 0,
+  fontSize: 10
 });
 
 export default class ReactQuillViewer extends React.Component {
@@ -158,7 +159,7 @@ export default class ReactQuillViewer extends React.Component {
           style={{
             backgroundColor: '#FAEBD7',
             fontSize: '20px',
-            height: 'calc(100% - 42px)'
+            height: '100%'
           }}
         />
         </div>

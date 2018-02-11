@@ -8,7 +8,7 @@ import renderIf from 'render-if';
 const util = require('util');
 let updateCounter = 0;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
-const SHOW_DEBUG_INFORMATION = true;
+const SHOW_DEBUG_INFORMATION = false;
 
 let messageQueue = [];
 let messageCounter = 0;
@@ -20,7 +20,8 @@ const MessagesDiv = glamorous.div({
   position: 'absolute',
   bottom: 0,
   left: 0,
-  right: 0
+  right: 0,
+  fontSize: 10
 });
 
 export default class ReactQuillEditor extends React.Component {
@@ -112,15 +113,13 @@ export default class ReactQuillEditor extends React.Component {
           // receive an event when the webview is ready
           case 'GET_DELTA':
             this.addMessageToQueue('RECEIVE_DELTA', {
-              payload: {
                 type: 'success',
                 delta: this.state.editor.getContents()
-              }
             });
             break;
 
           case 'SET_CONTENTS':
-            this.state.editor.setContents(event.payload.delta);
+            this.state.editor.setContents(msgData.payload.delta);
             break;
 
           case 'MESSAGE_ACKNOWLEDGED':

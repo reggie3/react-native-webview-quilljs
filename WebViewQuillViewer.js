@@ -70,6 +70,14 @@ export default class WebViewQuillViewer extends React.Component {
     }
   };
 
+  sendContentToViewer = (delta) => {
+    if (this.props.hasOwnProperty('contentToDisplay')) {
+      this.sendMessage('SET_CONTENTS', {
+          ops: delta.ops
+      });
+    }
+  };
+
   sendMessage = (type, payload) => {
     // only send message when webview is loaded
     if (this.webview) {
@@ -90,7 +98,6 @@ export default class WebViewQuillViewer extends React.Component {
 
     // send content to viewer if any was passed
     if (this.props.hasOwnProperty('contentToDisplay')) {
-      debugger;
       console.log(this.props.contentToDisplay);
       this.sendMessage('SET_CONTENTS', {
         payload: {
@@ -112,7 +119,7 @@ export default class WebViewQuillViewer extends React.Component {
     return (
       <View
         style={{
-          ...StyleSheet.absoluteFillObject,
+          flex: 1,
           backgroundColor: '#ffebba'
         }}
       >
@@ -137,11 +144,11 @@ export default class WebViewQuillViewer extends React.Component {
               padding: 10
             }}
             ref={this.createWebViewRef}
-            source={{
-              uri: config.USE_LOCAL_FILES
-                ? './dist/reactQuillViewer-index.html'
-                : INDEX_FILE_PATH
-            }}
+            source={
+              config.USE_LOCAL_FILES
+                ? require('./dist/reactQuillViewer-index.html')
+                : { uri: INDEX_FILE_PATH }
+            }
             onLoadEnd={this.webViewLoaded}
             onMessage={this.handleMessage}
           />
