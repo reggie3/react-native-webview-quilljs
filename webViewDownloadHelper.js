@@ -1,7 +1,21 @@
 import { FileSystem } from 'expo';
 let FILES_ALREADY_CHECKED = false;
-export const checkForFiles = async (directory, version, files, callback) => {
+let checkForFilesPromise = null;
+let directory, version, files;
 
+export const checkForFiles = (_directory, _version, _files) => {
+  if (checkForFilesPromise) {
+    return checkForFilesPromise;
+  } else {
+    directory = _directory;
+    version = _version;
+    files = _files;
+    checkForFilesPromise = startFileDownload();
+    return checkForFilesPromise;
+  }
+};
+
+const startFileDownload = async () => {
   // directory name of the form:
   //    react-native-webview-leaflet/24
   const CURRENT_VERSION_DIRECTORY_NAME =
@@ -12,7 +26,9 @@ export const checkForFiles = async (directory, version, files, callback) => {
   try {
     // get list of versions currently in the directory so that they can be deleted if needed
     console.log('reading parent directory');
-    let parentDirectoryContents = await getParentDirectoryContents(PARENT_DIRECTORY);
+    let parentDirectoryContents = await getParentDirectoryContents(
+      PARENT_DIRECTORY
+    );
     console.log(`parent contents: ${parentDirectoryContents}`);
 
     // check to see if this version's download directory already exists

@@ -70,7 +70,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var util = __webpack_require__(27);
 var MESSAGE_PREFIX = 'react-native-webview-quilljs';
-var SHOW_DEBUG_INFORMATION = true;
+var SHOW_DEBUG_INFORMATION = false;
 var messageQueue = [];
 var messageCounter = 0;
 
@@ -81,7 +81,8 @@ var MessagesDiv = _glamorous2.default.div({
   position: 'absolute',
   bottom: 0,
   left: 0,
-  right: 0
+  right: 0,
+  fontSize: 10
 });
 
 var ReactQuillViewer = function (_React$Component) {
@@ -224,7 +225,7 @@ var ReactQuillViewer = function (_React$Component) {
             style: {
               backgroundColor: '#FAEBD7',
               fontSize: '20px',
-              height: 'calc(100% - 42px)'
+              height: '100%'
             }
           })
         ),

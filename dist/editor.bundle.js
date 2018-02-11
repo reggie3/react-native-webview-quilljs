@@ -71,7 +71,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var util = __webpack_require__(27);
 var updateCounter = 0;
 var MESSAGE_PREFIX = 'react-native-webview-quilljs';
-var SHOW_DEBUG_INFORMATION = true;
+var SHOW_DEBUG_INFORMATION = false;
 
 var messageQueue = [];
 var messageCounter = 0;
@@ -83,7 +83,8 @@ var MessagesDiv = _glamorous2.default.div({
   position: 'absolute',
   bottom: 0,
   left: 0,
-  right: 0
+  right: 0,
+  fontSize: 10
 });
 
 var ReactQuillEditor = function (_React$Component) {
@@ -149,15 +150,13 @@ var ReactQuillEditor = function (_React$Component) {
             // receive an event when the webview is ready
             case 'GET_DELTA':
               _this.addMessageToQueue('RECEIVE_DELTA', {
-                payload: {
-                  type: 'success',
-                  delta: _this.state.editor.getContents()
-                }
+                type: 'success',
+                delta: _this.state.editor.getContents()
               });
               break;
 
             case 'SET_CONTENTS':
-              _this.state.editor.setContents(event.payload.delta);
+              _this.state.editor.setContents(msgData.payload.delta);
               break;
 
             case 'MESSAGE_ACKNOWLEDGED':
