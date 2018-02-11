@@ -1,19 +1,18 @@
 {
   "expo": {
-    "name": "react-native-webview-quilljs-test-app",
+    "name": "react-native-webview-quilljs",
     "description": "Development and test application for a react native webview component incorporating Quill JS",
-    "slug": "react-native-webview-quilljs-test-app",
+    "slug": "react-native-webview-quilljs",
     "privacy": "public",
-    "sdkVersion": "24.0.0",
+    "sdkVersion": "25.0.0",
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#cccccc",
+    "icon": "./assets/icon.png",
     "splash": {
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "packagerOpts": {
-      "assetExts": ["ttf", "mp4"]
     },
     "ios": {
       "supportsTablet": true

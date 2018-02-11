@@ -1,20 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import {WebViewQuillEditor, WebViewQuillViewer} from 'react-native-webview-quilljs';
+import { Constants } from 'expo';
+import WebViewQuillEditor from './WebViewQuillEditor';
+import WebViewQuillViewer from './WebViewQuillViewer';
 
 // example content to display
 const contentToDisplay = {
-  ops: [
-    { insert: 'Hello\n' },
-    { insert: 'This is another line' }
-  ]
+  ops: [{ insert: 'Hello\n' }, { insert: 'This is another line' }]
 };
 
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      messageHTML: '',
       messageDelta: {}
     };
   }
@@ -33,15 +31,26 @@ export default class App extends React.Component {
     return (
       <View
         style={{
-             ...StyleSheet.absoluteFillObject,
-             padding: 5,
-             marginTop: 15             
+          ...StyleSheet.absoluteFillObject,
+          backgroundColor: '#e2e2e2'
         }}
       >
-        <Text>react-native-webview-quilljs-test-app</Text>
+        <View style={styles.statusBar} />
+        <Text
+          style={{
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            fontSize: 20,
+            backgroundColor: '#9be1ff',
+            color: 'black'
+          }}
+        >
+          React Native Webview Quill-js
+        </Text>
         <View
           style={{
-            flex: 1
+            flex: 1,
+            padding: 5
           }}
         >
           <WebViewQuillEditor
@@ -64,8 +73,8 @@ export default class App extends React.Component {
         </View>
         <View
           style={{
-            backgroundColor: 'goldenrod',
-            flex: 1
+            flex: 1,
+            padding: 5
           }}
         >
           <WebViewQuillViewer
@@ -80,9 +89,12 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#ccccff',
+    display: 'flex'
+  },
+  statusBar: {
+    height: Constants.statusBarHeight,
+    backgroundColor: '#9be1ff'
   }
 });
