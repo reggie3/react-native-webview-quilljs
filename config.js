@@ -4,4 +4,4 @@ export const PACKAGE_VERSION = '0.1.33';
 
 // use the local html files from the dist folder instead of using the downloaded ones
 // used for debugging
-export const USE_LOCAL_FILES = false;
+export const USE_LOCAL_FILES = true;
