@@ -6,6 +6,15 @@
 [![npm](https://img.shields.io/npm/dt/react-native-webview-quilljs.svg)](https://www.npmjs.com/package/react-native-webview-quilljs)
 [![npm](https://img.shields.io/npm/l/react-native-webview-quilljs.svg)](https://github.com/react-native-component/react-native-webview-quilljs/blob/master/LICENSE)
 
+
+![Image](https://thumbs.gfycat.com/CelebratedSilentDromedary-size_restricted.gif)
+
+## Try it in Expo
+![QR Code](https://github.com/reggie3/react-native-webview-quilljs/blob/master/expo-qr-code.png)
+
+
+[Link to Expo Project Page](https://expo.io/@reggie3/react-native-webview-quilljs)
+
 ## Usage
 This package can be used to create both an editor and a viewer
 
@@ -53,10 +62,6 @@ This component accepts the following props:
 
 
 
-## Example Application
-[React Native Webview Quill.js test application](https://github.com/reggie3/react-native-webview-quilljs-test-app)
-
-![Alt Text](react-native-webview-quilljs.gif)
 
 ## LICENSE
 
