@@ -168,9 +168,7 @@ export default class WebViewQuillEditor extends React.Component {
             }}
             ref={this.createWebViewRef}
             source={
-              config.USE_LOCAL_FILES
-                ? require('./dist/reactQuillEditor-index.html')
-                : { uri: INDEX_FILE_PATH }
+              { uri: INDEX_FILE_PATH }
             }
             onLoadEnd={this.webViewLoaded}
             onMessage={this.handleMessage}
