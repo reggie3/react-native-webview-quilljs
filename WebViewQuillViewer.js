@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import renderIf from 'render-if';
 import * as webViewDownloadHelper from './webViewDownloadHelper';
 import { FileSystem } from 'expo';
-import * as config from './config';
+import config from './config';
 
 // path to the file that the webview will load
 const INDEX_FILE_PATH = `${FileSystem.documentDirectory}${

@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import renderIf from 'render-if';
 import * as webViewDownloadHelper from './webViewDownloadHelper';
 import { FileSystem } from 'expo';
-import * as config from './config';
+import config from './config';
 
 // name and version of the package that contains the index file(s) the webview will load
 
