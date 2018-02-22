@@ -16,6 +16,9 @@
     },
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "assetBundlePatterns": [
+      "dist/*"
+    ]
   }
 }

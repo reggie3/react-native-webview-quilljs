@@ -15,6 +15,21 @@
 
 [Link to Expo Project Page](https://expo.io/@reggie3/react-native-webview-quilljs)
 
+
+## Installation
+~~~
+npm install --save react-native-webview-quilljs
+~~~
+or 
+~~~
+yarn add react-native-webview-quilljs
+~~~
+
+and then
+~~~
+import {WebViewQuillEditor, WebViewQuillViewer} from 'react-native-webview-quilljs'
+~~~
+
 ## Usage
 This package can be used to create both an editor and a viewer
 

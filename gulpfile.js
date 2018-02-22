@@ -1,11 +1,11 @@
 const gulp = require('gulp');
-const log = require('fancy-log');
-const intercept = require('gulp-intercept');
+
 const concat = require('gulp-concat');
 const jeditor = require('gulp-json-editor');
 const bump = require('gulp-bump');
 const webpack_stream = require('webpack-stream');
-const webpack_config = require('./webpack.config.js');
+const webpackDevConfig = require('./webpack.config.dev');
+const webpackProdConfig = require('./webpack.config.prod');
 const run = require('gulp-run');
 
 // dependencies for npm publishing
@@ -18,15 +18,16 @@ const npmDeps = {
   'prop-types': '^15.6.0',
   'react-native-ui-kitten': '^3.0.0',
   util: '^0.10.3',
-  'render-if': '^0.1.1'
+  'render-if': '^0.1.1',
+  "versioned-file-downloader": "^1.0.0"
 };
 // additional dependencies for expo app
 const expoDeps = {
-  expo: '^24.0.0',
+  expo: '^25.0.0',
   react: '16.0.0',
   'react-dom': '^16.2.0',
   'react-native':
-    'https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz'
+    'https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz'
 };
 
 // main for npm publishing
@@ -74,15 +75,26 @@ gulp.task('editConfig', done => {
 });
 
 // pack the files
-gulp.task('webpack', done => {
-  return webpack_stream(webpack_config).pipe(gulp.dest(`${paths.build}`));
+gulp.task('webpack-prod', done => {
+  return webpack_stream(webpackDevConfig).pipe(gulp.dest(`${paths.build}`));
   done();
 });
+
+gulp.task('webpack-dev', done => {
+  return webpack_stream(webpackDevConfig).pipe(gulp.dest(`${paths.build}`));
+  done();
+});
+
 
 gulp.task('npm-publish', done => {
   return run('npm publish').exec(); // run "npm start".
   done();
 });
+
+gulp.task('npm-alpha', done=>{
+  return run('npm publish --tag alpha').exec();
+  done();
+})
 
 gulp.task('git-add', done => {
   return run('git add .').exec();
@@ -116,11 +128,10 @@ gulp.task('forExpo', done => {
 
 
 gulp.task(
-  'publish',
+  'prod',
   gulp.series(
     'forNPM',
-    'editConfig',
-    'webpack',
+    'webpack-prod',
     gulp.parallel(
       gulp.series('git-add', 'git-commit', 'git-push'),
       'npm-publish'
@@ -128,4 +139,27 @@ gulp.task(
     'forExpo'
   )
 );
+
+gulp.task(
+  'dev',
+  gulp.series(
+    'forNPM',
+    'webpack-dev',
+    gulp.parallel(
+      gulp.series('git-add', 'git-commit', 'git-push'),
+      'npm-publish'
+    ),
+    'forExpo'
+  )
+);
+
+gulp.task(
+  'alpha',
+  gulp.series(
+    'forNPM',
+    'webpack-dev',
+    'npm-alpha',
+    'forExpo'
+  )
+)
 

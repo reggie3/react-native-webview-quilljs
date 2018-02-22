@@ -142,6 +142,8 @@ export default class ReactQuillEditor extends React.Component {
     }
   };
 
+
+
   render() {
     return (
       <div
