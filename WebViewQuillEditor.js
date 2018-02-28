@@ -151,7 +151,7 @@ export default class WebViewQuillEditor extends React.Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: '#ffebba'
+          backgroundColor: '#fffff'
         }}
       >
         {renderIf(this.state.webViewFilesNotAvailable)(

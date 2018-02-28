@@ -62,7 +62,7 @@ export default class ReactQuillEditor extends React.Component {
     } else if (window) {
       window.addEventListener('message', this.handleMessage), false;
     } else {
-      console.log(nable to add event listener');
+      console.log('unable to add event listener');
     }
     this.printElement(`component mounted`);
   }
