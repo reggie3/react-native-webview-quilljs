@@ -92,6 +92,10 @@ export default class WebViewQuillEditor extends React.Component {
           case 'RECEIVE_DELTA':
             this.props.getDeltaCallback(msgData.payload.delta);
             break;
+          case 'TEXT_CHANGED':
+            if (this.props.onChangeCallback)
+              this.props.onChangeCallback(msgData.payload);
+            break;
           default:
             console.warn(
               `WebViewQuillEditor Error: Unhandled message type received "${
@@ -200,6 +204,7 @@ export default class WebViewQuillEditor extends React.Component {
 
 WebViewQuillEditor.propTypes = {
   getDeltaCallback: PropTypes.func.isRequired,
+  onChangeCallback: PropTypes.func,
   contentToDisplay: PropTypes.object
 };
 

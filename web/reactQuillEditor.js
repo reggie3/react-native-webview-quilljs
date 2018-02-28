@@ -56,7 +56,15 @@ export default class ReactQuillEditor extends React.Component {
         theme: 'snow',
         bounds: '#Quill-Editor-Container'
       })
+    }, () => {
+      this.state.editor.on('text-change', (delta, oldDelta, source) => {
+        this.addMessageToQueue('TEXT_CHANGED', {
+          type: 'success',
+          delta, oldDelta, source
+        });
+      });
     });
+
     if (document) {
       document.addEventListener('message', this.handleMessage), false;
     } else if (window) {

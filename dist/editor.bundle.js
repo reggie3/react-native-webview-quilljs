@@ -192,12 +192,22 @@ var ReactQuillEditor = function (_React$Component) {
   _createClass(ReactQuillEditor, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var _this2 = this;
+
       this.setState({
         editor: new _quill2.default('#editor', {
           theme: 'snow',
           bounds: '#Quill-Editor-Container'
         })
+      }, function () {
+        _this2.state.editor.on('text-change', function (delta, oldDelta, source) {
+          _this2.addMessageToQueue('TEXT_CHANGED', {
+            type: 'success',
+            delta: delta, oldDelta: oldDelta, source: source
+          });
+        });
       });
+
       if (document) {
         document.addEventListener('message', this.handleMessage), false;
       } else if (window) {
