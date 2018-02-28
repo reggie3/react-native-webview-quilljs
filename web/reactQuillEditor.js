@@ -56,7 +56,15 @@ export default class ReactQuillEditor extends React.Component {
         theme: 'snow',
         bounds: '#Quill-Editor-Container'
       })
+    }, () => {
+      this.state.editor.on('text-change', (delta, oldDelta, source) => {
+        this.addMessageToQueue('TEXT_CHANGED', {
+          type: 'success',
+          delta, oldDelta, source
+        });
+      });
     });
+
     if (document) {
       document.addEventListener('message', this.handleMessage), false;
     } else if (window) {
@@ -122,6 +130,10 @@ export default class ReactQuillEditor extends React.Component {
             this.state.editor.setContents(msgData.payload.delta);
             break;
 
+          case 'SET_HTML_CONTENTS':
+            this.state.editor.pasteHTML(msgData.payload.html);
+            break;
+
           case 'MESSAGE_ACKNOWLEDGED':
             this.printElement(`received MESSAGE_ACKNOWLEDGED`);
             this.setState({ readyToSendNextMessage: true });
@@ -150,7 +162,6 @@ export default class ReactQuillEditor extends React.Component {
         id="Quill-Editor-Container"
         style={{
           height: '100%',
-          backgroundColor: '#dddddd',
           display: 'flex',
           flexDirection: 'column'
         }}
@@ -158,7 +169,6 @@ export default class ReactQuillEditor extends React.Component {
         <div
           style={{
             height: '100%',
-            backgroundColor: '#ffebba',
             display: 'flex',
             flexDirection: 'column',
             paddingVertical: 5
@@ -167,12 +177,10 @@ export default class ReactQuillEditor extends React.Component {
           <div
             id="editor"
             style={{
-              backgroundColor: '#FAEBD7',
               fontSize: '20px',
               height: 'calc(100% - 42px)'
             }}
           >
-            <p>Hello World!</p>
           </div>
         </div>
         {renderIf(SHOW_DEBUG_INFORMATION)(<MessagesDiv id="messages" />)}

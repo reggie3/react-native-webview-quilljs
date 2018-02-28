@@ -92,6 +92,10 @@ export default class WebViewQuillEditor extends React.Component {
           case 'RECEIVE_DELTA':
             this.props.getDeltaCallback(msgData.payload.delta);
             break;
+          case 'TEXT_CHANGED':
+            if (this.props.onChangeCallback)
+              this.props.onChangeCallback(msgData.payload);
+            break;
           default:
             console.warn(
               `WebViewQuillEditor Error: Unhandled message type received "${
@@ -110,10 +114,16 @@ export default class WebViewQuillEditor extends React.Component {
     this.setState({ webViewNotLoaded: false });
     // send the content to the editor if we have it
     if (this.props.hasOwnProperty('contentToDisplay')) {
-      console.log(this.props.contentToDisplay);
       this.sendMessage('SET_CONTENTS', {
        
           delta: this.props.contentToDisplay
+      
+      });
+    }
+    if (this.props.hasOwnProperty('htmlContentToDisplay')) {
+      this.sendMessage('SET_HTML_CONTENTS', {
+       
+          html: this.props.htmlContentToDisplay
       
       });
     }
@@ -145,7 +155,7 @@ export default class WebViewQuillEditor extends React.Component {
       <View
         style={{
           flex: 1,
-          backgroundColor: '#ffebba'
+          backgroundColor: '#fffff'
         }}
       >
         {renderIf(this.state.webViewFilesNotAvailable)(
@@ -163,7 +173,7 @@ export default class WebViewQuillEditor extends React.Component {
           <WebView
             style={{
               ...StyleSheet.absoluteFillObject,
-              backgroundColor: '#ffebba',
+              backgroundColor: '#fffff',
               padding: 10
             }}
             ref={this.createWebViewRef}
@@ -194,6 +204,7 @@ export default class WebViewQuillEditor extends React.Component {
 
 WebViewQuillEditor.propTypes = {
   getDeltaCallback: PropTypes.func.isRequired,
+  onChangeCallback: PropTypes.func,
   contentToDisplay: PropTypes.object
 };
 

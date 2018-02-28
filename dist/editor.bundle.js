@@ -159,6 +159,10 @@ var ReactQuillEditor = function (_React$Component) {
               _this.state.editor.setContents(msgData.payload.delta);
               break;
 
+            case 'SET_HTML_CONTENTS':
+              _this.state.editor.pasteHTML(msgData.payload.html);
+              break;
+
             case 'MESSAGE_ACKNOWLEDGED':
               _this.printElement('received MESSAGE_ACKNOWLEDGED');
               _this.setState({ readyToSendNextMessage: true });
@@ -188,12 +192,22 @@ var ReactQuillEditor = function (_React$Component) {
   _createClass(ReactQuillEditor, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var _this2 = this;
+
       this.setState({
         editor: new _quill2.default('#editor', {
           theme: 'snow',
           bounds: '#Quill-Editor-Container'
         })
+      }, function () {
+        _this2.state.editor.on('text-change', function (delta, oldDelta, source) {
+          _this2.addMessageToQueue('TEXT_CHANGED', {
+            type: 'success',
+            delta: delta, oldDelta: oldDelta, source: source
+          });
+        });
       });
+
       if (document) {
         document.addEventListener('message', this.handleMessage), false;
       } else if (window) {
@@ -212,7 +226,6 @@ var ReactQuillEditor = function (_React$Component) {
           id: 'Quill-Editor-Container',
           style: {
             height: '100%',
-            backgroundColor: '#dddddd',
             display: 'flex',
             flexDirection: 'column'
           }
@@ -222,28 +235,18 @@ var ReactQuillEditor = function (_React$Component) {
           {
             style: {
               height: '100%',
-              backgroundColor: '#ffebba',
               display: 'flex',
               flexDirection: 'column',
               paddingVertical: 5
             }
           },
-          _react2.default.createElement(
-            'div',
-            {
-              id: 'editor',
-              style: {
-                backgroundColor: '#FAEBD7',
-                fontSize: '20px',
-                height: 'calc(100% - 42px)'
-              }
-            },
-            _react2.default.createElement(
-              'p',
-              null,
-              'Hello World!'
-            )
-          )
+          _react2.default.createElement('div', {
+            id: 'editor',
+            style: {
+              fontSize: '20px',
+              height: 'calc(100% - 42px)'
+            }
+          })
         ),
         (0, _renderIf2.default)(SHOW_DEBUG_INFORMATION)(_react2.default.createElement(MessagesDiv, { id: 'messages' }))
       );
