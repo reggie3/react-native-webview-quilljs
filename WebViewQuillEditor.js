@@ -20,11 +20,11 @@ const INDEX_FILE_PATH = `${FileSystem.documentDirectory}${
 }/${config.PACKAGE_VERSION}/reactQuillEditor-index.html`;
 // the files that will be downloaded
 const FILES_TO_DOWNLOAD = [
-  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/reactQuillViewer-index.html',
-  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/viewer.bundle.js',
-  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/reactQuillEditor-index.html',
-  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/editor.bundle.js',
-  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/common.js'
+  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/reactQuillViewer-index.html',
+  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/viewer.bundle.js',
+  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/reactQuillEditor-index.html',
+  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/editor.bundle.js',
+  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/common.js'
 ];
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
