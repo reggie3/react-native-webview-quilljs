@@ -160,7 +160,7 @@ var ReactQuillEditor = function (_React$Component) {
               break;
 
             case 'SET_HTML_CONTENTS':
-              _this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
+              _this.state.editor.pasteHTML(msgData.payload.html);
               break;
 
             case 'MESSAGE_ACKNOWLEDGED':

@@ -169,7 +169,7 @@ export default class WebViewQuillEditor extends React.Component {
           <WebView
             style={{
               ...StyleSheet.absoluteFillObject,
-              backgroundColor: '#ffebba',
+              backgroundColor: '#fffff',
               padding: 10
             }}
             ref={this.createWebViewRef}

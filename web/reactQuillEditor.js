@@ -123,7 +123,7 @@ export default class ReactQuillEditor extends React.Component {
             break;
 
           case 'SET_HTML_CONTENTS':
-            this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
+            this.state.editor.pasteHTML(msgData.payload.html);
             break;
 
           case 'MESSAGE_ACKNOWLEDGED':
