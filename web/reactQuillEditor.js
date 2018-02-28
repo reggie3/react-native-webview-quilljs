@@ -62,7 +62,7 @@ export default class ReactQuillEditor extends React.Component {
     } else if (window) {
       window.addEventListener('message', this.handleMessage), false;
     } else {
-      console.log('unable to add event listener');
+      console.log(nable to add event listener');
     }
     this.printElement(`component mounted`);
   }
@@ -122,6 +122,10 @@ export default class ReactQuillEditor extends React.Component {
             this.state.editor.setContents(msgData.payload.delta);
             break;
 
+          case 'SET_HTML_CONTENTS':
+            this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
+            break;
+
           case 'MESSAGE_ACKNOWLEDGED':
             this.printElement(`received MESSAGE_ACKNOWLEDGED`);
             this.setState({ readyToSendNextMessage: true });
@@ -150,7 +154,6 @@ export default class ReactQuillEditor extends React.Component {
         id="Quill-Editor-Container"
         style={{
           height: '100%',
-          backgroundColor: '#dddddd',
           display: 'flex',
           flexDirection: 'column'
         }}
@@ -158,7 +161,6 @@ export default class ReactQuillEditor extends React.Component {
         <div
           style={{
             height: '100%',
-            backgroundColor: '#ffebba',
             display: 'flex',
             flexDirection: 'column',
             paddingVertical: 5
@@ -167,12 +169,10 @@ export default class ReactQuillEditor extends React.Component {
           <div
             id="editor"
             style={{
-              backgroundColor: '#FAEBD7',
               fontSize: '20px',
               height: 'calc(100% - 42px)'
             }}
           >
-            <p>Hello World!</p>
           </div>
         </div>
         {renderIf(SHOW_DEBUG_INFORMATION)(<MessagesDiv id="messages" />)}

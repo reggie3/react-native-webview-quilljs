@@ -20,11 +20,11 @@ const INDEX_FILE_PATH = `${FileSystem.documentDirectory}${
 }/${config.PACKAGE_VERSION}/reactQuillEditor-index.html`;
 // the files that will be downloaded
 const FILES_TO_DOWNLOAD = [
-  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/reactQuillViewer-index.html',
-  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/viewer.bundle.js',
-  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/reactQuillEditor-index.html',
-  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/editor.bundle.js',
-  'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/common.js'
+  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/reactQuillViewer-index.html',
+  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/viewer.bundle.js',
+  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/reactQuillEditor-index.html',
+  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/editor.bundle.js',
+  'https://raw.githubusercontent.com/foysalit/react-native-webview-quilljs/master/dist/common.js'
 ];
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
@@ -110,10 +110,16 @@ export default class WebViewQuillEditor extends React.Component {
     this.setState({ webViewNotLoaded: false });
     // send the content to the editor if we have it
     if (this.props.hasOwnProperty('contentToDisplay')) {
-      console.log(this.props.contentToDisplay);
       this.sendMessage('SET_CONTENTS', {
        
           delta: this.props.contentToDisplay
+      
+      });
+    }
+    if (this.props.hasOwnProperty('htmlContentToDisplay')) {
+      this.sendMessage('SET_HTML_CONTENTS', {
+       
+          html: this.props.htmlContentToDisplay
       
       });
     }
