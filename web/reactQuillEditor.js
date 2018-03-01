@@ -172,7 +172,6 @@ export default class ReactQuillEditor extends React.Component {
               height: 'calc(100% - 42px)'
             }}
           >
-            <p>Hello World!</p>
           </div>
         </div>
         {renderIf(SHOW_DEBUG_INFORMATION)(<MessagesDiv id="messages" />)}

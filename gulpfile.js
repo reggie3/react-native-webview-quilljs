@@ -38,7 +38,7 @@ const paths = {
 
 /****package.json stuff****/
 gulp.task('test', function() {
-  console.log('Hello Zell');
+  console.log('Hello');
 });
 
 const updatePackageJSONforNPM = json => {};
@@ -114,6 +114,20 @@ gulp.task('forExpo', done => {
 
 gulp.task(
   'prod',
+  gulp.series(
+    'forNPM',
+    'editConfig',
+    'webpack',
+    gulp.parallel(
+      gulp.series('git-add', 'git-commit', 'git-push'),
+      'npm-publish'
+    ),
+    'forExpo'
+  )
+);
+
+gulp.task(
+  'test',
   gulp.series(
     'forNPM',
     'editConfig',

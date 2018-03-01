@@ -228,22 +228,14 @@ var ReactQuillEditor = function (_React$Component) {
               paddingVertical: 5
             }
           },
-          _react2.default.createElement(
-            'div',
-            {
-              id: 'editor',
-              style: {
-                backgroundColor: '#FAEBD7',
-                fontSize: '20px',
-                height: 'calc(100% - 42px)'
-              }
-            },
-            _react2.default.createElement(
-              'p',
-              null,
-              'Hello World!'
-            )
-          )
+          _react2.default.createElement('div', {
+            id: 'editor',
+            style: {
+              backgroundColor: '#FAEBD7',
+              fontSize: '20px',
+              height: 'calc(100% - 42px)'
+            }
+          })
         ),
         (0, _renderIf2.default)(SHOW_DEBUG_INFORMATION)(_react2.default.createElement(MessagesDiv, { id: 'messages' }))
       );
