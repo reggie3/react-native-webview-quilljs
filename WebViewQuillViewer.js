@@ -39,7 +39,7 @@ export default class WebViewQuillViewer extends React.Component {
   }
 
   componentDidMount = () => {
-    this.downloadWebViewFiles(FILES_TO_DOWNLOAD);
+    // this.downloadWebViewFiles(FILES_TO_DOWNLOAD);
   };
 
   downloadWebViewFiles = async filesToDownload => {
@@ -145,7 +145,7 @@ export default class WebViewQuillViewer extends React.Component {
             }}
             ref={this.createWebViewRef}
             source={
-             { uri: INDEX_FILE_PATH }
+              { uri: "./dist/reactQuillViewer-index.html" }
             }
             onLoadEnd={this.webViewLoaded}
             onMessage={this.handleMessage}
