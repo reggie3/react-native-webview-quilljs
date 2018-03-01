@@ -56,7 +56,6 @@ export default class App extends React.Component {
           <WebViewQuillEditor
             ref={component => (this.webViewQuillEditor = component)}
             getDeltaCallback={this.getDeltaCallback}
-            contentToDisplay={contentToDisplay}
           />
         </View>
         <View
