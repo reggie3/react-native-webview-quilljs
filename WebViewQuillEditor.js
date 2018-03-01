@@ -5,11 +5,12 @@
  *
  */
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet, WebView } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, WebView, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
-
-
+const reactHtml = require('./assets/dist/reactQuillEditor-index.html');
+const viewer = require('./assets/dist/viewer.bundle.js');
+const common = require('./assets/dist/common.js');
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -21,10 +22,7 @@ export default class WebViewQuillEditor extends React.Component {
       webViewFilesNotAvailable: true
     };
   }
-  componentDidMount() {
-
-  }
-
+  componentDidMount() {}
 
   createWebViewRef = webview => {
     this.webview = webview;
@@ -46,6 +44,10 @@ export default class WebViewQuillEditor extends React.Component {
           case 'EDITOR_MOUNTED':
             this.setState({ webViewNotLoaded: false });
             break;
+          case 'TEXT_CHANGED':
+            if (this.props.onChangeCallback)
+              this.props.onChangeCallback(msgData.payload.delta);
+            break;
           case 'RECEIVE_DELTA':
             this.props.getDeltaCallback(msgData.payload.delta);
             break;
@@ -64,14 +66,13 @@ export default class WebViewQuillEditor extends React.Component {
   };
 
   webViewLoaded = () => {
+    console.log('Webview loaded');
     this.setState({ webViewNotLoaded: false });
     // send the content to the editor if we have it
     if (this.props.hasOwnProperty('contentToDisplay')) {
       console.log(this.props.contentToDisplay);
       this.sendMessage('SET_CONTENTS', {
-       
-          delta: this.props.contentToDisplay
-      
+        delta: this.props.contentToDisplay
       });
     }
   };
@@ -97,6 +98,32 @@ export default class WebViewQuillEditor extends React.Component {
     this.sendMessage('GET_DELTA');
   };
 
+  showLoadingIndicator = () => {
+    return (
+      <View style={styles.activityOverlayStyle}>
+        <View style={styles.activityIndicatorContainer}>
+          <ActivityIndicator
+            size="large"
+            animating={this.state.webViewNotLoaded}
+            color="green"
+          />
+        </View>
+      </View>
+    );
+  };
+
+  onError = error => {
+    Alert.alert('WebView onError', error, [
+      { text: 'OK', onPress: () => console.log('OK Pressed') }
+    ]);
+  };
+
+  renderError = error => {
+    Alert.alert('WebView renderError', error, [
+      { text: 'OK', onPress: () => console.log('OK Pressed') }
+    ]);
+  };
+
   render = () => {
     return (
       <View
@@ -105,32 +132,21 @@ export default class WebViewQuillEditor extends React.Component {
           backgroundColor: '#ffebba'
         }}
       >
-          <WebView
-            style={{
-              ...StyleSheet.absoluteFillObject,
-              backgroundColor: '#ffebba',
-              padding: 10
-            }}
-            ref={this.createWebViewRef}
-            source={
-              { uri: "./dist/reactQuillEditor-index.html" }
-            }
-            onLoadEnd={this.webViewLoaded}
-            onMessage={this.handleMessage}
-          />
-        {renderIf(
-          this.state.webViewNotLoaded 
-        )(
-          <View style={styles.activityOverlayStyle}>
-            <View style={styles.activityIndicatorContainer}>
-              <ActivityIndicator
-                size="large"
-                animating={this.state.webViewNotLoaded}
-                color="orange"
-              />
-            </View>
-          </View>
-        )}
+        <WebView
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: '#ffebba',
+            padding: 10
+          }}
+          ref={this.createWebViewRef}
+          source={reactHtml}
+          onLoadEnd={this.webViewLoaded}
+          onMessage={this.handleMessage}
+          startInLoadingState={true}
+          renderLoading={this.showLoadingIndicator}
+          renderError={this.renderError}
+          onError={this.onError}
+        />
       </View>
     );
   };
@@ -138,18 +154,17 @@ export default class WebViewQuillEditor extends React.Component {
 
 WebViewQuillEditor.propTypes = {
   getDeltaCallback: PropTypes.func.isRequired,
-  contentToDisplay: PropTypes.object
+  contentToDisplay: PropTypes.object,
+  onChangeCallback: PropTypes.func
 };
 
 const styles = StyleSheet.create({
   activityOverlayStyle: {
     ...StyleSheet.absoluteFillObject,
-    marginHorizontal: 20,
-    marginVertical: 60,
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
-    borderRadius: 5
+    borderRadius: 0
   },
   activityIndicatorContainer: {
     backgroundColor: 'white',

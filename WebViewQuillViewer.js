@@ -6,10 +6,18 @@
  *
  */
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet, WebView } from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  StyleSheet,
+  WebView,
+  Alert
+} from 'react-native';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
-
+const reactHtml = require('./assets/dist/reactQuillViewer-index.html');
+const bundle = require('./assets/dist/editor.bundle.js');
+const common = require('./assets/dist/common.js');
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -18,7 +26,7 @@ export default class WebViewQuillViewer extends React.Component {
     super();
     this.webview = null;
     this.state = {
-      webViewNotLoaded: true, // flag to show activity indicator
+      webViewNotLoaded: true // flag to show activity indicator
     };
   }
 
@@ -26,12 +34,10 @@ export default class WebViewQuillViewer extends React.Component {
     // this.downloadWebViewFiles(FILES_TO_DOWNLOAD);
   };
 
- 
-
-  sendContentToViewer = (delta) => {
+  sendContentToViewer = delta => {
     if (this.props.hasOwnProperty('contentToDisplay')) {
       this.sendMessage('SET_CONTENTS', {
-          ops: delta.ops
+        ops: delta.ops
       });
     }
   };
@@ -52,6 +58,7 @@ export default class WebViewQuillViewer extends React.Component {
   };
 
   webViewLoaded = () => {
+    console.log('Webview loaded');
     this.setState({ webViewNotLoaded: false });
 
     // send content to viewer if any was passed
@@ -73,6 +80,32 @@ export default class WebViewQuillViewer extends React.Component {
     console.log('WebViewQuillViewer handleMessage');
   };
 
+  showLoadingIndicator = () => {
+    return (
+      <View style={styles.activityOverlayStyle}>
+        <View style={styles.activityIndicatorContainer}>
+          <ActivityIndicator
+            size="large"
+            animating={this.state.webViewNotLoaded}
+            color="green"
+          />
+        </View>
+      </View>
+    );
+  };
+
+  onError = error => {
+    Alert.alert('WebView onError', error, [
+      { text: 'OK', onPress: () => console.log('OK Pressed') }
+    ]);
+  };
+
+  renderError = error => {
+    Alert.alert('WebView renderError', error, [
+      { text: 'OK', onPress: () => console.log('OK Pressed') }
+    ]);
+  };
+
   render = () => {
     return (
       <View
@@ -81,35 +114,21 @@ export default class WebViewQuillViewer extends React.Component {
           backgroundColor: '#ffebba'
         }}
       >
-       
-
-        
-          <WebView
-            style={{
-              ...StyleSheet.absoluteFillObject,
-              backgroundColor: '#ffebba',
-              padding: 10
-            }}
-            ref={this.createWebViewRef}
-            source={
-              { uri: "./dist/reactQuillViewer-index.html" }
-            }
-            onLoadEnd={this.webViewLoaded}
-            onMessage={this.handleMessage}
-          />
-        {renderIf(
-          this.state.webViewNotLoaded 
-        )(
-          <View style={styles.activityOverlayStyle}>
-            <View style={styles.activityIndicatorContainer}>
-              <ActivityIndicator
-                size="large"
-                animating={this.state.webViewNotLoaded}
-                color="orange"
-              />
-            </View>
-          </View>
-        )}
+        <WebView
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: '#ffebba',
+            padding: 10
+          }}
+          ref={this.createWebViewRef}
+          source={reactHtml}
+          onLoadEnd={this.webViewLoaded}
+          onMessage={this.handleMessage}
+          startInLoadingState={true}
+          renderLoading={this.showLoadingIndicator}
+          renderError={this.renderError}
+          onError={this.onError}
+        />
       </View>
     );
   };

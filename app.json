@@ -18,7 +18,10 @@
       "supportsTablet": true
     },
     "assetBundlePatterns": [
-      "./dist/*"
-    ]
+      "./assets/**"
+    ],
+    "packagerOpts": {
+      "assetExts": ["html"]
+    }
   }
 }
