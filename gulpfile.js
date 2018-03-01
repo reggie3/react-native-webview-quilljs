@@ -13,20 +13,17 @@ const npmDeps = {
   glamor: '^2.20.40',
   glamorous: '^4.11.2',
   'is-valid-coordinates': '^1.0.0',
-  leaflet: '^1.3.1',
-  'leaflet.markercluster': '^1.3.0',
   'prop-types': '^15.6.0',
-  'react-native-ui-kitten': '^3.0.0',
   util: '^0.10.3',
   'render-if': '^0.1.1'
 };
 // additional dependencies for expo app
 const expoDeps = {
-  expo: '^24.0.0',
-  react: '16.0.0',
+  expo: '^25.0.0',
+  react: '16.2.0',
   'react-dom': '^16.2.0',
   'react-native':
-    'https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz'
+    'https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz'
 };
 
 // main for npm publishing
