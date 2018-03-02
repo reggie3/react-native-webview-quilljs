@@ -15,8 +15,7 @@ import {
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
 const reactHtml = require('./assets/dist/reactQuillEditor-index.html');
-/* const viewer = require('./assets/dist/editor.bundle.js');
-const common = require('./assets/dist/common.js'); */
+
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 

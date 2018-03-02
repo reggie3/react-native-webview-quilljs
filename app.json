@@ -17,6 +17,9 @@
     "ios": {
       "supportsTablet": true
     },
+    "packagerOpts": {
+      "assetExts": ["html"]
+    },
     "assetBundlePatterns": [
       "./assets/**"
     ]
