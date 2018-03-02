@@ -13,7 +13,12 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      messageDelta: {}
+      messageDelta: {
+        ops: [
+          { insert: 'Type something.\n' },
+          { insert: 'Then press "Get Text"' }
+        ]
+      }
     };
   }
 
@@ -27,9 +32,9 @@ export default class App extends React.Component {
     this.webViewQuillViewer.sendContentToViewer(delta);
   };
 
-  onDeltaChangeCallback=(delta)=>{
+  onDeltaChangeCallback = delta => {
     // console.log(delta);
-  }
+  };
 
   render() {
     return (

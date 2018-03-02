@@ -62,6 +62,7 @@ module.exports = {
       filename: './reactQuillViewer-index.html'
       
     }),
+    
     commonsPlugin
   ]
 };
