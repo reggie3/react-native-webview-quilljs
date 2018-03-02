@@ -27,6 +27,10 @@ export default class App extends React.Component {
     this.webViewQuillViewer.sendContentToViewer(delta);
   };
 
+  onDeltaChangeCallback=(delta)=>{
+    // console.log(delta);
+  }
+
   render() {
     return (
       <View
@@ -56,6 +60,7 @@ export default class App extends React.Component {
           <WebViewQuillEditor
             ref={component => (this.webViewQuillEditor = component)}
             getDeltaCallback={this.getDeltaCallback}
+            onDeltaChangeCallback={this.onDeltaChangeCallback}
           />
         </View>
         <View

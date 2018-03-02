@@ -8,6 +8,7 @@ import renderIf from 'render-if';
 const util = require('util');
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 const SHOW_DEBUG_INFORMATION = false;
+
 let messageQueue = [];
 let messageCounter = 0;
 
@@ -59,13 +60,21 @@ export default class ReactQuillViewer extends React.Component {
       })
     });
     if (document) {
-      document.addEventListener('message', this.handleMessage), false;
+      document.addEventListener('message', this.handleMessage);
     } else if (window) {
-      window.addEventListener('message', this.handleMessage), false;
+      window.addEventListener('message', this.handleMessage);
     } else {
       console.log('unable to add event listener');
     }
     this.printElement(`component mounted`);
+  }
+
+  componentWillUnmount(){
+    if (document) {
+      document.removeEventListener('message', this.handleMessage);
+    } else if (window) {
+      window.removeEventListener('message', this.handleMessage);
+    }
   }
 
   addMessageToQueue = (type, payload) => {

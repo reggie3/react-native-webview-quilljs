@@ -19,9 +19,6 @@
     },
     "assetBundlePatterns": [
       "./assets/**"
-    ],
-    "packagerOpts": {
-      "assetExts": ["html"]
-    }
+    ]
   }
 }

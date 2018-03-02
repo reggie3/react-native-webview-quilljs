@@ -50,30 +50,46 @@ export default class ReactQuillEditor extends React.Component {
     }
   };
 
+  addTextChangeEventToEditor = () => {
+    let that = this;
+    this.state.editor.on('text-change', (delta, oldDelta, source) => {
+      that.addMessageToQueue('TEXT_CHANGED', {
+        type: 'success',
+        delta,
+        oldDelta,
+        source
+      });
+    });
+  };
+
   componentDidMount() {
-    this.setState({
-      editor: new Quill('#editor', {
-        theme: 'snow',
-        bounds: '#Quill-Editor-Container'
-      })
-    }, () => {
-          this.state.editor.on('text-change', (delta, oldDelta, source) => {
-             this.addMessageToQueue('TEXT_CHANGED', {
-                type: 'success',
-                delta, oldDelta, source
-            });
-          });
-        );
+    this.setState(
+      {
+        editor: new Quill('#editor', {
+          theme: 'snow',
+          bounds: '#Quill-Editor-Container'
+        })
+      },
+      this.addTextChangeEventToEditor
+    );
+
     if (document) {
-      document.addEventListener('message', this.handleMessage), false;
+      document.addEventListener('message', this.handleMessage);
     } else if (window) {
-      window.addEventListener('message', this.handleMessage), false;
+      window.addEventListener('message', this.handleMessage);
     } else {
       console.log('unable to add event listener');
     }
     this.printElement(`component mounted`);
   }
 
+  componentWillUnmount(){
+    if (document) {
+      document.removeEventListener('message', this.handleMessage);
+    } else if (window) {
+      window.removeEventListener('message', this.handleMessage);
+    }
+  }
   addMessageToQueue = (type, payload) => {
     messageQueue.push(
       JSON.stringify({
@@ -120,8 +136,8 @@ export default class ReactQuillEditor extends React.Component {
           // receive an event when the webview is ready
           case 'GET_DELTA':
             this.addMessageToQueue('RECEIVE_DELTA', {
-                type: 'success',
-                delta: this.state.editor.getContents()
+              type: 'success',
+              delta: this.state.editor.getContents()
             });
             break;
 
@@ -148,8 +164,6 @@ export default class ReactQuillEditor extends React.Component {
       return;
     }
   };
-
-
 
   render() {
     return (
@@ -178,8 +192,7 @@ export default class ReactQuillEditor extends React.Component {
               fontSize: '20px',
               height: 'calc(100% - 42px)'
             }}
-          >
-          </div>
+          />
         </div>
         {renderIf(SHOW_DEBUG_INFORMATION)(<MessagesDiv id="messages" />)}
       </div>

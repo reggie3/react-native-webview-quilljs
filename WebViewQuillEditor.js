@@ -5,12 +5,18 @@
  *
  */
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet, WebView, Alert } from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  StyleSheet,
+  WebView,
+  Alert
+} from 'react-native';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
 const reactHtml = require('./assets/dist/reactQuillEditor-index.html');
-const viewer = require('./assets/dist/viewer.bundle.js');
-const common = require('./assets/dist/common.js');
+/* const viewer = require('./assets/dist/editor.bundle.js');
+const common = require('./assets/dist/common.js'); */
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -36,20 +42,21 @@ export default class WebViewQuillEditor extends React.Component {
         msgData.hasOwnProperty('prefix') &&
         msgData.prefix === MESSAGE_PREFIX
       ) {
-        console.log(`WebViewQuillEditor: received message ${msgData.type}`);
+        // console.log(`WebViewQuillEditor: received message ${msgData.type}`);
         this.sendMessage('MESSAGE_ACKNOWLEDGED');
-        console.log(`WebViewQuillEditor: sent MESSAGE_ACKNOWLEDGED`);
+        // console.log(`WebViewQuillEditor: sent MESSAGE_ACKNOWLEDGED`);
 
         switch (msgData.type) {
           case 'EDITOR_MOUNTED':
             this.setState({ webViewNotLoaded: false });
             break;
           case 'TEXT_CHANGED':
-            if (this.props.onChangeCallback)
-              this.props.onChangeCallback(msgData.payload.delta);
+            if (this.props.onDeltaChangeCallback)
+              this.props.onDeltaChangeCallback(msgData.payload.delta);
             break;
           case 'RECEIVE_DELTA':
-            this.props.getDeltaCallback(msgData.payload.delta);
+            if (this.props.onGetDeltaCallback)
+              this.props.getDeltaCallback(msgData.payload.delta);
             break;
           default:
             console.warn(
@@ -80,7 +87,7 @@ export default class WebViewQuillEditor extends React.Component {
   sendMessage = (type, payload) => {
     // only send message when webview is loaded
     if (this.webview) {
-      console.log(`WebViewQuillEditor: sending message ${type}`);
+      // console.log(`WebViewQuillEditor: sending message ${type}`);
       this.webview.postMessage(
         JSON.stringify({
           prefix: MESSAGE_PREFIX,
@@ -139,7 +146,7 @@ export default class WebViewQuillEditor extends React.Component {
             padding: 10
           }}
           ref={this.createWebViewRef}
-          source={reactHtml}
+          source={require('./assets/dist/reactQuillEditor-index.html')}
           onLoadEnd={this.webViewLoaded}
           onMessage={this.handleMessage}
           startInLoadingState={true}
@@ -153,9 +160,9 @@ export default class WebViewQuillEditor extends React.Component {
 }
 
 WebViewQuillEditor.propTypes = {
-  getDeltaCallback: PropTypes.func.isRequired,
+  getDeltaCallback: PropTypes.func,
   contentToDisplay: PropTypes.object,
-  onChangeCallback: PropTypes.func
+  onDeltaChangeCallback: PropTypes.func
 };
 
 const styles = StyleSheet.create({

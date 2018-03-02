@@ -6,6 +6,7 @@ const commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
   filename: 'common.js' // Name of the output file
   // There are more options, but we don't need them yet.
 });
+
 module.exports = {
   entry: {
     editor: './web/componentEditor.js',
