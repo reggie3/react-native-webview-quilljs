@@ -1,6 +1,6 @@
 {
   "name": "react-native-webview-quilljs",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Quill-js package for apps that need a non-native rich text editor",
   "author": "Reginald Johnson",
   "license": "MIT",

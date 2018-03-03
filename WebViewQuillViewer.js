@@ -145,6 +145,7 @@ export default class WebViewQuillViewer extends React.Component {
             source={{ uri: INDEX_FILE_PATH }}
             onLoadEnd={this.webViewLoaded}
             onMessage={this.handleMessage}
+            
           />
         )}
         {renderIf(
