@@ -5,9 +5,9 @@ import WebViewQuillEditor from './WebViewQuillEditor';
 import WebViewQuillViewer from './WebViewQuillViewer';
 
 // example content to display
-const contentToDisplay = {
+/* const contentToDisplay = {
   ops: [{ insert: 'Hello\n' }, { insert: 'This is another line' }]
-};
+}; */
 
 export default class App extends React.Component {
   constructor() {
