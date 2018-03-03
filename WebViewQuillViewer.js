@@ -70,12 +70,11 @@ export default class WebViewQuillViewer extends React.Component {
     }
   };
 
-  sendContentToViewer = (delta) => {
-    if (this.props.hasOwnProperty('contentToDisplay')) {
-      this.sendMessage('SET_CONTENTS', {
-          ops: delta.ops
-      });
-    }
+  sendContentToViewer = delta => {
+    debugger;
+    this.sendMessage('SET_CONTENTS', {
+      ops: delta.ops
+    });
   };
 
   sendMessage = (type, payload) => {
@@ -135,7 +134,6 @@ export default class WebViewQuillViewer extends React.Component {
           </View>
         )}
 
-        
         {renderIf(!this.state.webViewFilesNotAvailable)(
           <WebView
             style={{
@@ -144,9 +142,7 @@ export default class WebViewQuillViewer extends React.Component {
               padding: 10
             }}
             ref={this.createWebViewRef}
-            source={
-             { uri: INDEX_FILE_PATH }
-            }
+            source={{ uri: INDEX_FILE_PATH }}
             onLoadEnd={this.webViewLoaded}
             onMessage={this.handleMessage}
           />

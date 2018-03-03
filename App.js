@@ -21,10 +21,14 @@ export default class App extends React.Component {
     this.webViewQuillEditor.getDelta();
   };
 
-  getDeltaCallback = delta => {
+  getDeltaCallback = response => {
     console.log('getDeltaCallback');
-    console.log(delta);
-    this.webViewQuillViewer.sendContentToViewer(delta);
+    console.log(response.delta);
+    this.webViewQuillViewer.sendContentToViewer(response.delta);
+  };
+
+  onDeltaChangeCallback = delta => {
+    console.log('onDeltaChangeCallback: ', delta);
   };
 
   render() {
@@ -56,6 +60,7 @@ export default class App extends React.Component {
           <WebViewQuillEditor
             ref={component => (this.webViewQuillEditor = component)}
             getDeltaCallback={this.getDeltaCallback}
+            onDeltaChangeCallback={this.onDeltaChangeCallback}
           />
         </View>
         <View

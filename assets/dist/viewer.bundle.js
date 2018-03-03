@@ -1,6 +1,6 @@
-webpackJsonp([1],{
+webpackJsonp([0],{
 
-/***/ 28:
+/***/ 75:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10,9 +10,9 @@ var _reactDom = __webpack_require__(11);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactQuillEditor = __webpack_require__(37);
+var _reactQuillViewer = __webpack_require__(76);
 
-var _reactQuillEditor2 = _interopRequireDefault(_reactQuillEditor);
+var _reactQuillViewer2 = _interopRequireDefault(_reactQuillViewer);
 
 var _react = __webpack_require__(3);
 
@@ -20,11 +20,11 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_reactQuillEditor2.default, null), document.getElementById("root"));
+_reactDom2.default.render(_react2.default.createElement(_reactQuillViewer2.default, null), document.getElementById("root"));
 
 /***/ }),
 
-/***/ 37:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69,10 +69,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var util = __webpack_require__(27);
-var updateCounter = 0;
 var MESSAGE_PREFIX = 'react-native-webview-quilljs';
 var SHOW_DEBUG_INFORMATION = false;
-
 var messageQueue = [];
 var messageCounter = 0;
 
@@ -87,13 +85,13 @@ var MessagesDiv = _glamorous2.default.div({
   fontSize: 10
 });
 
-var ReactQuillEditor = function (_React$Component) {
-  _inherits(ReactQuillEditor, _React$Component);
+var ReactQuillViewer = function (_React$Component) {
+  _inherits(ReactQuillViewer, _React$Component);
 
-  function ReactQuillEditor(props) {
-    _classCallCheck(this, ReactQuillEditor);
+  function ReactQuillViewer(props) {
+    _classCallCheck(this, ReactQuillViewer);
 
-    var _this = _possibleConstructorReturn(this, (ReactQuillEditor.__proto__ || Object.getPrototypeOf(ReactQuillEditor)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (ReactQuillViewer.__proto__ || Object.getPrototypeOf(ReactQuillViewer)).call(this, props));
 
     _this.printElement = function (data) {
       if (SHOW_DEBUG_INFORMATION) {
@@ -111,18 +109,6 @@ var ReactQuillEditor = function (_React$Component) {
       }
     };
 
-    _this.addTextChangeEventToEditor = function () {
-      var that = _this;
-      _this.state.editor.on('text-change', function (delta, oldDelta, source) {
-        that.addMessageToQueue('TEXT_CHANGED', {
-          type: 'success',
-          delta: delta,
-          oldDelta: oldDelta,
-          source: source
-        });
-      });
-    };
-
     _this.addMessageToQueue = function (type, payload) {
       messageQueue.push(JSON.stringify({
         messageID: messageCounter++,
@@ -132,7 +118,6 @@ var ReactQuillEditor = function (_React$Component) {
       }));
       _this.printElement('adding message ' + messageCounter + ' to queue');
       if (_this.state.readyToSendNextMessage) {
-        _this.printElement('sending message');
         _this.sendNextMessage();
       }
     };
@@ -160,29 +145,21 @@ var ReactQuillEditor = function (_React$Component) {
           // this.printElement(msgData);
           switch (msgData.type) {
             // receive an event when the webview is ready
-            case 'GET_DELTA':
-              _this.addMessageToQueue('RECEIVE_DELTA', {
-                type: 'success',
-                delta: _this.state.editor.getContents()
-              });
-              break;
-
             case 'SET_CONTENTS':
-              _this.state.editor.setContents(msgData.payload.delta);
+              // this.printElement('MAP_CENTER_COORD_CHANGE event recieved');
+              _this.state.editor.setContents(msgData.payload.ops);
               break;
-
             case 'MESSAGE_ACKNOWLEDGED':
-              _this.printElement('received MESSAGE_ACKNOWLEDGED');
               _this.setState({ readyToSendNextMessage: true });
               _this.sendNextMessage();
               break;
 
             default:
-              printElement('reactQuillEditor Error: Unhandled message type received "' + msgData.type + '"');
+              printElement('reactQuillViewer Error: Unhandled message type received "' + msgData.type + '"');
           }
         }
       } catch (err) {
-        _this.printElement('reactQuillEditor error: ' + err);
+        _this.printElement('reactQuillViewer error: ' + err);
         return;
       }
     };
@@ -190,40 +167,33 @@ var ReactQuillEditor = function (_React$Component) {
     _this.state = {
       editor: null,
       readyToSendNextMessage: true
-    };
+    }; // You can also pass a Quill Delta here
     return _this;
   }
+
   // print passed information in an html element; useful for debugging
   // since console.log and debug statements won't work in a conventional way
 
 
-  _createClass(ReactQuillEditor, [{
+  _createClass(ReactQuillViewer, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.setState({
-        editor: new _quill2.default('#editor', {
-          theme: 'snow',
-          bounds: '#Quill-Editor-Container'
+        editor: new _quill2.default('#viewer', {
+          modules: { toolbar: false },
+          readOnly: true,
+          theme: null,
+          bounds: '#Quill-Viewer-Container'
         })
-      }, this.addTextChangeEventToEditor);
-
+      });
       if (document) {
-        document.addEventListener('message', this.handleMessage);
+        document.addEventListener('message', this.handleMessage), false;
       } else if (window) {
-        window.addEventListener('message', this.handleMessage);
+        window.addEventListener('message', this.handleMessage), false;
       } else {
         console.log('unable to add event listener');
       }
       this.printElement('component mounted');
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      if (document) {
-        document.removeEventListener('message', this.handleMessage);
-      } else if (window) {
-        window.removeEventListener('message', this.handleMessage);
-      }
     }
   }, {
     key: 'render',
@@ -231,7 +201,7 @@ var ReactQuillEditor = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         {
-          id: 'Quill-Editor-Container',
+          id: 'Quill-Viewer-Container',
           style: {
             height: '100%',
             backgroundColor: '#dddddd',
@@ -251,11 +221,11 @@ var ReactQuillEditor = function (_React$Component) {
             }
           },
           _react2.default.createElement('div', {
-            id: 'editor',
+            id: 'viewer',
             style: {
               backgroundColor: '#FAEBD7',
               fontSize: '20px',
-              height: 'calc(100% - 42px)'
+              height: '100%'
             }
           })
         ),
@@ -264,11 +234,11 @@ var ReactQuillEditor = function (_React$Component) {
     }
   }]);
 
-  return ReactQuillEditor;
+  return ReactQuillViewer;
 }(_react2.default.Component);
 
-exports.default = ReactQuillEditor;
+exports.default = ReactQuillViewer;
 
 /***/ })
 
-},[28]);
+},[75]);
