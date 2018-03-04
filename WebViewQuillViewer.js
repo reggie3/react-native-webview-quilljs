@@ -71,7 +71,6 @@ export default class WebViewQuillViewer extends React.Component {
   };
 
   sendContentToViewer = delta => {
-    debugger;
     this.sendMessage('SET_CONTENTS', {
       ops: delta.ops
     });
@@ -94,14 +93,11 @@ export default class WebViewQuillViewer extends React.Component {
 
   webViewLoaded = () => {
     this.setState({ webViewNotLoaded: false });
-
     // send content to viewer if any was passed
     if (this.props.hasOwnProperty('contentToDisplay')) {
       console.log(this.props.contentToDisplay);
       this.sendMessage('SET_CONTENTS', {
-        payload: {
           ops: this.props.contentToDisplay.ops
-        }
       });
     }
   };
