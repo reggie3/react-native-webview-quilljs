@@ -32,10 +32,6 @@ const FILES_TO_DOWNLOAD = [
   'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/common.js'
 ];
 
-
-const reactHtml = require('./assets/dist/reactQuillEditor-index.html');
-
-
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
 export default class WebViewQuillEditor extends React.Component {
@@ -154,7 +150,6 @@ export default class WebViewQuillEditor extends React.Component {
   };
   
   render = () => {
-    return (
       return (
         <View
           style={{
