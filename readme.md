@@ -78,6 +78,8 @@ This component accepts the following props:
 
 
 ## Changelog
+### 0.3.10
+* Revert file access features from 0.3.0.
 ### 0.3.0
 * Library no longer relies on accessing WebView files from the Internet.  All files needed by both the Editor and Viewer are included with the packages.
 * Fonts display correctly on iOS devices
