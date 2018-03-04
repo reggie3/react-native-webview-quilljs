@@ -72,12 +72,14 @@ This component accepts the following props:
 
 | Name                   | Required      | Description |
 | ---------------------- | ------------- | ----------- |
-| ref            |    yes        | A reference to the editor componment to be used to update its contents using     this.webViewQuillViewer.sendContentToViewer(delta);
+| ref            |    yes        | A reference to the editor componment to be used to update its contents using this.webViewQuillViewer.sendContentToViewer(delta);
 | contentToDisplay     |    no        | A Delta object that will be displayed by the viewer when it mounts|
 |onLoad | no| A function called when the Editor finishes loading |
 
 
 ## Changelog
+### X.X.X
+* Implement onLoad callbacks for both the Editor and the Viewer
 ### 0.3.10
 * Revert file access features from 0.3.0.
 ### 0.3.0

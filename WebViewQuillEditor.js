@@ -7,7 +7,7 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet, WebView, Alert } from 'react-native';
 import PropTypes from 'prop-types';
-const reactHtml = require('./assets/dist/reactQuillViewer-index.html');
+const reactHTML = require('./assets/dist/reactQuillViewer-index.html');
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -62,7 +62,10 @@ export default class WebViewQuillEditor extends React.Component {
 			this.sendMessage('SET_CONTENTS', {
 				delta: this.props.contentToDisplay
 			});
-		}
+    }
+    if(this.props.hasOwnProperty('onLoad')){
+      this.props.onLoad();
+    }
 	};
 
 	sendMessage = (type, payload) => {
@@ -118,7 +121,7 @@ export default class WebViewQuillEditor extends React.Component {
 						padding: 10
 					}}
 					ref={this.createWebViewRef}
-					source={require('./assets/dist/reactQuillEditor-index.html')}
+					source={reactHTML}
 					onLoadEnd={this.webViewLoaded}
 					onMessage={this.handleMessage}
 					startInLoadingState={true}
@@ -135,7 +138,8 @@ export default class WebViewQuillEditor extends React.Component {
 WebViewQuillEditor.propTypes = {
 	getDeltaCallback: PropTypes.func,
 	contentToDisplay: PropTypes.object,
-	onDeltaChangeCallback: PropTypes.func
+  onDeltaChangeCallback: PropTypes.func,
+  onLoad: PropTypes.func
 };
 
 const styles = StyleSheet.create({

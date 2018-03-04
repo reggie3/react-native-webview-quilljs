@@ -1,6 +1,6 @@
 {
   "name": "react-native-webview-quilljs",
-  "version": "0.3.12",
+  "version": "0.3.15",
   "description": "Quill-js package for apps that need a non-native rich text editor",
   "author": "Reginald Johnson",
   "license": "MIT",
@@ -12,16 +12,16 @@
     "/assets/dist/"
   ],
   "dependencies": {
-    "expo": "^25.0.0",
     "glamor": "^2.20.40",
     "glamorous": "^4.11.2",
     "is-valid-coordinates": "^1.0.0",
     "prop-types": "^15.6.0",
+    "util": "^0.10.3",
+    "render-if": "^0.1.1",
+    "expo": "^25.0.0",
     "react": "16.2.0",
     "react-dom": "^16.2.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
-    "render-if": "^0.1.1",
-    "util": "^0.10.3"
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz"
   },
   "devDependencies": {
     "babel-jest": "^21.2.0",

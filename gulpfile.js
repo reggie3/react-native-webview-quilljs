@@ -83,6 +83,11 @@ gulp.task('npm-publish', done => {
   done();
 });
 
+gulp.task('npm-alpha', done => {
+  return run('npm publish --tag alpha').exec(); // run "npm start".
+  done();
+});
+
 gulp.task('git-add', done => {
   return run('git add .').exec();
   done();
@@ -124,6 +129,19 @@ gulp.task(
     gulp.parallel(
       gulp.series('git-add', 'git-commit', 'git-push'),
       'npm-publish'
+    ),
+    'forExpo'
+  )
+);
+
+gulp.task(
+  'alpha',
+  gulp.series(
+    'forNPM',
+    'webpack',
+    'inlinesource',
+    gulp.parallel(
+      'npm-alpha'
     ),
     'forExpo'
   )

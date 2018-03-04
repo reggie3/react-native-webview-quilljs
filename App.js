@@ -12,6 +12,7 @@ import WebViewQuillViewer from './WebViewQuillViewer';
 export default class App extends React.Component {
   constructor() {
     super();
+    this.webViewQuillViewer = null;
     this.state = {
       messageDelta: {}
     };
@@ -30,6 +31,10 @@ export default class App extends React.Component {
   onDeltaChangeCallback = delta => {
     console.log('onDeltaChangeCallback: ', delta);
   };
+
+  onLoadViewer=(a,b,c)=>{
+    debugger;
+  }
 
   render() {
     return (
@@ -84,6 +89,7 @@ export default class App extends React.Component {
           <WebViewQuillViewer
             ref={component => (this.webViewQuillViewer = component)}
             contentToDisplay={this.state.messageDelta}
+            onLoad={this.onLoadViewer}
           />
         </View>
       </View>
