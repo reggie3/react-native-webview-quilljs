@@ -90,6 +90,7 @@ export default class ReactQuillEditor extends React.Component {
       window.removeEventListener('message', this.handleMessage);
     }
   }
+  
   addMessageToQueue = (type, payload) => {
     messageQueue.push(
       JSON.stringify({

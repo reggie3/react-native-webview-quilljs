@@ -7,7 +7,7 @@ const bump = require('gulp-bump');
 const webpack_stream = require('webpack-stream');
 const webpack_config = require('./webpack.config.js');
 const run = require('gulp-run');
-
+const inlinesource = require('gulp-inline-source');
 // dependencies for npm publishing
 const npmDeps = {
   glamor: '^2.20.40',
@@ -33,7 +33,7 @@ const expoMain = 'node_modules/expo/AppEntry.js';
 
 const paths = {
   src: './Scripts/',
-  build: './dist/'
+  bundled: './bundled/'
 };
 
 /****package.json stuff****/
@@ -72,7 +72,7 @@ gulp.task('editConfig', done => {
 
 // pack the files
 gulp.task('webpack', done => {
-  return webpack_stream(webpack_config).pipe(gulp.dest(`${paths.build}`));
+  return run('webpack').exec();
   done();
 });
 
@@ -111,6 +111,19 @@ gulp.task('forExpo', done => {
   done();
 });
 
+// build the distribution HTML files with inline JS and CSS
+gulp.task('inlinesource', done=>{
+  return gulp.src('./bundled/*.html')
+  .pipe(intercept(function(file){
+    console.log('FILE: ' + file.path );
+    return file;
+  })) 
+  .pipe(inlinesource())
+  .pipe(gulp.dest('./assets/dist'));
+
+})
+
+
 
 gulp.task(
   'prod',
@@ -139,3 +152,13 @@ gulp.task(
     'forExpo'
   )
 );
+
+
+// Don't use, gulp-inline-source package isn't inlining anything
+gulp.task(
+  'inline',
+  gulp.series(
+    'webpack',
+    'inlinesource'
+  )
+)

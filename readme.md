@@ -77,7 +77,12 @@ This component accepts the following props:
 |onLoad | no| A function called when the Editor finishes loading |
 
 
-
+## Changelog
+### 0.3.0
+* Library no longer relies on accessing WebView files from the Internet.  All files needed by both the Editor and Viewer are included with the packages.
+* Fonts display correctly on iOS devices
+### 0.2.5
+* Added onDeltaChangeCallback property to Editor
 
 ## LICENSE
 
