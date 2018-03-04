@@ -9,8 +9,6 @@ const commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const rootDir = __dirname;
-console.log("rooDir: ", rootDir);
-
 
 module.exports = {
 	entry: {
@@ -70,14 +68,13 @@ module.exports = {
 		}),
 		commonsPlugin,
 		new HtmlWebpackInlineSourcePlugin(),
-		new CopyWebpackPlugin(
-			[
-				{
-					from: './bundled/*.html',
-					to: path.join(rootDir, '/assets/dist'),
-          toType: 'dir',
-          flatten: true
-				}
-			])
+		new CopyWebpackPlugin([
+			{
+				from: './bundled/*.html',
+				to: path.join(rootDir, '/assets/dist'),
+				toType: 'dir',
+				flatten: true
+			}
+		])
 	]
 };

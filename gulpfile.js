@@ -59,22 +59,24 @@ gulp.task('forNPM', done => {
   done();
 });
 
-// read and bump the package version in config.js so that it
-// matches the version number about to be published
-gulp.task('editConfig', done => {
-  gulp
-    .src('./config.js')
-    .pipe(bump({ key: 'PACKAGE_VERSION' }))
-    .pipe(concat('config.js'))
-    .pipe(gulp.dest('./'));
-  done();
-});
 
 // pack the files
 gulp.task('webpack', done => {
   return run('webpack').exec();
   done();
 });
+
+// build the distribution HTML files with inline JS and CSS
+gulp.task('inlinesource', done=>{
+  return gulp.src('./bundled/*.html')
+  .pipe(intercept(function(file){
+    console.log('FILE: ' + file.path );
+    return file;
+  })) 
+  .pipe(inlinesource())
+  .pipe(gulp.dest('./assets/dist'));
+
+})
 
 gulp.task('npm-publish', done => {
   return run('npm publish').exec(); // run "npm start".
@@ -111,26 +113,14 @@ gulp.task('forExpo', done => {
   done();
 });
 
-// build the distribution HTML files with inline JS and CSS
-gulp.task('inlinesource', done=>{
-  return gulp.src('./bundled/*.html')
-  .pipe(intercept(function(file){
-    console.log('FILE: ' + file.path );
-    return file;
-  })) 
-  .pipe(inlinesource())
-  .pipe(gulp.dest('./assets/dist'));
-
-})
-
 
 
 gulp.task(
   'prod',
   gulp.series(
     'forNPM',
-    'editConfig',
     'webpack',
+    'inlinesource',
     gulp.parallel(
       gulp.series('git-add', 'git-commit', 'git-push'),
       'npm-publish'
@@ -139,26 +129,3 @@ gulp.task(
   )
 );
 
-gulp.task(
-  'test',
-  gulp.series(
-    'forNPM',
-    'editConfig',
-    'webpack',
-    gulp.parallel(
-      gulp.series('git-add', 'git-commit', 'git-push'),
-      'npm-publish'
-    ),
-    'forExpo'
-  )
-);
-
-
-// Don't use, gulp-inline-source package isn't inlining anything
-gulp.task(
-  'inline',
-  gulp.series(
-    'webpack',
-    'inlinesource'
-  )
-)
