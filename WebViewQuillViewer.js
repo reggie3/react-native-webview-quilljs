@@ -51,14 +51,12 @@ export default class WebViewQuillViewer extends React.Component {
 		if (this.props.hasOwnProperty('contentToDisplay')) {
 			console.log(this.props.contentToDisplay);
 			this.sendMessage('SET_CONTENTS', {
-				payload: {
 					ops: this.props.contentToDisplay.ops
-				}
 			});
     }
-    if(this.props.hasOwnProperty('onLoad')){
+    /* if(this.props.hasOwnProperty('onLoad')){
       this.props.onLoad();
-    }
+    } */
 	};
 
 	createWebViewRef = (webview) => {
@@ -80,10 +78,12 @@ export default class WebViewQuillViewer extends React.Component {
 	};
 
 	onError = (error) => {
+    debugger;
 		Alert.alert('WebView onError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
 	};
 
 	renderError = (error) => {
+    debugger;
 		Alert.alert('WebView renderError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
 	};
 
@@ -110,6 +110,7 @@ export default class WebViewQuillViewer extends React.Component {
 					renderError={this.renderError}
           onError={this.onError}
           scalesPageToFit ={false}
+          javaScriptEnabled = {true}
 				/>
 			</View>
 		);

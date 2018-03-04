@@ -100,10 +100,12 @@ export default class WebViewQuillEditor extends React.Component {
 	};
 
 	onError = (error) => {
+    debugger;
 		Alert.alert('WebView onError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
 	};
 
 	renderError = (error) => {
+    debugger;
 		Alert.alert('WebView renderError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
 	};
 	render = () => {
@@ -129,6 +131,7 @@ export default class WebViewQuillEditor extends React.Component {
 					renderError={this.renderError}
           onError={this.onError}
           scalesPageToFit ={false}
+          javaScriptEnabled = {true}
 				/>
 			</View>
 		);

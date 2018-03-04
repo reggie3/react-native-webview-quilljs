@@ -13,6 +13,7 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.webViewQuillViewer = null;
+    this.webViewQuillEditor = null;
     this.state = {
       messageDelta: {}
     };
@@ -33,6 +34,10 @@ export default class App extends React.Component {
   };
 
   onLoadViewer=(a,b,c)=>{
+    debugger;
+  }
+
+  onLoadEditor=(a,b,c)=>{
     debugger;
   }
 
@@ -63,9 +68,11 @@ export default class App extends React.Component {
           }}
         >
           <WebViewQuillEditor
-            ref={component => (this.webViewQuillEditor = component)}
+            ref={component => (
+              this.webViewQuillEditor = component)}
             getDeltaCallback={this.getDeltaCallback}
             onDeltaChangeCallback={this.onDeltaChangeCallback}
+            onLoad={this.onLoadEditor}
           />
         </View>
         <View

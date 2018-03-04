@@ -71,7 +71,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var util = __webpack_require__(27);
 var updateCounter = 0;
 var MESSAGE_PREFIX = 'react-native-webview-quilljs';
-var SHOW_DEBUG_INFORMATION = false;
+var SHOW_DEBUG_INFORMATION = true;
 
 var messageQueue = [];
 var messageCounter = 0;
