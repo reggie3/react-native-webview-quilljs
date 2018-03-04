@@ -2,23 +2,17 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
-	name: 'commons', // Just name it
-	filename: 'common.js' // Name of the output file
-	// There are more options, but we don't need them yet.
+  name: 'commons', // Just name it
+  filename: 'common.js' // Name of the output file
+  // There are more options, but we don't need them yet.
 });
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const rootDir = __dirname;
-console.log("rooDir: ", rootDir);
-
-
 module.exports = {
   entry: {
     editor: './web/componentEditor.js',
     viewer: './web/componentViewer.js'
   },
   output: {
-    path: path.join(__dirname, './assets/dist'),
+    path: path.join(__dirname, './dist'),
     filename: '[name].bundle.js'
   },
   module: {
