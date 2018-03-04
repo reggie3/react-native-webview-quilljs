@@ -1,7 +1,7 @@
 // name and version of the package that contains the index file(s) the webview will load
 const config = {
     PACKAGE_NAME: 'react-native-webview-quilljs',
-    PACKAGE_VERSION: '0.3.10',
+    PACKAGE_VERSION: '0.3.11',
 
     // use the local html files from the dist folder instead of using the downloaded ones
     // used for debugging
