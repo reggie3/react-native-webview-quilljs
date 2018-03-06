@@ -72,7 +72,6 @@ export default class App extends React.Component {
               this.webViewQuillEditor = component)}
             getDeltaCallback={this.getDeltaCallback}
             onDeltaChangeCallback={this.onDeltaChangeCallback}
-            onLoad={this.onLoadEditor}
           />
         </View>
         <View
@@ -96,7 +95,6 @@ export default class App extends React.Component {
           <WebViewQuillViewer
             ref={component => (this.webViewQuillViewer = component)}
             contentToDisplay={this.state.messageDelta}
-            onLoad={this.onLoadViewer}
           />
         </View>
       </View>
@@ -112,6 +110,6 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     height: Constants.statusBarHeight,
-    backgroundColor: '#9be1ff'
+    backgroundColor: '#c3ffa0'
   }
 });

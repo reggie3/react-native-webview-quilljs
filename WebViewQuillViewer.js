@@ -8,7 +8,7 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet, WebView, Alert } from 'react-native';
 import PropTypes from 'prop-types';
-const reactHTML = require('./assets/dist/reactQuillViewer-index.html');
+const reactHtml = require('./assets/dist/reactQuillViewer-index.html');
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -102,7 +102,7 @@ export default class WebViewQuillViewer extends React.Component {
 						padding: 10
 					}}
 					ref={this.createWebViewRef}
-					source={reactHTML}
+					source={reactHtml}
 					onLoadEnd={this.webViewLoaded}
 					onMessage={this.handleMessage}
 					startInLoadingState={true}

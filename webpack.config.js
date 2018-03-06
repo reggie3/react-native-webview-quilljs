@@ -73,7 +73,8 @@ module.exports = {
 				from: './bundled/*.html',
 				to: path.join(rootDir, '/assets/dist'),
 				toType: 'dir',
-				flatten: true
+				flatten: true,
+				force: true
 			}
 		])
 	]

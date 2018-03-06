@@ -13918,25 +13918,16 @@ function handleStyles(styles, props, context) {
   var nonGlamorClassNames = [];
   for (var i = 0; i < styles.length; i++) {
     current = styles[i];
-    if (typeof current === 'function') {
-      var result = current(props, context);
-      if (typeof result === 'string') {
-        var _extractGlamorStyles = extractGlamorStyles(result),
-            glamorStyles = _extractGlamorStyles.glamorStyles,
-            glamorlessClassName = _extractGlamorStyles.glamorlessClassName;
+    while (typeof current === 'function') {
+      current = current(props, context);
+    }
+    if (typeof current === 'string') {
+      var _extractGlamorStyles = extractGlamorStyles(current),
+          glamorStyles = _extractGlamorStyles.glamorStyles,
+          glamorlessClassName = _extractGlamorStyles.glamorlessClassName;
 
-        mappedArgs.push.apply(mappedArgs, toConsumableArray(glamorStyles));
-        nonGlamorClassNames.push.apply(nonGlamorClassNames, toConsumableArray(glamorlessClassName));
-      } else {
-        mappedArgs.push(result);
-      }
-    } else if (typeof current === 'string') {
-      var _extractGlamorStyles2 = extractGlamorStyles(current),
-          _glamorStyles = _extractGlamorStyles2.glamorStyles,
-          _glamorlessClassName = _extractGlamorStyles2.glamorlessClassName;
-
-      mappedArgs.push.apply(mappedArgs, toConsumableArray(_glamorStyles));
-      nonGlamorClassNames.push.apply(nonGlamorClassNames, toConsumableArray(_glamorlessClassName));
+      mappedArgs.push.apply(mappedArgs, toConsumableArray(glamorStyles));
+      nonGlamorClassNames.push.apply(nonGlamorClassNames, toConsumableArray(glamorlessClassName));
     } else if (Array.isArray(current)) {
       var recursed = handleStyles(current, props, context);
       mappedArgs.push.apply(mappedArgs, toConsumableArray(recursed.mappedArgs));
@@ -14207,32 +14198,32 @@ function memoize (fn, options) {
 //
 
 function isPrimitive (value) {
-  return value == null || (typeof value !== 'function' && typeof value !== 'object')
+  return value == null || typeof value === 'number' || typeof value === 'boolean' // || typeof value === "string" 'unsafe' primitive for our needs
 }
 
 function monadic (fn, cache, serializer, arg) {
   var cacheKey = isPrimitive(arg) ? arg : serializer(arg);
 
-  if (!cache.has(cacheKey)) {
-    var computedValue = fn.call(this, arg);
+  var computedValue = cache.get(cacheKey);
+  if (typeof computedValue === 'undefined') {
+    computedValue = fn.call(this, arg);
     cache.set(cacheKey, computedValue);
-    return computedValue
   }
 
-  return cache.get(cacheKey)
+  return computedValue
 }
 
 function variadic (fn, cache, serializer) {
   var args = Array.prototype.slice.call(arguments, 3);
   var cacheKey = serializer(args);
 
-  if (!cache.has(cacheKey)) {
-    var computedValue = fn.apply(this, args);
+  var computedValue = cache.get(cacheKey);
+  if (typeof computedValue === 'undefined') {
+    computedValue = fn.apply(this, args);
     cache.set(cacheKey, computedValue);
-    return computedValue
   }
 
-  return cache.get(cacheKey)
+  return computedValue
 }
 
 function assemble (fn, context, strategy, cache, serialize) {
@@ -34728,6 +34719,8 @@ for (var i = 0, len = code.length; i < len; ++i) {
   revLookup[code.charCodeAt(i)] = i
 }
 
+// Support decoding URL-safe base64 strings, as Node.js does.
+// See: https://en.wikipedia.org/wiki/Base64#URL_applications
 revLookup['-'.charCodeAt(0)] = 62
 revLookup['_'.charCodeAt(0)] = 63
 
@@ -34789,7 +34782,7 @@ function encodeChunk (uint8, start, end) {
   var tmp
   var output = []
   for (var i = start; i < end; i += 3) {
-    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+    tmp = ((uint8[i] << 16) & 0xFF0000) + ((uint8[i + 1] << 8) & 0xFF00) + (uint8[i + 2] & 0xFF)
     output.push(tripletToBase64(tmp))
   }
   return output.join('')
