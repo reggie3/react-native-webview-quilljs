@@ -151,7 +151,8 @@ export default class WebViewQuillEditor extends React.Component {
           startInLoadingState={true}
           renderLoading={this.showLoadingIndicator}
           renderError={this.renderError}
-          onError={this.onError}
+		  onError={this.onError}
+		  javaScriptEnabled={true}
         />
       </View>
     );
