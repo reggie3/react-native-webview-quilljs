@@ -107,6 +107,7 @@ export default class WebViewQuillViewer extends React.Component {
 					renderError={this.renderError}
           onError={this.onError}
           scalesPageToFit ={false}
+          javaScriptEnabled={true}
 				/>
 			</View>
 		);
