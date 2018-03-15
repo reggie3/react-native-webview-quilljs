@@ -78,6 +78,8 @@ This component accepts the following props:
 
 
 ## Changelog
+### 0.3.20
+* Added copy and paste of HTML
 ### 0.3.10
 * Revert file access features from 0.3.0.
 ### 0.3.0
