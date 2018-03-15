@@ -12,7 +12,6 @@ const run = require('gulp-run');
 const npmDeps = {
   glamor: '^2.20.40',
   glamorous: '^4.11.2',
-  'is-valid-coordinates': '^1.0.0',
   'prop-types': '^15.6.0',
   util: '^0.10.3',
   'render-if': '^0.1.1'
