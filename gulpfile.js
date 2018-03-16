@@ -64,12 +64,7 @@ gulp.task('editConfigForProd', done => {
   gulp
     .src('./config.js')
     .pipe(bump({ key: 'PACKAGE_VERSION' }))
-    .pipe(
-      jeditor(function(json) {
-        USE_LOCAL_FILES = false;
-        return json;
-      })
-    )
+    
     .pipe(concat('config.js'))
     .pipe(gulp.dest('./'));
   done();
@@ -77,12 +72,12 @@ gulp.task('editConfigForProd', done => {
 
 // pack the files
 gulp.task('webpack', done => {
-  return webpack_stream(webpack_config).pipe(gulp.dest(`${paths.build}`));
+  return run('webpack').exec();
   done();
 });
 
 gulp.task('npm-publish', done => {
-  return run('npm publish').exec(); // run "npm start".
+  return run('npm publish').exec(); 
   done();
 });
 
@@ -139,7 +134,7 @@ gulp.task('editConfigForDev', done => {
     .pipe(bump({ key: 'PACKAGE_VERSION' }))
     .pipe(
       jeditor(function(json) {
-        USE_LOCAL_FILES = true;
+        USE_LOCAL_FILES : true;
         return json;
       })
     )

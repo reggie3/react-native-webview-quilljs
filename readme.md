@@ -79,6 +79,8 @@ This component accepts the following props:
 | backgroundColor| no | String that equates to a valid CSS color value that the background of the viewer will be set to|
 
 ## Changelog
+### 0.4.0
+* Added "backgroundColor" props for both the WebViewQuillViewer and WebViewQuillEditor
 ### 0.3.20
 * Added copy and paste of HTML
 ### 0.3.10
