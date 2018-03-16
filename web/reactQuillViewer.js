@@ -69,7 +69,7 @@ export default class ReactQuillViewer extends React.Component {
 			{
 				viewer: new Quill('#viewer', {
 					readOnly: true,
-					theme: 'bubble',
+					theme,
 					bounds: '#Quill-Viewer-Container'
 				})
 			},
@@ -136,6 +136,16 @@ export default class ReactQuillViewer extends React.Component {
 					case 'SET_CONTENTS':
 						this.state.viewer.setContents(msgData.payload.ops);
 						break;
+					case 'SET_HTML_CONTENTS':
+						this.state.viewer.clipboard.dangerouslyPasteHTML(msgData.payload.html);
+						break;
+					case 'SET_BACKGROUND_COLOR':
+						if (document) {
+							this.printElement(`received SET_BACKGROUND_COLOR: ${msgData.payload.backgroundColor}`);
+							document.getElementById('Quill-Viewer-Container').style.backgroundColor =
+								msgData.payload.backgroundColor;
+						}
+						break;
 					case 'MESSAGE_ACKNOWLEDGED':
 						this.printElement(`received MESSAGE_ACKNOWLEDGED`);
 						this.setState({ readyToSendNextMessage: true });
@@ -158,7 +168,8 @@ export default class ReactQuillViewer extends React.Component {
 				style={{
 					height: '100%',
 					display: 'flex',
-					flexDirection: 'column'
+					flexDirection: 'column',
+					backgroundColor: 'red'
 				}}
 			>
 				<div

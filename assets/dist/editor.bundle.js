@@ -71,7 +71,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var util = __webpack_require__(28);
 var updateCounter = 0;
 var MESSAGE_PREFIX = 'react-native-webview-quilljs';
-var SHOW_DEBUG_INFORMATION = true;
+var SHOW_DEBUG_INFORMATION = false;
 var messageQueue = [];
 var messageCounter = 0;
 
@@ -190,6 +190,12 @@ var ReactQuillEditor = function (_React$Component) {
 							break;
 						case 'SET_HTML_CONTENTS':
 							_this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
+							break;
+						case 'SET_BACKGROUND_COLOR':
+							if (document) {
+								_this.printElement('received SET_BACKGROUND_COLOR: ' + msgData.payload.backgroundColor);
+								document.getElementById('Quill-Editor-Container').style.backgroundColor = msgData.payload.backgroundColor;
+							}
 							break;
 						case 'MESSAGE_ACKNOWLEDGED':
 							_this.printElement('received MESSAGE_ACKNOWLEDGED');

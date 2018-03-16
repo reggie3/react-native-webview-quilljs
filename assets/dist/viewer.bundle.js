@@ -115,7 +115,7 @@ var ReactQuillViewer = function (_React$Component) {
 			_this.setState({
 				viewer: new _quill2.default('#viewer', {
 					readOnly: true,
-					theme: 'bubble',
+					theme: theme,
 					bounds: '#Quill-Viewer-Container'
 				})
 			}, function () {
@@ -167,6 +167,15 @@ var ReactQuillViewer = function (_React$Component) {
 							break;
 						case 'SET_CONTENTS':
 							_this.state.viewer.setContents(msgData.payload.ops);
+							break;
+						case 'SET_HTML_CONTENTS':
+							_this.state.viewer.clipboard.dangerouslyPasteHTML(msgData.payload.html);
+							break;
+						case 'SET_BACKGROUND_COLOR':
+							if (document) {
+								_this.printElement('received SET_BACKGROUND_COLOR: ' + msgData.payload.backgroundColor);
+								document.getElementById('Quill-Viewer-Container').style.backgroundColor = msgData.payload.backgroundColor;
+							}
 							break;
 						case 'MESSAGE_ACKNOWLEDGED':
 							_this.printElement('received MESSAGE_ACKNOWLEDGED');
@@ -229,7 +238,8 @@ var ReactQuillViewer = function (_React$Component) {
 					style: {
 						height: '100%',
 						display: 'flex',
-						flexDirection: 'column'
+						flexDirection: 'column',
+						backgroundColor: 'red'
 					}
 				},
 				_react2.default.createElement(

@@ -55,6 +55,7 @@ This component accepts the following props:
 | contentToDisplay     |    no        | A Delta object that will be displayed by the editor when it mounts|
 | onLoad | no| A function called when the Editor finishes loading |
 | onDeltaChangeCallback | no | Function called when the contents of Quill editor have changed.  The function receives a delta containing the new contents, the old contents, and source as described in the Quill.js API [documentation](https://quilljs.com/docs/api/events.html) |
+| backgroundColor| no | String that equates to a valid CSS color value that the background of the editor will be set to|
 
 
 Creating a Delta viewer that can display content created with Quill.js:
@@ -75,7 +76,7 @@ This component accepts the following props:
 | ref            |    yes        | A reference to the editor componment to be used to update its contents using     this.webViewQuillViewer.sendContentToViewer(delta);
 | contentToDisplay     |    no        | A Delta object that will be displayed by the viewer when it mounts|
 |onLoad | no| A function called when the Editor finishes loading |
-
+| backgroundColor| no | String that equates to a valid CSS color value that the background of the viewer will be set to|
 
 ## Changelog
 ### 0.3.20

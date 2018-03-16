@@ -8,7 +8,7 @@ import renderIf from 'render-if';
 const util = require('util');
 let updateCounter = 0;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
-const SHOW_DEBUG_INFORMATION = true;
+const SHOW_DEBUG_INFORMATION = false;
 let messageQueue = [];
 let messageCounter = 0;
 
@@ -78,7 +78,7 @@ export default class ReactQuillEditor extends React.Component {
 		this.setState(
 			{
 				editor: new Quill('#editor', {
-					theme: theme,
+					theme,
 					bounds: '#Quill-Editor-Container'
 				})
 			},
@@ -155,6 +155,13 @@ export default class ReactQuillEditor extends React.Component {
 						break;
 					case 'SET_HTML_CONTENTS':
 						this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
+						break;
+					case 'SET_BACKGROUND_COLOR':
+						if (document) {
+							this.printElement(`received SET_BACKGROUND_COLOR: ${msgData.payload.backgroundColor}`);
+							document.getElementById('Quill-Editor-Container').style.backgroundColor =
+								msgData.payload.backgroundColor;
+						}
 						break;
 					case 'MESSAGE_ACKNOWLEDGED':
 						this.printElement(`received MESSAGE_ACKNOWLEDGED`);

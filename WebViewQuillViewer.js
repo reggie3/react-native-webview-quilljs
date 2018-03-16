@@ -100,7 +100,13 @@ export default class WebViewQuillViewer extends React.Component {
 		this.setState({ webViewNotLoaded: false });
 		this.sendMessage('LOAD_VIEWER', {
 			theme: this.props.theme
-		});
+    });
+    if (this.props.hasOwnProperty('backgroundColor')) {
+      this.sendMessage('SET_BACKGROUND_COLOR', {
+        backgroundColor: this.props.backgroundColor
+      });
+    }
+
 	};
 
 	viewerLoaded = () => {
@@ -173,7 +179,7 @@ export default class WebViewQuillViewer extends React.Component {
 					<WebView
 						style={{
 							...StyleSheet.absoluteFillObject,
-							padding: 10
+              padding: 10,
 						}}
 						ref={this.createWebViewRef}
 						source={{ uri: INDEX_FILE_PATH }}
@@ -195,7 +201,7 @@ export default class WebViewQuillViewer extends React.Component {
 
 WebViewQuillViewer.propTypes = {
 	contentToDisplay: PropTypes.object,
-	theme: PropTypes.string
+	backgroundColor: PropTypes.string
 };
 
 // Specifies the default values for props:

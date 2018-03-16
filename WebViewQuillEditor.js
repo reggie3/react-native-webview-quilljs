@@ -105,6 +105,12 @@ export default class WebViewQuillEditor extends React.Component {
 		this.sendMessage('LOAD_EDITOR', {
 			theme: this.props.theme
 		});
+		if (this.props.hasOwnProperty('backgroundColor')) {
+			this.sendMessage('SET_BACKGROUND_COLOR', {
+			  backgroundColor: this.props.backgroundColor
+			});
+		  }
+	  
 	};
 
 	editorLoaded = () => {
@@ -201,7 +207,7 @@ WebViewQuillEditor.propTypes = {
 	getDeltaCallback: PropTypes.func,
 	contentToDisplay: PropTypes.object,
 	onDeltaChangeCallback: PropTypes.func,
-	theme: PropTypes.string
+	backgroundColor: PropTypes.string
 };
 
 // Specifies the default values for props:

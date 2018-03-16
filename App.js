@@ -61,6 +61,7 @@ export default class App extends React.Component {
             ref={component => (this.webViewQuillEditor = component)}
             getDeltaCallback={this.getDeltaCallback}
             onDeltaChangeCallback={this.onDeltaChangeCallback}
+            backgroundColor={'#fffbea'}
           />
         </View>
         <View
@@ -84,6 +85,8 @@ export default class App extends React.Component {
           <WebViewQuillViewer
             ref={component => (this.webViewQuillViewer = component)}
             contentToDisplay={this.state.messageDelta}
+            backgroundColor={'#fffbea'}
+
           />
         </View>
       </View>
