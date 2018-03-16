@@ -60,10 +60,16 @@ gulp.task('forNPM', done => {
 
 // read and bump the package version in config.js so that it
 // matches the version number about to be published
-gulp.task('editConfig', done => {
+gulp.task('editConfigForProd', done => {
   gulp
     .src('./config.js')
     .pipe(bump({ key: 'PACKAGE_VERSION' }))
+    .pipe(
+      jeditor(function(json) {
+        USE_LOCAL_FILES = false;
+        return json;
+      })
+    )
     .pipe(concat('config.js'))
     .pipe(gulp.dest('./'));
   done();
@@ -115,7 +121,7 @@ gulp.task(
   'prod',
   gulp.series(
     'forNPM',
-    'editConfig',
+    'editConfigForProd',
     'webpack',
     gulp.parallel(
       gulp.series('git-add', 'git-commit', 'git-push'),
@@ -125,11 +131,28 @@ gulp.task(
   )
 );
 
+// read and bump the package version in config.js so that it
+// matches the version number about to be published
+gulp.task('editConfigForDev', done => {
+  gulp
+    .src('./config.js')
+    .pipe(bump({ key: 'PACKAGE_VERSION' }))
+    .pipe(
+      jeditor(function(json) {
+        USE_LOCAL_FILES = true;
+        return json;
+      })
+    )
+    .pipe(concat('config.js'))
+    .pipe(gulp.dest('./'));
+  done();
+});
+
 gulp.task(
   'test',
   gulp.series(
     'forNPM',
-    'editConfig',
+    'editConfigForProd',
     'webpack',
     gulp.parallel(
       gulp.series('git-add', 'git-commit', 'git-push'),

@@ -8,8 +8,7 @@ import renderIf from 'render-if';
 const util = require('util');
 let updateCounter = 0;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
-const SHOW_DEBUG_INFORMATION = false;
-
+const SHOW_DEBUG_INFORMATION = true;
 let messageQueue = [];
 let messageCounter = 0;
 
@@ -50,6 +49,17 @@ export default class ReactQuillEditor extends React.Component {
 		}
 	};
 
+	componentDidMount() {
+		if (document) {
+			document.addEventListener('message', this.handleMessage);
+		} else if (window) {
+			window.addEventListener('message', this.handleMessage);
+		} else {
+			console.log('unable to add event listener');
+		}
+		this.printElement(`component mounted`);
+	}
+
 	addTextChangeEventToEditor = () => {
 		let that = this;
 		this.state.editor.on('text-change', (delta, oldDelta, source) => {
@@ -62,26 +72,26 @@ export default class ReactQuillEditor extends React.Component {
 		});
 	};
 
-	componentDidMount() {
+	loadEditor = (theme) => {
+		let that = this;
+		this.printElement(`loading editor, theme = ${theme}`);
 		this.setState(
 			{
 				editor: new Quill('#editor', {
-					theme: 'snow',
+					theme: theme,
 					bounds: '#Quill-Editor-Container'
 				})
 			},
-			this.addTextChangeEventToEditor
+			() => {
+				that.printElement(`editor initialized`);
+				that.addMessageToQueue('EDITOR_LOADED', {
+					type: 'success',
+					delta: this.state.editor.getContents()
+				});
+				that.addTextChangeEventToEditor();
+			}
 		);
-
-		if (document) {
-			document.addEventListener('message', this.handleMessage);
-		} else if (window) {
-			window.addEventListener('message', this.handleMessage);
-		} else {
-			console.log('unable to add event listener');
-		}
-		this.printElement(`component mounted`);
-	}
+	};
 
 	componentWillUnmount() {
 		if (document) {
@@ -131,28 +141,26 @@ export default class ReactQuillEditor extends React.Component {
 			if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
 				// this.printElement(msgData);
 				switch (msgData.type) {
-					// receive an event when the webview is ready
+					case 'LOAD_EDITOR':
+						this.loadEditor(msgData.payload.theme);
+						break;
 					case 'GET_DELTA':
 						this.addMessageToQueue('RECEIVE_DELTA', {
 							type: 'success',
 							delta: this.state.editor.getContents()
 						});
 						break;
-
 					case 'SET_CONTENTS':
 						this.state.editor.setContents(msgData.payload.delta);
 						break;
-
 					case 'SET_HTML_CONTENTS':
 						this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
 						break;
-
 					case 'MESSAGE_ACKNOWLEDGED':
 						this.printElement(`received MESSAGE_ACKNOWLEDGED`);
 						this.setState({ readyToSendNextMessage: true });
 						this.sendNextMessage();
 						break;
-
 					default:
 						printElement(`reactQuillEditor Error: Unhandled message type received "${msgData.type}"`);
 				}
@@ -169,7 +177,6 @@ export default class ReactQuillEditor extends React.Component {
 				id="Quill-Editor-Container"
 				style={{
 					height: '100%',
-					backgroundColor: '#dddddd',
 					display: 'flex',
 					flexDirection: 'column'
 				}}
@@ -177,7 +184,6 @@ export default class ReactQuillEditor extends React.Component {
 				<div
 					style={{
 						height: '100%',
-						backgroundColor: '#ffebba',
 						display: 'flex',
 						flexDirection: 'column',
 						paddingVertical: 5
@@ -186,7 +192,6 @@ export default class ReactQuillEditor extends React.Component {
 					<div
 						id="editor"
 						style={{
-							backgroundColor: '#FAEBD7',
 							fontSize: '20px',
 							height: 'calc(100% - 42px)'
 						}}

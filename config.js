@@ -5,6 +5,6 @@ const config = {
 
     // use the local html files from the dist folder instead of using the downloaded ones
     // used for debugging
-    USE_LOCAL_FILES: false
+    USE_LOCAL_FILES: true
   };
   export default config;

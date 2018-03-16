@@ -12,9 +12,9 @@ import * as webViewDownloadHelper from './webViewDownloadHelper';
 import { FileSystem } from 'expo';
 import config from './config';
 
-// name and version of the package that contains the index file(s) the webview will load
 // path to the file that the webview will load
 const INDEX_FILE_PATH = `${FileSystem.documentDirectory}${config.PACKAGE_NAME}/${config.PACKAGE_VERSION}/reactQuillEditor-index.html`;
+
 // the files that will be downloaded
 const FILES_TO_DOWNLOAD = [
 	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/reactQuillViewer-index.html',
@@ -34,6 +34,7 @@ export default class WebViewQuillEditor extends React.Component {
 			webViewFilesNotAvailable: true
 		};
 	}
+
 	componentDidMount() {
 		this.downloadWebViewFiles(FILES_TO_DOWNLOAD);
 	}
@@ -78,8 +79,9 @@ export default class WebViewQuillEditor extends React.Component {
 				// console.log(`WebViewQuillEditor: sent MESSAGE_ACKNOWLEDGED`);
 
 				switch (msgData.type) {
-					case 'EDITOR_MOUNTED':
+					case 'EDITOR_LOADED':
 						this.setState({ webViewNotLoaded: false });
+						this.editorLoaded();
 						break;
 					case 'TEXT_CHANGED':
 						if (this.props.onDeltaChangeCallback) this.props.onDeltaChangeCallback(msgData.payload.delta);
@@ -100,6 +102,12 @@ export default class WebViewQuillEditor extends React.Component {
 	webViewLoaded = () => {
 		console.log('Webview loaded');
 		this.setState({ webViewNotLoaded: false });
+		this.sendMessage('LOAD_EDITOR', {
+			theme: this.props.theme
+		});
+	};
+
+	editorLoaded = () => {
 		// send the content to the editor if we have it
 		if (this.props.hasOwnProperty('contentToDisplay')) {
 			console.log(this.props.contentToDisplay);
@@ -139,8 +147,7 @@ export default class WebViewQuillEditor extends React.Component {
 		return (
 			<View
 				style={{
-					flex: 1,
-					backgroundColor: '#ffebba'
+					flex: 1
 				}}
 			>
 				{renderIf(this.state.webViewFilesNotAvailable)(
@@ -154,12 +161,22 @@ export default class WebViewQuillEditor extends React.Component {
 						</View>
 					</View>
 				)}
-
-				{renderIf(!this.state.webViewFilesNotAvailable)(
+				{renderIf(!this.state.webViewFilesNotAvailable && config.USE_LOCAL_FILES)(
 					<WebView
 						style={{
 							...StyleSheet.absoluteFillObject,
-							backgroundColor: '#ffebba',
+							padding: 10
+						}}
+						ref={this.createWebViewRef}
+						source={require('./assets/dist/reactQuillEditor-index.html')}
+						onLoadEnd={this.webViewLoaded}
+						onMessage={this.handleMessage}
+					/>
+				)}
+				{renderIf(!this.state.webViewFilesNotAvailable && !config.USE_LOCAL_FILES)(
+					<WebView
+						style={{
+							...StyleSheet.absoluteFillObject,
 							padding: 10
 						}}
 						ref={this.createWebViewRef}
@@ -183,7 +200,13 @@ export default class WebViewQuillEditor extends React.Component {
 WebViewQuillEditor.propTypes = {
 	getDeltaCallback: PropTypes.func,
 	contentToDisplay: PropTypes.object,
-	onDeltaChangeCallback: PropTypes.func
+	onDeltaChangeCallback: PropTypes.func,
+	theme: PropTypes.string
+};
+
+// Specifies the default values for props:
+WebViewQuillEditor.defaultProps = {
+	theme: 'snow'
 };
 
 const styles = StyleSheet.create({

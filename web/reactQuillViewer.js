@@ -1,5 +1,5 @@
 import Quill from './quill.js';
-import './quill.snow.css';
+import './quill.bubble.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
@@ -7,7 +7,7 @@ import renderIf from 'render-if';
 
 const util = require('util');
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
-const SHOW_DEBUG_INFORMATION = false;
+const SHOW_DEBUG_INFORMATION = true;
 let messageQueue = [];
 let messageCounter = 0;
 
@@ -26,9 +26,9 @@ export default class ReactQuillViewer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			editor: null,
+			viewer: null,
 			readyToSendNextMessage: true
-		}; // You can also pass a Quill Delta here
+		};
 	}
 
 	// print passed information in an html element; useful for debugging
@@ -50,14 +50,6 @@ export default class ReactQuillViewer extends React.Component {
 	};
 
 	componentDidMount() {
-		this.setState({
-			editor: new Quill('#viewer', {
-				modules: { toolbar: false },
-				readOnly: true,
-				theme: null,
-				bounds: '#Quill-Viewer-Container'
-			})
-		});
 		if (document) {
 			document.addEventListener('message', this.handleMessage), false;
 		} else if (window) {
@@ -66,8 +58,30 @@ export default class ReactQuillViewer extends React.Component {
 			console.log('unable to add event listener');
 		}
 		this.printElement(`component mounted`);
-  }
-  
+	}
+
+	// load the viewer.  Don't do it in componentMount so that we can pass a theme
+	// to this component based on component props
+	loadViewer = (theme) => {
+		let that = this;
+		this.printElement(`loading viewer, theme = ${theme}`);
+		this.setState(
+			{
+				viewer: new Quill('#viewer', {
+					readOnly: true,
+					theme: 'bubble',
+					bounds: '#Quill-Viewer-Container'
+				})
+			},
+			() => {
+				that.printElement(`viewer initialized`);
+				that.addMessageToQueue('VIEWER_LOADED', {
+					type: 'success'
+				});
+			}
+		);
+	};
+
 	componentWillUnmount() {
 		if (document) {
 			document.removeEventListener('message', this.handleMessage);
@@ -87,6 +101,7 @@ export default class ReactQuillViewer extends React.Component {
 		);
 		this.printElement(`adding message ${messageCounter} to queue`);
 		if (this.state.readyToSendNextMessage) {
+			this.printElement(`sending message`);
 			this.sendNextMessage();
 		}
 	};
@@ -101,7 +116,7 @@ export default class ReactQuillViewer extends React.Component {
 	};
 
 	handleMessage = (event) => {
-		this.printElement(`received message`);
+		this.printElement(`viewer received message`);
 		this.printElement(
 			util.inspect(event.data, {
 				showHidden: false,
@@ -115,16 +130,17 @@ export default class ReactQuillViewer extends React.Component {
 			if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
 				// this.printElement(msgData);
 				switch (msgData.type) {
-					// receive an event when the webview is ready
+					case 'LOAD_VIEWER':
+						this.loadViewer(msgData.payload.theme);
+						break;
 					case 'SET_CONTENTS':
-						// this.printElement('MAP_CENTER_COORD_CHANGE event recieved');
-						this.state.editor.setContents(msgData.payload.ops);
+						this.state.viewer.setContents(msgData.payload.ops);
 						break;
 					case 'MESSAGE_ACKNOWLEDGED':
+						this.printElement(`received MESSAGE_ACKNOWLEDGED`);
 						this.setState({ readyToSendNextMessage: true });
 						this.sendNextMessage();
 						break;
-
 					default:
 						printElement(`reactQuillViewer Error: Unhandled message type received "${msgData.type}"`);
 				}
@@ -141,7 +157,6 @@ export default class ReactQuillViewer extends React.Component {
 				id="Quill-Viewer-Container"
 				style={{
 					height: '100%',
-					backgroundColor: '#dddddd',
 					display: 'flex',
 					flexDirection: 'column'
 				}}
@@ -149,7 +164,6 @@ export default class ReactQuillViewer extends React.Component {
 				<div
 					style={{
 						height: '100%',
-						backgroundColor: '#ffebba',
 						display: 'flex',
 						flexDirection: 'column',
 						paddingVertical: 5
@@ -158,7 +172,6 @@ export default class ReactQuillViewer extends React.Component {
 					<div
 						id="viewer"
 						style={{
-							backgroundColor: '#FAEBD7',
 							fontSize: '20px',
 							height: '100%'
 						}}
