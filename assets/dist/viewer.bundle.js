@@ -70,7 +70,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var util = __webpack_require__(28);
 var MESSAGE_PREFIX = 'react-native-webview-quilljs';
-var SHOW_DEBUG_INFORMATION = true;
+var SHOW_DEBUG_INFORMATION = false;
 var messageQueue = [];
 var messageCounter = 0;
 
@@ -238,8 +238,7 @@ var ReactQuillViewer = function (_React$Component) {
 					style: {
 						height: '100%',
 						display: 'flex',
-						flexDirection: 'column',
-						backgroundColor: 'red'
+						flexDirection: 'column'
 					}
 				},
 				_react2.default.createElement(
