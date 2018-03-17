@@ -163,7 +163,7 @@ export default class WebViewQuillViewer extends React.Component {
 						</View>
 					</View>
 				)}
-				{renderIf(!this.state.webViewFilesNotAvailable && config.USE_LOCAL_FILES)(
+				{/* renderIf(!this.state.webViewFilesNotAvailable && config.USE_LOCAL_FILES)(
 					<WebView
 						style={{
 							...StyleSheet.absoluteFillObject,
@@ -174,7 +174,7 @@ export default class WebViewQuillViewer extends React.Component {
 						onLoadEnd={this.webViewLoaded}
 						onMessage={this.handleMessage}
 					/>
-				)}
+				) */}
 				{renderIf(!this.state.webViewFilesNotAvailable && !config.USE_LOCAL_FILES)(
 					<WebView
 						style={{
