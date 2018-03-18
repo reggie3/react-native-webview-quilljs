@@ -5,7 +5,7 @@
   "author": "Reginald Johnson",
   "license": "MIT",
   "private": false,
-  "main": "index.js",
+  "main": "node_modules/expo/AppEntry.js",
   "files": [
     "WebViewQuillEditor.js",
     "WebViewQuillViewer.js",
@@ -14,11 +14,16 @@
     "config.js"
   ],
   "dependencies": {
+    "expo": "^25.0.0",
     "glamor": "^2.20.40",
     "glamorous": "^4.11.2",
     "prop-types": "^15.6.0",
+    "react": "16.2.0",
+    "react-dom": "^16.2.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "render-if": "^0.1.1",
     "util": "^0.10.3",
-    "render-if": "^0.1.1"
+    "versioned-file-downloader": "^1.0.0"
   },
   "devDependencies": {
     "babel-jest": "^21.2.0",

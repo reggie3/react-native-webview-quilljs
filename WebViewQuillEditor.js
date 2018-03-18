@@ -8,7 +8,7 @@ import React from 'react';
 import { View, ActivityIndicator, StyleSheet, WebView, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
-import * as webViewDownloadHelper from './webViewDownloadHelper';
+import versionedFileDownloader from 'versioned-file-downloader';
 import { FileSystem } from 'expo';
 import config from './config';
 
@@ -41,12 +41,14 @@ export default class WebViewQuillEditor extends React.Component {
 
 	downloadWebViewFiles = async (filesToDownload) => {
 		if (!config.USE_LOCAL_FILES) {
-			let downloadStatus = await webViewDownloadHelper.checkForFiles(
-				config.PACKAGE_NAME,
-				config.PACKAGE_VERSION,
-				filesToDownload,
-				this.webViewDownloadStatusCallBack
-			);
+			let downloadStatus = await versionedFileDownloader(
+				this.webViewDownloadStatusCallBack,
+				{
+				  name: config.PACKAGE_NAME,
+				  version: config.PACKAGE_VERSION,
+				  files: FILES_TO_DOWNLOAD
+				}
+			  );
 			if (downloadStatus.success) {
 				this.setState({ webViewFilesNotAvailable: false });
 			} else if (!downloadStatus.success) {
@@ -65,6 +67,10 @@ export default class WebViewQuillEditor extends React.Component {
 		}
 	};
 
+	webViewDownloadStatusCallBack = message => {
+		console.log(message);
+	  };
+	  
 	createWebViewRef = (webview) => {
 		this.webview = webview;
 	};

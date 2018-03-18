@@ -17,7 +17,6 @@ export const checkForFiles = (_directory, _version, _files) => {
 
 const startFileDownload = async () => {
   // directory name of the form:
-  //    react-native-webview-leaflet/24
   console.log('FileSystem.documentDirectory: ' + FileSystem.documentDirectory);
   const CURRENT_VERSION_DIRECTORY_NAME =
     FileSystem.documentDirectory + directory + '/' + version;
