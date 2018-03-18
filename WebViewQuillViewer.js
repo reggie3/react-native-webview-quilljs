@@ -18,11 +18,11 @@ const INDEX_FILE_PATH = `${FileSystem.documentDirectory}${config.PACKAGE_NAME}/$
 
 // the files that will be downloaded
 const FILES_TO_DOWNLOAD = [
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/reactQuillViewer-index.html',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/viewer.bundle.js',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/reactQuillEditor-index.html',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/editor.bundle.js',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/dist/common.js'
+	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/reactQuillViewer-index.html',
+	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/viewer.bundle.js',
+	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/reactQuillEditor-index.html',
+	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/editor.bundle.js',
+	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/common.js'
 ];
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
