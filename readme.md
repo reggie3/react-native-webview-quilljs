@@ -1,5 +1,5 @@
 # React Native Webview Quilljs
-## Quill.js editor and viewer components with no native code for React Native apps.
+## Quill.js editor and viewer components with no native code for React Native apps built using [Expo](https://expo.io/).
 
 [![npm](https://img.shields.io/npm/v/react-native-webview-quilljs.svg)](https://www.npmjs.com/package/react-native-webview-quilljs)
 [![npm](https://img.shields.io/npm/dm/react-native-webview-quilljs.svg)](https://www.npmjs.com/package/react-native-webview-quilljs)
