@@ -28,9 +28,9 @@ export default class WebViewQuillViewer extends React.Component {
 		};
 	}
 
-	webViewDownloadStatusCallBack = message => {
+	webViewDownloadStatusCallBack = (message) => {
 		console.log(message);
-	  };
+	};
 
 	createWebViewRef = (webview) => {
 		this.webview = webview;
@@ -47,7 +47,6 @@ export default class WebViewQuillViewer extends React.Component {
 
 				switch (msgData.type) {
 					case 'VIEWER_LOADED':
-						this.setState({ webViewNotLoaded: false });
 						this.viewerLoaded();
 						break;
 					default:
@@ -60,18 +59,17 @@ export default class WebViewQuillViewer extends React.Component {
 		}
 	};
 
-	webViewLoaded = () => {
+	onWebViewLoaded = () => {
 		console.log('Webview loaded');
 		this.setState({ webViewNotLoaded: false });
 		this.sendMessage('LOAD_VIEWER', {
 			theme: this.props.theme
-    });
-    if (this.props.hasOwnProperty('backgroundColor')) {
-      this.sendMessage('SET_BACKGROUND_COLOR', {
-        backgroundColor: this.props.backgroundColor
-      });
-    }
-
+		});
+		if (this.props.hasOwnProperty('backgroundColor')) {
+			this.sendMessage('SET_BACKGROUND_COLOR', {
+				backgroundColor: this.props.backgroundColor
+			});
+		}
 	};
 
 	viewerLoaded = () => {
@@ -110,6 +108,24 @@ export default class WebViewQuillViewer extends React.Component {
 		}
 	};
 
+	showLoadingIndicator = () => {
+		return (
+			<View style={styles.activityOverlayStyle}>
+				<View style={styles.activityIndicatorContainer}>
+					<ActivityIndicator size="large" animating={this.state.webViewNotLoaded} color="green" />
+				</View>
+			</View>
+		);
+	};
+
+	onError = (error) => {
+		Alert.alert('WebView onError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
+	};
+
+	renderError = (error) => {
+		Alert.alert('WebView renderError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
+	};
+
 	render = () => {
 		return (
 			<View
@@ -117,48 +133,20 @@ export default class WebViewQuillViewer extends React.Component {
 					flex: 1
 				}}
 			>
-				{renderIf(this.state.webViewFilesNotAvailable)(
-					<View style={styles.activityOverlayStyle}>
-						<View style={styles.activityIndicatorContainer}>
-							<ActivityIndicator
-								size="large"
-								animating={this.state.webViewFilesNotAvailable}
-								color="blue"
-							/>
-						</View>
-					</View>
-				)}
-				{/* renderIf(!this.state.webViewFilesNotAvailable && config.USE_LOCAL_FILES)(
 					<WebView
-						style={{
-							...StyleSheet.absoluteFillObject,
-							padding: 10
-						}}
+						style={{ ...StyleSheet.absoluteFillObject }}
 						ref={this.createWebViewRef}
-						source={require('./assets/dist/reactQuillViewer-index.html')}
-						onLoadEnd={this.webViewLoaded}
+						source={INDEX_FILE}
+						onLoadEnd={this.onWebViewLoaded}
 						onMessage={this.handleMessage}
+						startInLoadingState={true}
+						renderLoading={this.showLoadingIndicator}
+						renderError={this.renderError}
+						javaScriptEnabled={true}
+						onError={this.onError}
+						scalesPageToFit={false}
+						mixedContentMode={'always'}
 					/>
-				) */}
-				{renderIf(!this.state.webViewFilesNotAvailable && !config.USE_LOCAL_FILES)(
-					<WebView
-						style={{
-							...StyleSheet.absoluteFillObject,
-              padding: 10,
-						}}
-						ref={this.createWebViewRef}
-						source={{ uri: INDEX_FILE }}
-						onLoadEnd={this.webViewLoaded}
-						onMessage={this.handleMessage}
-					/>
-				)}
-				{renderIf(this.state.webViewNotLoaded && !this.state.webViewFilesNotAvailable)(
-					<View style={styles.activityOverlayStyle}>
-						<View style={styles.activityIndicatorContainer}>
-							<ActivityIndicator size="large" animating={this.state.webViewNotLoaded} color="orange" />
-						</View>
-					</View>
-				)}
 			</View>
 		);
 	};

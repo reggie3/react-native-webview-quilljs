@@ -21,7 +21,7 @@
       "assetExts": ["html"]
     },
     "assetBundlePatterns": [
-      "./assets/**"
+      "assets/*.html"
     ]
   }
 }

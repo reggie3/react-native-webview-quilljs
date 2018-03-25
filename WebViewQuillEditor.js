@@ -8,11 +8,9 @@ import React from 'react';
 import { View, ActivityIndicator, StyleSheet, WebView, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
-import config from './config';
 
 // path to the file that the webview will load
-const INDEX_FILE = require(`./assets/assets/dist/reactQuillViewer-index.html`);
-
+const INDEX_FILE = require(`./assets/assets/dist/reactQuillEditor-index.html`);
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -24,7 +22,7 @@ export default class WebViewQuillEditor extends React.Component {
 			webViewFilesNotAvailable: true
 		};
 	}
-	  
+
 	createWebViewRef = (webview) => {
 		this.webview = webview;
 	};
@@ -40,7 +38,6 @@ export default class WebViewQuillEditor extends React.Component {
 
 				switch (msgData.type) {
 					case 'EDITOR_LOADED':
-						this.setState({ webViewNotLoaded: false });
 						this.editorLoaded();
 						break;
 					case 'TEXT_CHANGED':
@@ -59,7 +56,7 @@ export default class WebViewQuillEditor extends React.Component {
 		}
 	};
 
-	webViewLoaded = () => {
+	onWebViewLoaded = () => {
 		console.log('Webview loaded');
 		this.setState({ webViewNotLoaded: false });
 		this.sendMessage('LOAD_EDITOR', {
@@ -67,10 +64,9 @@ export default class WebViewQuillEditor extends React.Component {
 		});
 		if (this.props.hasOwnProperty('backgroundColor')) {
 			this.sendMessage('SET_BACKGROUND_COLOR', {
-			  backgroundColor: this.props.backgroundColor
+				backgroundColor: this.props.backgroundColor
 			});
-		  }
-	  
+		}
 	};
 
 	editorLoaded = () => {
@@ -109,6 +105,24 @@ export default class WebViewQuillEditor extends React.Component {
 		this.sendMessage('GET_DELTA');
 	};
 
+	showLoadingIndicator = () => {
+		return (
+			<View style={styles.activityOverlayStyle}>
+				<View style={styles.activityIndicatorContainer}>
+					<ActivityIndicator size="large" animating={this.state.webViewNotLoaded} color="green" />
+				</View>
+			</View>
+		);
+	};
+
+	onError = (error) => {
+		Alert.alert('WebView onError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
+	};
+
+	renderError = (error) => {
+		Alert.alert('WebView renderError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
+	};
+
 	render = () => {
 		return (
 			<View
@@ -116,48 +130,20 @@ export default class WebViewQuillEditor extends React.Component {
 					flex: 1
 				}}
 			>
-				{renderIf(this.state.webViewFilesNotAvailable)(
-					<View style={styles.activityOverlayStyle}>
-						<View style={styles.activityIndicatorContainer}>
-							<ActivityIndicator
-								size="large"
-								animating={this.state.webViewFilesNotAvailable}
-								color="blue"
-							/>
-						</View>
-					</View>
-				)}
-				{/* renderIf(!this.state.webViewFilesNotAvailable && config.USE_LOCAL_FILES)(
 					<WebView
-						style={{
-							...StyleSheet.absoluteFillObject,
-							padding: 10
-						}}
+					style={{ ...StyleSheet.absoluteFillObject }}
 						ref={this.createWebViewRef}
-						source={require('./assets/dist/reactQuillEditor-index.html')}
-						onLoadEnd={this.webViewLoaded}
+						source={INDEX_FILE}
+						onLoadEnd={this.onWebViewLoaded}
 						onMessage={this.handleMessage}
+						startInLoadingState={true}
+						renderLoading={this.showLoadingIndicator}
+						renderError={this.renderError}
+						javaScriptEnabled={true}
+						onError={this.onError}
+						scalesPageToFit={false}
+						mixedContentMode={'always'}
 					/>
-				) */}
-				{renderIf(!this.state.webViewFilesNotAvailable && !config.USE_LOCAL_FILES)(
-					<WebView
-						style={{
-							...StyleSheet.absoluteFillObject,
-							padding: 10
-						}}
-						ref={this.createWebViewRef}
-						source={{ uri: INDEX_FILE }}
-						onLoadEnd={this.webViewLoaded}
-						onMessage={this.handleMessage}
-					/>
-				)}
-				{renderIf(this.state.webViewNotLoaded && !this.state.webViewFilesNotAvailable)(
-					<View style={styles.activityOverlayStyle}>
-						<View style={styles.activityIndicatorContainer}>
-							<ActivityIndicator size="large" animating={this.state.webViewNotLoaded} color="orange" />
-						</View>
-					</View>
-				)}
 			</View>
 		);
 	};
