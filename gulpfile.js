@@ -10,21 +10,21 @@ const run = require('gulp-run');
 
 // dependencies for npm publishing
 const npmDeps = {
-	"prop-types": "^15.6.0",
-  "react": "16.2.0",
-  "react-dom": "^16.2.0",
-  "render-if": "^0.1.1",
-  "util": "^0.10.3"
+	'prop-types': '^15.6.0',
+	react: '16.2.0',
+	'react-dom': '^16.2.0',
+	'render-if': '^0.1.1',
+	util: '^0.10.3'
 };
 // additional dependencies for expo app
 const expoDeps = {
-  "expo": "^25.0.0",
-  "prop-types": "^15.6.0",
-  "react": "16.2.0",
-  "react-dom": "^16.2.0",
-  "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
-  "render-if": "^0.1.1",
-  "util": "^0.10.3"
+	expo: '^25.0.0',
+	'prop-types': '^15.6.0',
+	react: '16.2.0',
+	'react-dom': '^16.2.0',
+	'react-native': 'https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz',
+	'render-if': '^0.1.1',
+	util: '^0.10.3'
 };
 
 // main for npm publishing
@@ -46,7 +46,8 @@ const updatePackageJSONforNPM = (json) => {};
 // read the package.json and update it for npm publishing
 gulp.task('forNPM', (done) => {
 	gulp
-		.src('./package.json')
+    .src('./package.json')
+    .pipe(bump())
 		.pipe(
 			jeditor(function(json) {
 				json.dependencies = npmDeps;
@@ -77,6 +78,11 @@ gulp.task('npm-publish', (done) => {
 	done();
 });
 
+gulp.task('npm-publish-beta', (done) => {
+	return run('npm publish --tag beta').exec();
+	done();
+});
+
 gulp.task('git-add', (done) => {
 	return run('git add .').exec();
 	done();
@@ -90,6 +96,11 @@ gulp.task('git-commit', (done) => {
 
 gulp.task('git-push', (done) => {
 	return run('git push origin master').exec();
+	done();
+});
+
+gulp.task('git-push-inline-javascript-3', (done) => {
+	return run('git push origin inline-javascript-3').exec();
 	done();
 });
 
@@ -111,9 +122,18 @@ gulp.task(
 	'prod',
 	gulp.series(
 		'forNPM',
-		'editConfigForProd',
 		'webpack',
 		gulp.parallel(gulp.series('git-add', 'git-commit', 'git-push'), 'npm-publish'),
+		'forExpo'
+	)
+);
+
+gulp.task(
+	'beta',
+	gulp.series(
+		'forNPM',
+		'webpack',
+		gulp.parallel(gulp.series('git-add', 'git-commit', 'git-push-inline-javascript-3'), 'npm-publish-beta'),
 		'forExpo'
 	)
 );
