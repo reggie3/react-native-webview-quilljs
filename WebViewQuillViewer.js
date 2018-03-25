@@ -14,16 +14,7 @@ import { FileSystem } from 'expo';
 import config from './config';
 
 // path to the file that the webview will load
-const INDEX_FILE_PATH = `${FileSystem.documentDirectory}${config.PACKAGE_NAME}/${config.PACKAGE_VERSION}/reactQuillViewer-index.html`;
-
-// the files that will be downloaded
-const FILES_TO_DOWNLOAD = [
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/reactQuillViewer-index.html',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/viewer.bundle.js',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/reactQuillEditor-index.html',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/editor.bundle.js',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/common.js'
-];
+const INDEX_FILE = require(`./assets/assets/dist/reactQuillViewer-index.html`);
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -36,38 +27,6 @@ export default class WebViewQuillViewer extends React.Component {
 			webViewFilesNotAvailable: true
 		};
 	}
-
-	componentDidMount = () => {
-		this.downloadWebViewFiles(FILES_TO_DOWNLOAD);
-	};
-
-	downloadWebViewFiles = async (filesToDownload) => {
-		if (!config.USE_LOCAL_FILES) {
-			let downloadStatus = await versionedFileDownloader(
-				this.webViewDownloadStatusCallBack,
-				{
-				  name: config.PACKAGE_NAME,
-				  version: config.PACKAGE_VERSION,
-				  files: FILES_TO_DOWNLOAD
-				}
-			  );
-			if (downloadStatus.success) {
-				this.setState({ webViewFilesNotAvailable: false });
-			} else if (!downloadStatus.success) {
-				console.log(`unable to download html files: ${JSON.stringify(downloadStatus)}`);
-				Alert.alert(
-					'Error',
-					`unable to download html files: ${JSON.stringify(downloadStatus)}`,
-					[ { text: 'OK', onPress: () => console.log('OK Pressed') } ],
-					{ cancelable: false }
-				);
-			} else {
-				this.setState({ webViewFilesNotAvailable: false });
-			}
-		} else {
-			this.setState({ webViewFilesNotAvailable: false });
-		}
-	};
 
 	webViewDownloadStatusCallBack = message => {
 		console.log(message);
@@ -188,7 +147,7 @@ export default class WebViewQuillViewer extends React.Component {
               padding: 10,
 						}}
 						ref={this.createWebViewRef}
-						source={{ uri: INDEX_FILE_PATH }}
+						source={{ uri: INDEX_FILE }}
 						onLoadEnd={this.webViewLoaded}
 						onMessage={this.handleMessage}
 					/>

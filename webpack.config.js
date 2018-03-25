@@ -12,7 +12,7 @@ module.exports = {
     viewer: './web/componentViewer.js'
   },
   output: {
-    path: path.join(__dirname, './assets/dist'),
+    path: path.join(__dirname, './assets/assets/dist'),
     filename: '[name].bundle.js'
   },
   module: {
