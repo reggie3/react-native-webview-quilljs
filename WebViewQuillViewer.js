@@ -9,9 +9,6 @@ import React from 'react';
 import { View, ActivityIndicator, StyleSheet, WebView } from 'react-native';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
-import versionedFileDownloader from 'versioned-file-downloader';
-import { FileSystem } from 'expo';
-import config from './config';
 
 // path to the file that the webview will load
 const INDEX_FILE = require(`./assets/assets/dist/reactQuillViewer-index.html`);

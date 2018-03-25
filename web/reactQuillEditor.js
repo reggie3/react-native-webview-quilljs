@@ -2,7 +2,6 @@ import Quill from './quill.js';
 import './quill.snow.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
 import renderIf from 'render-if';
 
 const util = require('util');
@@ -11,17 +10,6 @@ const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 const SHOW_DEBUG_INFORMATION = false;
 let messageQueue = [];
 let messageCounter = 0;
-
-const MessagesDiv = glamorous.div({
-	backgroundColor: 'orange',
-	maxHeight: 200,
-	overflow: 'auto',
-	position: 'absolute',
-	bottom: 0,
-	left: 0,
-	right: 0,
-	fontSize: 10
-});
 
 export default class ReactQuillEditor extends React.Component {
 	constructor(props) {
@@ -204,7 +192,21 @@ export default class ReactQuillEditor extends React.Component {
 						}}
 					/>
 				</div>
-				{renderIf(SHOW_DEBUG_INFORMATION)(<MessagesDiv id="messages" />)}
+				{renderIf(SHOW_DEBUG_INFORMATION)(
+					<div
+						id="messages"
+						style={{
+							backgroundColor: 'orange',
+							maxHeight: 200,
+							overflow: 'auto',
+							position: 'absolute',
+							bottom: 0,
+							left: 0,
+							right: 0,
+							fontSize: 10
+						}}
+					/>
+				)}
 			</div>
 		);
 	}

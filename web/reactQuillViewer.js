@@ -2,7 +2,6 @@ import Quill from './quill.js';
 import './quill.bubble.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
 import renderIf from 'render-if';
 
 const util = require('util');
@@ -11,16 +10,6 @@ const SHOW_DEBUG_INFORMATION = false;
 let messageQueue = [];
 let messageCounter = 0;
 
-const MessagesDiv = glamorous.div({
-	backgroundColor: 'orange',
-	maxHeight: 200,
-	overflow: 'auto',
-	position: 'absolute',
-	bottom: 0,
-	left: 0,
-	right: 0,
-	fontSize: 10
-});
 
 export default class ReactQuillViewer extends React.Component {
 	constructor(props) {
@@ -168,7 +157,7 @@ export default class ReactQuillViewer extends React.Component {
 				style={{
 					height: '100%',
 					display: 'flex',
-					flexDirection: 'column',
+					flexDirection: 'column'
 				}}
 			>
 				<div
@@ -187,7 +176,21 @@ export default class ReactQuillViewer extends React.Component {
 						}}
 					/>
 				</div>
-				{renderIf(SHOW_DEBUG_INFORMATION)(<MessagesDiv id="messages" />)}
+				{renderIf(SHOW_DEBUG_INFORMATION)(
+					<div
+						id="messages"
+						style={{
+							backgroundColor: 'orange',
+							maxHeight: 200,
+							overflow: 'auto',
+							position: 'absolute',
+							bottom: 0,
+							left: 0,
+							right: 0,
+							fontSize: 10
+						}}
+					/>
+				)}
 			</div>
 		);
 	}
