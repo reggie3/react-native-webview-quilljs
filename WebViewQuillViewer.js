@@ -74,7 +74,7 @@ export default class WebViewQuillViewer extends React.Component {
 		if (this.props.hasOwnProperty('contentToDisplay')) {
 			console.log(this.props.contentToDisplay);
 			this.sendMessage('SET_CONTENTS', {
-				delta: this.props.contentToDisplay
+				ops: this.props.contentToDisplay
 			});
 		}
 		if (this.props.hasOwnProperty('htmlContentToDisplay')) {
