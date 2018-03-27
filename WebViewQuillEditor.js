@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import renderIf from 'render-if';
 
 // path to the file that the webview will load
-const INDEX_FILE = require(`./assets/assets/dist/reactQuillEditor-index.html`);
+const INDEX_FILE = require(`./assets/dist/reactQuillEditor-index.html`);
 
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
