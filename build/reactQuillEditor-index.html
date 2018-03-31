@@ -33923,7 +33923,13 @@ var ReactQuillEditor = function (_React$Component) {
 			if (messageQueue.length > 0) {
 				var nextMessage = messageQueue.shift();
 				_this.printElement('sending message ' + nextMessage);
-				window.postMessage(nextMessage, '*');
+				if (document) {
+					document.postMessage(nextMessage, '*');
+				} else if (window) {
+					window.postMessage(nextMessage, '*');
+				} else {
+					console.log('unable to add event listener');
+				}
 				_this.setState({ readyToSendNextMessage: false });
 			}
 		};
