@@ -19,6 +19,7 @@ module.exports = {
 		path: path.join(__dirname, './build'),
 		filename: '[name].bundle.js'
 	},
+	devtool: 'source-map',
 	module: {
 		rules: [
 			{
@@ -68,19 +69,6 @@ module.exports = {
 			filename: './reactQuillViewer-index.html'
 		}),
 		commonsPlugin,
-		new webpack.optimize.UglifyJsPlugin({
-			// Eliminate comments
-			comments: false,
-
-			// Compression specific options
-			compress: {
-				// remove warnings
-				warnings: false,
-
-				// Drop console statements
-				drop_console: true
-			}
-		}),
 		new HtmlWebpackInlineSourcePlugin(),
 		new CopyWebpackPlugin([
 			{

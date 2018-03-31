@@ -66,6 +66,9 @@ export default class WebViewQuillViewer extends React.Component {
 			this.sendMessage('SET_BACKGROUND_COLOR', {
 				backgroundColor: this.props.backgroundColor
 			});
+		};
+		if(this.props.hasOwnProperty('onLoad')){
+			this.props.onLoad();
 		}
 	};
 
@@ -151,7 +154,8 @@ export default class WebViewQuillViewer extends React.Component {
 
 WebViewQuillViewer.propTypes = {
 	contentToDisplay: PropTypes.object,
-	backgroundColor: PropTypes.string
+	backgroundColor: PropTypes.string,
+	onLoad: PropTypes.func
 };
 
 // Specifies the default values for props:

@@ -27,6 +27,7 @@ const expoDeps = {
 	util: '^0.10.3'
 };
 
+
 // main for npm publishing
 const npmMain = 'index.js';
 // main for expo app
@@ -117,6 +118,21 @@ gulp.task('forExpo', (done) => {
 		.pipe(gulp.dest('./'));
 	done();
 });
+
+gulp.task(
+	'copy-build-files', (done)=>{
+		gulp.src('./build/index.html')
+		.pipe(gulp.dest('./assets/dist/'));
+		done();
+	}
+)
+
+gulp.task('build',
+gulp.series(
+	'webpack',
+	'copy-build-files'
+));
+
 
 gulp.task(
 	'prod',

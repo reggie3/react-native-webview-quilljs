@@ -19,7 +19,6 @@ export default class WebViewQuillEditor extends React.Component {
 		super();
 		this.state = {
 			webViewNotLoaded: true, // flag to show activity indicator
-			webViewFilesNotAvailable: true
 		};
 	}
 
@@ -66,6 +65,9 @@ export default class WebViewQuillEditor extends React.Component {
 			this.sendMessage('SET_BACKGROUND_COLOR', {
 				backgroundColor: this.props.backgroundColor
 			});
+		}
+		if(this.props.hasOwnProperty('onLoad')){
+			this.props.onLoad();
 		}
 	};
 
@@ -124,6 +126,7 @@ export default class WebViewQuillEditor extends React.Component {
 	};
 
 	render = () => {
+		debugger;
 		return (
 			<View
 				style={{
@@ -153,7 +156,8 @@ WebViewQuillEditor.propTypes = {
 	getDeltaCallback: PropTypes.func,
 	contentToDisplay: PropTypes.object,
 	onDeltaChangeCallback: PropTypes.func,
-	backgroundColor: PropTypes.string
+	backgroundColor: PropTypes.string,
+	onLoad: PropTypes.func
 };
 
 // Specifies the default values for props:

@@ -46,6 +46,7 @@ export default class ReactQuillEditor extends React.Component {
 			console.log('unable to add event listener');
 		}
 		this.printElement(`component mounted`);
+		// this.loadEditor();
 	}
 
 	addTextChangeEventToEditor = () => {
