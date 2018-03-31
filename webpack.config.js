@@ -9,7 +9,13 @@ const commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
 });
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
+// the path(s) that should be cleaned
+let pathsToClean = [
+  'assets/dist/index.html',
+  'build'
+]
 module.exports = {
 	entry: {
 		editor: './web/componentEditor.js',
@@ -54,6 +60,7 @@ module.exports = {
 	},
 
 	plugins: [
+		new CleanWebpackPlugin(pathsToClean),
 		new HtmlWebpackPlugin({
 			inlineSource: '(common.js|editor.bundle.js)',
 			template: './web/reactNativeComponentTemplate.html',
