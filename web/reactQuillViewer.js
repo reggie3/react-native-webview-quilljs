@@ -133,6 +133,9 @@ export default class ReactQuillViewer extends React.Component {
 					case 'LOAD_VIEWER':
 						this.loadViewer(msgData.payload.theme);
 						break;
+					case 'SEND_VIEWER':
+						this.addMessageToQueue('VIEWER_SENT', {viewer: this.state.viewer});
+						break;
 					case 'SET_CONTENTS':
 						this.state.viewer.setContents(msgData.payload.ops);
 						break;

@@ -57,9 +57,7 @@ Creating a Quill.js editor with the standard toolbar:
 ~~~~
 
 This component accepts the following props:
-* ref
-* getDeltaCallback
-* contentToDisplay
+
 
 | Name                   | Required      | Description |
 | ---------------------- | ------------- | ----------- |
