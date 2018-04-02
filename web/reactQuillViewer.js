@@ -10,7 +10,6 @@ const SHOW_DEBUG_INFORMATION = false;
 let messageQueue = [];
 let messageCounter = 0;
 
-
 export default class ReactQuillViewer extends React.Component {
 	constructor(props) {
 		super(props);
@@ -127,6 +126,9 @@ export default class ReactQuillViewer extends React.Component {
 				switch (msgData.type) {
 					case 'LOAD_VIEWER':
 						this.loadViewer(msgData.payload.theme);
+						break;
+					case 'SEND_VIEWER':
+						this.addMessageToQueue('VIEWER_SENT', { viewer: this.state.viewer });
 						break;
 					case 'SET_CONTENTS':
 						this.state.viewer.setContents(msgData.payload.ops);

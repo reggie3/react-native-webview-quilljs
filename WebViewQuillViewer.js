@@ -46,6 +46,9 @@ export default class WebViewQuillViewer extends React.Component {
 					case 'VIEWER_LOADED':
 						this.viewerLoaded();
 						break;
+					case 'VIEWER_SENT':
+						this.props.getViewerCallback(msgData.payload.viewer);
+						break;
 					default:
 						console.warn(`WebViewQuillViewer Error: Unhandled message type received "${msgData.type}"`);
 				}
@@ -70,10 +73,13 @@ export default class WebViewQuillViewer extends React.Component {
 		if(this.props.hasOwnProperty('onLoad')){
 			this.props.onLoad();
 		}
+		if(this.props.hasOwnProperty('getViewerCallback')){
+			this.sendMessage('SEND_VIEWER');
+		}
 	};
 
 	viewerLoaded = () => {
-		// send the content to the editor if we have it
+		// send the content to the viewer if we have it
 		if (this.props.hasOwnProperty('contentToDisplay')) {
 			console.log(this.props.contentToDisplay);
 			this.sendMessage('SET_CONTENTS', {

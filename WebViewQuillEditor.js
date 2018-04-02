@@ -38,6 +38,9 @@ export default class WebViewQuillEditor extends React.Component {
 					case 'EDITOR_LOADED':
 						this.editorLoaded();
 						break;
+					case 'EDITOR_SENT':
+						this.props.getEditorCallback(msgData.payload.editor);
+						break;
 					case 'TEXT_CHANGED':
 						if (this.props.onDeltaChangeCallback) this.props.onDeltaChangeCallback(msgData.payload.delta);
 						break;
@@ -67,6 +70,9 @@ export default class WebViewQuillEditor extends React.Component {
 		}
 		if(this.props.hasOwnProperty('onLoad')){
 			this.props.onLoad();
+		}
+		if(this.props.hasOwnProperty('getEditorCallback')){
+			this.sendMessage('SEND_EDITOR');
 		}
 	};
 

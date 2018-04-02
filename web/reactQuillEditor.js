@@ -139,6 +139,9 @@ export default class ReactQuillEditor extends React.Component {
 					case 'LOAD_EDITOR':
 						this.loadEditor(msgData.payload.theme);
 						break;
+					case 'SEND_EDITOR':
+						this.addMessageToQueue('EDITOR_SENT', {editor: this.state.editor});
+						break;
 					case 'GET_DELTA':
 						this.addMessageToQueue('RECEIVE_DELTA', {
 							type: 'success',
