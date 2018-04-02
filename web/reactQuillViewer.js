@@ -96,15 +96,15 @@ export default class ReactQuillViewer extends React.Component {
 	};
 
 	sendNextMessage = () => {
-		if (messageQueue.length > 0) {
-			const nextMessage = messageQueue.shift();
+		if (this.messageQueue.length > 0) {
+			const nextMessage = this.messageQueue.shift();
 			this.printElement(`sending message ${nextMessage}`);
-			if (document) {
+			if (document.hasOwnProperty('postMessage')) {
 				document.postMessage(nextMessage, '*');
-			} else if (window) {
+			} else if (window.hasOwnProperty('postMessage')) {
 				window.postMessage(nextMessage, '*');
 			} else {
-				console.log('unable to add event listener');
+				console.log('unable to find postMessage');
 			}
 			this.setState({ readyToSendNextMessage: false });
 		}
