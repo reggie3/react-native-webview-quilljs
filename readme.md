@@ -15,6 +15,19 @@
 
 [Link to Expo Project Page](https://expo.io/@reggie3/react-native-webview-quilljs)
 
+## New Beta Version With Full Offline Support Now Available
+The new beta does not require downloading any files during program launch to make it work.  All Editor and Viewer JavaScript files are bundled with the package.  
+install it by using:
+~~~
+npm install --save react-native-webview-quilljs@beta
+~~~
+or 
+~~~
+yarn add react-native-webview-quilljs@beta
+~~~
+
+The code for the beta is in the inline-javascript-3 branch.
+NOTE: Barring any unforeseen circumstances, I will be merging the beta and publishing it by 7 April, 2018.
 
 ## Installation
 ~~~
