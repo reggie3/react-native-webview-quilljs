@@ -56,6 +56,7 @@ This component accepts the following props:
 | onLoad | no| A function called when the Editor finishes loading |
 | onDeltaChangeCallback | no | Function called when the contents of Quill editor have changed.  The function receives a delta containing the new contents, the old contents, and source as described in the Quill.js API [documentation](https://quilljs.com/docs/api/events.html) |
 | backgroundColor| no | String that equates to a valid CSS color value that the background of the editor will be set to|
+|getEditorCallback| no | A function that will receive the Quill.js editor as an arguement |
 
 
 Creating a Delta viewer that can display content created with Quill.js:
@@ -68,8 +69,6 @@ Creating a Delta viewer that can display content created with Quill.js:
 ~~~
 
 This component accepts the following props:
-* ref
-* contentToDisplay
 
 | Name                   | Required      | Description |
 | ---------------------- | ------------- | ----------- |
@@ -77,8 +76,12 @@ This component accepts the following props:
 | contentToDisplay     |    no        | A Delta object that will be displayed by the viewer when it mounts|
 |onLoad | no| A function called when the Editor finishes loading |
 | backgroundColor| no | String that equates to a valid CSS color value that the background of the viewer will be set to|
+|getViewerCallback| no | A function that will receive the Quill.js viewer as an arguement |
 
 ## Changelog
+### 0.6.0
+* Removed requirement to download JavaScript files from GitHub in order for the package to work.  JavaScript files are now inline with the HTML which enables the package to work without an Internet connection.
+* Added getViewerCallback and getEditorCallback
 ### 0.4.4
 * Changed HTTP path for files to be downloaded in preparation for potential inline JS bundling or Expo Packager bundling of files.
 ### 0.4.0

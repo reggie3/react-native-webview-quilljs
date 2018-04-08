@@ -16,6 +16,7 @@ const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 export default class WebViewQuillEditor extends React.Component {
 	constructor() {
 		super();
+		this.webview = null;
 		this.state = {
 			webViewNotLoaded: true, // flag to show activity indicator
 		};
@@ -131,7 +132,6 @@ export default class WebViewQuillEditor extends React.Component {
 	};
 
 	render = () => {
-		debugger;
 		return (
 			<View
 				style={{

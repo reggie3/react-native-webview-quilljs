@@ -6,7 +6,7 @@ import renderIf from 'render-if';
 
 const util = require('util');
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
-const SHOW_DEBUG_INFORMATION = false;
+const SHOW_DEBUG_INFORMATION = true;
 let messageQueue = [];
 let messageCounter = 0;
 
@@ -15,6 +15,7 @@ export default class ReactQuillViewer extends React.Component {
 		super(props);
 		this.state = {
 			viewer: null,
+			debugMessages: [],
 			readyToSendNextMessage: true
 		};
 	}
@@ -22,18 +23,18 @@ export default class ReactQuillViewer extends React.Component {
 	// print passed information in an html element; useful for debugging
 	// since console.log and debug statements won't work in a conventional way
 	printElement = (data) => {
-		if (SHOW_DEBUG_INFORMATION) {
+		if (this.state.SHOW_DEBUG_INFORMATION) {
+			let message = '';
 			if (typeof data === 'object') {
-				let el = document.createElement('pre');
-				el.innerHTML = util.inspect(data, { showHidden: false, depth: null });
-				document.getElementById('messages').appendChild(el);
-				console.log(JSON.stringify(data));
+				message = util.inspect(data, { showHidden: false, depth: null })
 			} else if (typeof data === 'string') {
-				let el = document.createElement('pre');
-				el.innerHTML = data;
-				document.getElementById('messages').appendChild(el);
-				console.log(data);
+				message = data;
 			}
+			this.setState({
+				debugMessages:
+					this.state.debugMessages.concat([message])
+			});
+			console.log(message)
 		}
 	};
 
@@ -184,20 +185,22 @@ export default class ReactQuillViewer extends React.Component {
 						}}
 					/>
 				</div>
-				{renderIf(SHOW_DEBUG_INFORMATION)(
+				{renderIf(this.state.SHOW_DEBUG_INFORMATION)(
 					<div
-						id="messages"
 						style={{
 							backgroundColor: 'orange',
 							maxHeight: 200,
 							overflow: 'auto',
-							position: 'absolute',
-							bottom: 0,
-							left: 0,
-							right: 0,
-							fontSize: 10
+							padding: 5
 						}}
-					/>
+						id="messages"
+					>
+						<ul>
+							{this.state.debugMessages.map((message, index) => {
+								return (<li key={index}>{message}</li>)
+							})}
+						</ul>
+					</div>
 				)}
 			</div>
 		);

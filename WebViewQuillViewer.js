@@ -21,13 +21,8 @@ export default class WebViewQuillViewer extends React.Component {
 		this.webview = null;
 		this.state = {
 			webViewNotLoaded: true, // flag to show activity indicator
-			webViewFilesNotAvailable: true
 		};
 	}
-
-	webViewDownloadStatusCallBack = (message) => {
-		console.log(message);
-	};
 
 	createWebViewRef = (webview) => {
 		this.webview = webview;

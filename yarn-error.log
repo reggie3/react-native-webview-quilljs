@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\regin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add clean-webpack-plugin
+  C:\Program Files\nodejs\node.exe C:\Users\regin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js remove copy-webpack-plugin webpack-remove-debug webpack-stream
 
 PATH: 
-  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\regin\AppData\Local\Microsoft\WindowsApps;;C:\Program Files\Microsoft VS Code\bin;C:\Users\regin\AppData\Roaming\npm
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\regin\AppData\Local\Microsoft\WindowsApps;;C:\Program Files\Microsoft VS Code\bin;C:\Users\regin\AppData\Roaming\npm
 
 Yarn version: 
   1.5.1
@@ -16,20 +16,20 @@ Platform:
 npm manifest: 
   {
   	"name": "react-native-webview-quilljs",
-  	"version": "0.6.16",
+  	"version": "0.6.18",
   	"description": "Quill-js package for apps that need a non-native rich text editor",
   	"author": "Reginald Johnson",
   	"license": "MIT",
   	"private": false,
   	"main": "node_modules/expo/AppEntry.js",
   	"dependencies": {
+  		"expo": "^25.0.0",
   		"prop-types": "^15.6.0",
   		"react": "16.2.0",
   		"react-dom": "^16.2.0",
+  		"react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
   		"render-if": "^0.1.1",
-  		"util": "^0.10.3",
-  		"expo": "^25.0.0",
-  		"react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz"
+  		"util": "^0.10.3"
   	},
   	"devDependencies": {
   		"babel-jest": "^21.2.0",
@@ -55,8 +55,9 @@ npm manifest:
   		"gulp-run": "^1.7.1",
   		"gulp-run-command": "^0.0.9",
   		"gulp-sequence": "^1.0.0",
-  		"html-webpack-inline-source-plugin": "^0.0.9",
-  		"html-webpack-plugin": "^2.30.1",
+  		"gulp-util": "^3.0.8",
+  		"html-webpack-inline-source-plugin": "^0.0.10",
+  		"html-webpack-plugin": "^3.2.0",
   		"jest": "^21.2.1",
   		"jest-glamor-react": "^3.1.2",
   		"prop-types": "^15.6.0",
@@ -64,7 +65,6 @@ npm manifest:
   		"react-test-renderer": "16",
   		"style-loader": "^0.19.0",
   		"uglifyjs-webpack-plugin": "^1.2.4",
-  		"webpack": "^3.6.0",
   		"webpack-stream": "^4.0.1"
   	},
   	"repository": {
@@ -3216,6 +3216,16 @@ Lockfile:
       accepts "~1.3.0"
       escape-html "~1.0.3"
   
+  es-abstract@^1.5.1:
+    version "1.11.0"
+    resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.11.0.tgz#cce87d518f0496893b1a30cd8461835535480681"
+    dependencies:
+      es-to-primitive "^1.1.1"
+      function-bind "^1.1.1"
+      has "^1.0.1"
+      is-callable "^1.1.3"
+      is-regex "^1.0.4"
+  
   es-abstract@^1.6.1:
     version "1.10.0"
     resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.10.0.tgz#1ecb36c197842a00d8ee4c2dfd8646bb97d60864"
@@ -4349,7 +4359,7 @@ Lockfile:
     dependencies:
       thunks "^4.9.0"
   
-  gulp-util@^3.0.0, gulp-util@^3.0.4, gulp-util@~3.0.0, gulp-util@~3.0.4, gulp-util@~3.0.6:
+  gulp-util@^3.0.0, gulp-util@^3.0.4, gulp-util@^3.0.8, gulp-util@~3.0.0, gulp-util@~3.0.4, gulp-util@~3.0.6:
     version "3.0.8"
     resolved "https://registry.yarnpkg.com/gulp-util/-/gulp-util-3.0.8.tgz#0054e1e744502e27c04c187c3ecc505dd54bbb4f"
     dependencies:
@@ -4596,24 +4606,25 @@ Lockfile:
       relateurl "0.2.x"
       uglify-js "3.3.x"
   
-  html-webpack-inline-source-plugin@^0.0.9:
-    version "0.0.9"
-    resolved "https://registry.yarnpkg.com/html-webpack-inline-source-plugin/-/html-webpack-inline-source-plugin-0.0.9.tgz#e52dd3cf1164ac76ceaf39ba206f92e3597d054d"
+  html-webpack-inline-source-plugin@^0.0.10:
+    version "0.0.10"
+    resolved "https://registry.yarnpkg.com/html-webpack-inline-source-plugin/-/html-webpack-inline-source-plugin-0.0.10.tgz#89bd5f761e4f16902aa76a44476eb52831c9f7f0"
     dependencies:
       escape-string-regexp "^1.0.5"
       slash "^1.0.0"
       source-map-url "^0.4.0"
   
-  html-webpack-plugin@^2.30.1:
-    version "2.30.1"
-    resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-2.30.1.tgz#7f9c421b7ea91ec460f56527d78df484ee7537d5"
+  html-webpack-plugin@^3.2.0:
+    version "3.2.0"
+    resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-3.2.0.tgz#b01abbd723acaaa7b37b6af4492ebda03d9dd37b"
     dependencies:
-      bluebird "^3.4.7"
       html-minifier "^3.2.3"
       loader-utils "^0.2.16"
       lodash "^4.17.3"
       pretty-error "^2.0.2"
+      tapable "^1.0.0"
       toposort "^1.0.0"
+      util.promisify "1.0.0"
   
   htmlparser2@3.9.x, htmlparser2@^3.9.1:
     version "3.9.2"
@@ -6840,6 +6851,13 @@ Lockfile:
       es-abstract "^1.6.1"
       function-bind "^1.1.0"
       has "^1.0.1"
+  
+  object.getownpropertydescriptors@^2.0.3:
+    version "2.0.3"
+    resolved "https://registry.yarnpkg.com/object.getownpropertydescriptors/-/object.getownpropertydescriptors-2.0.3.tgz#8758c846f5b407adab0f236e0986f14b051caa16"
+    dependencies:
+      define-properties "^1.1.2"
+      es-abstract "^1.5.1"
   
   object.map@^1.0.0:
     version "1.0.1"
@@ -9163,6 +9181,10 @@ Lockfile:
     version "0.2.8"
     resolved "https://registry.yarnpkg.com/tapable/-/tapable-0.2.8.tgz#99372a5c999bf2df160afc0d74bed4f47948cd22"
   
+  tapable@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/tapable/-/tapable-1.0.0.tgz#cbb639d9002eed9c6b5975eb20598d7936f1f9f2"
+  
   tar-pack@^3.4.0:
     version "3.4.1"
     resolved "https://registry.yarnpkg.com/tar-pack/-/tar-pack-3.4.1.tgz#e1dbc03a9b9d3ba07e896ad027317eb679a10a1f"
@@ -9657,6 +9679,13 @@ Lockfile:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   
+  util.promisify@1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/util.promisify/-/util.promisify-1.0.0.tgz#440f7165a459c9a16dc145eb8e72f35687097030"
+    dependencies:
+      define-properties "^1.1.2"
+      object.getownpropertydescriptors "^2.0.3"
+  
   util@0.10.3, util@^0.10.3:
     version "0.10.3"
     resolved "https://registry.yarnpkg.com/util/-/util-0.10.3.tgz#7afb1afe50805246489e3db7fe0ed379336ac0f9"
@@ -9875,7 +9904,7 @@ Lockfile:
       vinyl "^2.1.0"
       webpack "^3.4.1"
   
-  webpack@^3.4.1, webpack@^3.6.0:
+  webpack@^3.4.1:
     version "3.11.0"
     resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.11.0.tgz#77da451b1d7b4b117adaf41a1a93b5742f24d894"
     dependencies:
@@ -10246,5 +10275,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/yesno/-/yesno-0.0.1.tgz#ffbc04ff3d6f99dad24f7463134e9b92ae41bef6"
 
 Trace: 
-  Error: https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz: invalid literal/length code
-      at Gunzip.zlibOnError (zlib.js:153:15)
+  Error: This module isn't specified in a manifest.
+      at new MessageError (C:\Users\regin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:186:110)
+      at Object.<anonymous> (C:\Users\regin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:60445:15)
+      at Generator.next (<anonymous>)
+      at step (C:\Users\regin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:98:30)
+      at C:\Users\regin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:109:13
+      at <anonymous>
