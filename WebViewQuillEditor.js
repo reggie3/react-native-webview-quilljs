@@ -28,12 +28,13 @@ export default class WebViewQuillEditor extends React.Component {
 
 	handleMessage = (event) => {
 		let msgData;
+		debugger;
 		try {
 			msgData = JSON.parse(event.nativeEvent.data);
 			if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
-				// console.log(`WebViewQuillEditor: received message ${msgData.type}`);
+				console.log(`WebViewQuillEditor: received message ${msgData.type}`);
 				this.sendMessage('MESSAGE_ACKNOWLEDGED');
-				// console.log(`WebViewQuillEditor: sent MESSAGE_ACKNOWLEDGED`);
+				console.log(`WebViewQuillEditor: sent MESSAGE_ACKNOWLEDGED`);
 
 				switch (msgData.type) {
 					case 'EDITOR_LOADED':
@@ -61,18 +62,16 @@ export default class WebViewQuillEditor extends React.Component {
 	onWebViewLoaded = () => {
 		console.log('Webview loaded');
 		this.setState({ webViewNotLoaded: false });
-		this.sendMessage('LOAD_EDITOR', {
-			theme: this.props.theme
-		});
+		this.sendMessage('LOAD_EDITOR');
 		if (this.props.hasOwnProperty('backgroundColor')) {
 			this.sendMessage('SET_BACKGROUND_COLOR', {
 				backgroundColor: this.props.backgroundColor
 			});
 		}
-		if(this.props.hasOwnProperty('onLoad')){
+		if (this.props.hasOwnProperty('onLoad')) {
 			this.props.onLoad();
 		}
-		if(this.props.hasOwnProperty('getEditorCallback')){
+		if (this.props.hasOwnProperty('getEditorCallback')) {
 			this.sendMessage('SEND_EDITOR');
 		}
 	};
@@ -95,7 +94,7 @@ export default class WebViewQuillEditor extends React.Component {
 	sendMessage = (type, payload) => {
 		// only send message when webview is loaded
 		if (this.webview) {
-			// console.log(`WebViewQuillEditor: sending message ${type}`);
+			console.log(`WebViewQuillEditor: sending message ${type}`);
 			this.webview.postMessage(
 				JSON.stringify({
 					prefix: MESSAGE_PREFIX,
@@ -124,11 +123,11 @@ export default class WebViewQuillEditor extends React.Component {
 	};
 
 	onError = (error) => {
-		Alert.alert('WebView onError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
+		Alert.alert('WebView onError', error, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
 	};
 
 	renderError = (error) => {
-		Alert.alert('WebView renderError', error, [ { text: 'OK', onPress: () => console.log('OK Pressed') } ]);
+		Alert.alert('WebView renderError', error, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
 	};
 
 	render = () => {
@@ -138,20 +137,20 @@ export default class WebViewQuillEditor extends React.Component {
 					flex: 1
 				}}
 			>
-					<WebView
+				<WebView
 					style={{ ...StyleSheet.absoluteFillObject }}
-						ref={this.createWebViewRef}
-						source={INDEX_FILE}
-						onLoadEnd={this.onWebViewLoaded}
-						onMessage={this.handleMessage}
-						startInLoadingState={true}
-						renderLoading={this.showLoadingIndicator}
-						renderError={this.renderError}
-						javaScriptEnabled={true}
-						onError={this.onError}
-						scalesPageToFit={false}
-						mixedContentMode={'always'}
-					/>
+					ref={this.createWebViewRef}
+					source={INDEX_FILE}
+					onLoadEnd={this.onWebViewLoaded}
+					onMessage={this.handleMessage}
+					startInLoadingState={true}
+					renderLoading={this.showLoadingIndicator}
+					renderError={this.renderError}
+					javaScriptEnabled={true}
+					onError={this.onError}
+					scalesPageToFit={false}
+					mixedContentMode={'always'}
+				/>
 			</View>
 		);
 	};

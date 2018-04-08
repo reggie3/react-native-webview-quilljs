@@ -33714,8 +33714,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var util = __webpack_require__(/*! util */ "./node_modules/util/util.js");
 var updateCounter = 0;
 var MESSAGE_PREFIX = 'react-native-webview-quilljs';
+
+var BROWSER_TESTING_ENABLED = false; // flag to enable testing directly in browser
 var SHOW_DEBUG_INFORMATION = true;
-var messageQueue = [];
+
 var messageCounter = 0;
 
 var ReactQuillEditor = function (_React$Component) {
@@ -33727,7 +33729,7 @@ var ReactQuillEditor = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (ReactQuillEditor.__proto__ || Object.getPrototypeOf(ReactQuillEditor)).call(this, props));
 
 		_this.printElement = function (data) {
-			if (_this.state.SHOW_DEBUG_INFORMATION) {
+			if (SHOW_DEBUG_INFORMATION) {
 				var message = '';
 				if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
 					message = util.inspect(data, { showHidden: false, depth: null });
@@ -33755,10 +33757,10 @@ var ReactQuillEditor = function (_React$Component) {
 
 		_this.loadEditor = function (theme) {
 			var that = _this;
-			_this.printElement('loading editor, theme = ' + theme);
+			_this.printElement('loading editor');
 			_this.setState({
 				editor: new _quill2.default('#editor', {
-					theme: theme,
+					theme: theme ? theme : 'snow',
 					bounds: '#Quill-Editor-Container'
 				})
 			}, function () {
@@ -33772,13 +33774,14 @@ var ReactQuillEditor = function (_React$Component) {
 		};
 
 		_this.addMessageToQueue = function (type, payload) {
-			messageQueue.push(JSON.stringify({
+			_this.messageQueue.push(JSON.stringify({
 				messageID: messageCounter++,
 				prefix: MESSAGE_PREFIX,
 				type: type,
 				payload: payload
 			}));
-			_this.printElement('adding message ' + messageCounter + ' to queue');
+			_this.printElement('adding message ' + messageCounter + ' to queue: ' + type);
+			_this.printElement('queue length: ' + _this.messageQueue.length);
 			if (_this.state.readyToSendNextMessage) {
 				_this.printElement('sending message');
 				_this.sendNextMessage();
@@ -33786,15 +33789,15 @@ var ReactQuillEditor = function (_React$Component) {
 		};
 
 		_this.sendNextMessage = function () {
-			if (messageQueue.length > 0) {
-				var nextMessage = messageQueue.shift();
+			if (_this.messageQueue.length > 0) {
+				var nextMessage = _this.messageQueue.shift();
 				_this.printElement('sending message ' + nextMessage);
-				if (document) {
+				if (document.hasOwnProperty('postMessage')) {
 					document.postMessage(nextMessage, '*');
-				} else if (window) {
+				} else if (window.hasOwnProperty('postMessage')) {
 					window.postMessage(nextMessage, '*');
 				} else {
-					console.log('unable to add event listener');
+					_this.printElement('ERROR: unable to find postMessage');
 				}
 				_this.setState({ readyToSendNextMessage: false });
 			}
@@ -33814,7 +33817,7 @@ var ReactQuillEditor = function (_React$Component) {
 					// this.printElement(msgData);
 					switch (msgData.type) {
 						case 'LOAD_EDITOR':
-							_this.loadEditor(msgData.payload.theme);
+							_this.loadEditor();
 							break;
 						case 'SEND_EDITOR':
 							_this.addMessageToQueue('EDITOR_SENT', { editor: _this.state.editor });
@@ -33839,8 +33842,9 @@ var ReactQuillEditor = function (_React$Component) {
 							break;
 						case 'MESSAGE_ACKNOWLEDGED':
 							_this.printElement('received MESSAGE_ACKNOWLEDGED');
-							_this.setState({ readyToSendNextMessage: true });
-							_this.sendNextMessage();
+							_this.setState({ readyToSendNextMessage: true }, function () {
+								_this.sendNextMessage();
+							});
 							break;
 						default:
 							printElement('reactQuillEditor Error: Unhandled message type received "' + msgData.type + '"');
@@ -33852,6 +33856,7 @@ var ReactQuillEditor = function (_React$Component) {
 			}
 		};
 
+		_this.messageQueue = [];
 		_this.state = {
 			editor: null,
 			debugMessages: [],
@@ -33874,7 +33879,10 @@ var ReactQuillEditor = function (_React$Component) {
 				console.log('unable to add event listener');
 			}
 			this.printElement('component mounted');
-			// this.loadEditor();
+			console.log('mounted');
+			if (BROWSER_TESTING_ENABLED) {
+				this.loadEditor();
+			}
 		}
 	}, {
 		key: 'componentWillUnmount',
@@ -33916,7 +33924,7 @@ var ReactQuillEditor = function (_React$Component) {
 						}
 					})
 				),
-				(0, _renderIf2.default)(this.state.SHOW_DEBUG_INFORMATION)(_react2.default.createElement(
+				(0, _renderIf2.default)(SHOW_DEBUG_INFORMATION)(_react2.default.createElement(
 					'div',
 					{
 						style: {

@@ -57,9 +57,7 @@ export default class WebViewQuillViewer extends React.Component {
 	onWebViewLoaded = () => {
 		console.log('Webview loaded');
 		this.setState({ webViewNotLoaded: false });
-		this.sendMessage('LOAD_VIEWER', {
-			theme: this.props.theme
-		});
+		this.sendMessage('LOAD_VIEWER');
 		if (this.props.hasOwnProperty('backgroundColor')) {
 			this.sendMessage('SET_BACKGROUND_COLOR', {
 				backgroundColor: this.props.backgroundColor

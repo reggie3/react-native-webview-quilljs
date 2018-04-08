@@ -33687,8 +33687,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var util = __webpack_require__(/*! util */ "./node_modules/util/util.js");
 var MESSAGE_PREFIX = 'react-native-webview-quilljs';
+
+var BROWSER_TESTING_ENABLED = false; // flag to enable testing directly in browser
 var SHOW_DEBUG_INFORMATION = true;
-var messageQueue = [];
+
 var messageCounter = 0;
 
 var ReactQuillViewer = function (_React$Component) {
@@ -33700,7 +33702,7 @@ var ReactQuillViewer = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (ReactQuillViewer.__proto__ || Object.getPrototypeOf(ReactQuillViewer)).call(this, props));
 
 		_this.printElement = function (data) {
-			if (_this.state.SHOW_DEBUG_INFORMATION) {
+			if (SHOW_DEBUG_INFORMATION) {
 				var message = '';
 				if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
 					message = util.inspect(data, { showHidden: false, depth: null });
@@ -33710,6 +33712,7 @@ var ReactQuillViewer = function (_React$Component) {
 				_this.setState({
 					debugMessages: _this.state.debugMessages.concat([message])
 				});
+
 				console.log(message);
 			}
 		};
@@ -33720,7 +33723,7 @@ var ReactQuillViewer = function (_React$Component) {
 			_this.setState({
 				viewer: new _quill2.default('#viewer', {
 					readOnly: true,
-					theme: theme,
+					theme: theme ? theme : 'bubble',
 					bounds: '#Quill-Viewer-Container'
 				})
 			}, function () {
@@ -33732,13 +33735,14 @@ var ReactQuillViewer = function (_React$Component) {
 		};
 
 		_this.addMessageToQueue = function (type, payload) {
-			messageQueue.push(JSON.stringify({
+			_this.messageQueue.push(JSON.stringify({
 				messageID: messageCounter++,
 				prefix: MESSAGE_PREFIX,
 				type: type,
 				payload: payload
 			}));
-			_this.printElement('adding message ' + messageCounter + ' to queue');
+			_this.printElement('adding message ' + messageCounter + ' to queue: ' + type);
+			_this.printElement('queue length: ' + _this.messageQueue.length);
 			if (_this.state.readyToSendNextMessage) {
 				_this.printElement('sending message');
 				_this.sendNextMessage();
@@ -33754,7 +33758,7 @@ var ReactQuillViewer = function (_React$Component) {
 				} else if (window.hasOwnProperty('postMessage')) {
 					window.postMessage(nextMessage, '*');
 				} else {
-					console.log('unable to find postMessage');
+					_this.printElement('ERROR: unable to find postMessage');
 				}
 				_this.setState({ readyToSendNextMessage: false });
 			}
@@ -33774,7 +33778,7 @@ var ReactQuillViewer = function (_React$Component) {
 					// this.printElement(msgData);
 					switch (msgData.type) {
 						case 'LOAD_VIEWER':
-							_this.loadViewer(msgData.payload.theme);
+							_this.loadViewer();
 							break;
 						case 'SEND_VIEWER':
 							_this.addMessageToQueue('VIEWER_SENT', { viewer: _this.state.viewer });
@@ -33794,7 +33798,9 @@ var ReactQuillViewer = function (_React$Component) {
 						case 'MESSAGE_ACKNOWLEDGED':
 							_this.printElement('received MESSAGE_ACKNOWLEDGED');
 							_this.setState({ readyToSendNextMessage: true });
-							_this.sendNextMessage();
+							_this.setState({ readyToSendNextMessage: true }, function () {
+								_this.sendNextMessage();
+							});
 							break;
 						default:
 							printElement('reactQuillViewer Error: Unhandled message type received "' + msgData.type + '"');
@@ -33806,6 +33812,7 @@ var ReactQuillViewer = function (_React$Component) {
 			}
 		};
 
+		_this.messageQueue = [];
 		_this.state = {
 			viewer: null,
 			debugMessages: [],
@@ -33829,6 +33836,10 @@ var ReactQuillViewer = function (_React$Component) {
 				console.log('unable to add event listener');
 			}
 			this.printElement('component mounted');
+			console.log('mounted');
+			if (BROWSER_TESTING_ENABLED) {
+				this.loadViewer();
+			}
 		}
 
 		// load the viewer.  Don't do it in componentMount so that we can pass a theme
@@ -33874,7 +33885,7 @@ var ReactQuillViewer = function (_React$Component) {
 						}
 					})
 				),
-				(0, _renderIf2.default)(this.state.SHOW_DEBUG_INFORMATION)(_react2.default.createElement(
+				(0, _renderIf2.default)(SHOW_DEBUG_INFORMATION)(_react2.default.createElement(
 					'div',
 					{
 						style: {
