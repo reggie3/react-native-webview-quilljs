@@ -9,21 +9,18 @@ const gutil = require('gulp-util');
 
 // dependencies for npm publishing
 const npmDeps = {
-	'prop-types': '^15.6.0',
-	react: '16.2.0',
-	'react-dom': '^16.2.0',
-	'render-if': '^0.1.1',
-	util: '^0.10.3'
+	"prop-types": '^15.6.0',
+	"render-if": "^0.1.1",
+	"util": '^0.10.3',
+	"quilljs": "^0.18.1",
+
 };
 // additional dependencies for expo app
 const expoDeps = {
-	expo: '^25.0.0',
-	'prop-types': '^15.6.0',
-	react: '16.2.0',
-	'react-dom': '^16.2.0',
-	'react-native': 'https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz',
-	'render-if': '^0.1.1',
-	util: '^0.10.3'
+	"expo": "^26.0.0",
+	"react": "16.3.0-alpha.1",
+    "react-dom": "^16.3.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
 };
 
 

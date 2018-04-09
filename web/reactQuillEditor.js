@@ -1,5 +1,6 @@
-import Quill from './quill.js';
-import './quill.snow.css';
+import Quill from 'quill';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
@@ -9,7 +10,7 @@ let updateCounter = 0;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
 const BROWSER_TESTING_ENABLED = false; // flag to enable testing directly in browser
-const SHOW_DEBUG_INFORMATION = true;
+const SHOW_DEBUG_INFORMATION = false;
 
 let messageCounter = 0;
 

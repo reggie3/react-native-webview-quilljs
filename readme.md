@@ -79,6 +79,8 @@ This component accepts the following props:
 |getViewerCallback| no | A function that will receive the Quill.js viewer as an arguement |
 
 ## Changelog
+### 0.6.5
+* Added initial testing framework
 ### 0.6.0
 * Removed requirement to download JavaScript files from GitHub in order for the package to work.  JavaScript files are now inline with the HTML which enables the package to work without an Internet connection.
 * Added getViewerCallback and getEditorCallback

@@ -1,5 +1,6 @@
-import Quill from './quill.js';
-import './quill.bubble.css';
+import Quill from 'quill';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.bubble.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
@@ -8,7 +9,7 @@ const util = require('util');
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
 const BROWSER_TESTING_ENABLED = false; // flag to enable testing directly in browser
-const SHOW_DEBUG_INFORMATION = true;
+const SHOW_DEBUG_INFORMATION = false;
 
 let messageCounter = 0;
 
