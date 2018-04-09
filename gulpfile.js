@@ -150,7 +150,7 @@ gulp.task(
 	'prod',
 	gulp.series(
 		'forNPM',
-		'webpack',
+		'build',
 		gulp.parallel(gulp.series('git-add', 'git-commit', 'git-push'), 'npm-publish'),
 		'forExpo'
 	)
