@@ -135,8 +135,6 @@ gulp.task(
 		gulp.src('./build/reactQuillViewer-index.html').pipe(gulp.dest('./assets/dist/'));
 		gulp.src('./build/editor.bundle.js.map').pipe(gulp.dest('./assets/dist/'));
 		gulp.src('./build/viewer.bundle.js.map').pipe(gulp.dest('./assets/dist/'));
-		/* gulp.src('./build/editor.bundle.js').pipe(gulp.dest('./assets/dist/'));
-		gulp.src('./build/viewer.bundle.js').pipe(gulp.dest('./assets/dist/')); */
 		done();
 	}
 )
