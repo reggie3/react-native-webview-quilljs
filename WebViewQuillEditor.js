@@ -8,86 +8,40 @@ import React from 'react';
 import { View, ActivityIndicator, StyleSheet, WebView, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
-import versionedFileDownloader from 'versioned-file-downloader';
-import { FileSystem } from 'expo';
-import config from './config';
 
 // path to the file that the webview will load
-const INDEX_FILE_PATH = `${FileSystem.documentDirectory}${config.PACKAGE_NAME}/${config.PACKAGE_VERSION}/reactQuillEditor-index.html`;
-
-// the files that will be downloaded
-const FILES_TO_DOWNLOAD = [
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/reactQuillViewer-index.html',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/viewer.bundle.js',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/reactQuillEditor-index.html',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/editor.bundle.js',
-	'https://raw.githubusercontent.com/reggie3/react-native-webview-quilljs/master/assets/dist/common.js'
-];
-
+const INDEX_FILE = require(`./assets/dist/reactQuillEditor-index.html`);
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
 export default class WebViewQuillEditor extends React.Component {
 	constructor() {
 		super();
+		this.webview = null;
 		this.state = {
 			webViewNotLoaded: true, // flag to show activity indicator
-			webViewFilesNotAvailable: true
 		};
 	}
 
-	componentDidMount() {
-		this.downloadWebViewFiles(FILES_TO_DOWNLOAD);
-	}
-
-	downloadWebViewFiles = async (filesToDownload) => {
-		if (!config.USE_LOCAL_FILES) {
-			let downloadStatus = await versionedFileDownloader(
-				this.webViewDownloadStatusCallBack,
-				{
-				  name: config.PACKAGE_NAME,
-				  version: config.PACKAGE_VERSION,
-				  files: FILES_TO_DOWNLOAD
-				}
-			  );
-			if (downloadStatus.success) {
-				this.setState({ webViewFilesNotAvailable: false });
-			} else if (!downloadStatus.success) {
-				console.log(`unable to download html files: ${JSON.stringify(downloadStatus)}`);
-				Alert.alert(
-					'Error',
-					`unable to download html files: ${JSON.stringify(downloadStatus)}`,
-					[ { text: 'OK', onPress: () => console.log('OK Pressed') } ],
-					{ cancelable: false }
-				);
-			} else {
-				this.setState({ webViewFilesNotAvailable: false });
-			}
-		} else {
-			this.setState({ webViewFilesNotAvailable: false });
-		}
-	};
-
-	webViewDownloadStatusCallBack = message => {
-		console.log(message);
-	  };
-	  
 	createWebViewRef = (webview) => {
 		this.webview = webview;
 	};
 
 	handleMessage = (event) => {
 		let msgData;
+		debugger;
 		try {
 			msgData = JSON.parse(event.nativeEvent.data);
 			if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
-				// console.log(`WebViewQuillEditor: received message ${msgData.type}`);
+				console.log(`WebViewQuillEditor: received message ${msgData.type}`);
 				this.sendMessage('MESSAGE_ACKNOWLEDGED');
-				// console.log(`WebViewQuillEditor: sent MESSAGE_ACKNOWLEDGED`);
+				console.log(`WebViewQuillEditor: sent MESSAGE_ACKNOWLEDGED`);
 
 				switch (msgData.type) {
 					case 'EDITOR_LOADED':
-						this.setState({ webViewNotLoaded: false });
 						this.editorLoaded();
+						break;
+					case 'EDITOR_SENT':
+						this.props.getEditorCallback(msgData.payload.editor);
 						break;
 					case 'TEXT_CHANGED':
 						if (this.props.onDeltaChangeCallback) this.props.onDeltaChangeCallback(msgData.payload.delta);
@@ -105,18 +59,21 @@ export default class WebViewQuillEditor extends React.Component {
 		}
 	};
 
-	webViewLoaded = () => {
+	onWebViewLoaded = () => {
 		console.log('Webview loaded');
 		this.setState({ webViewNotLoaded: false });
-		this.sendMessage('LOAD_EDITOR', {
-			theme: this.props.theme
-		});
+		this.sendMessage('LOAD_EDITOR');
 		if (this.props.hasOwnProperty('backgroundColor')) {
 			this.sendMessage('SET_BACKGROUND_COLOR', {
-			  backgroundColor: this.props.backgroundColor
+				backgroundColor: this.props.backgroundColor
 			});
-		  }
-	  
+		}
+		if (this.props.hasOwnProperty('onLoad')) {
+			this.props.onLoad();
+		}
+		if (this.props.hasOwnProperty('getEditorCallback')) {
+			this.sendMessage('SEND_EDITOR');
+		}
 	};
 
 	editorLoaded = () => {
@@ -137,7 +94,7 @@ export default class WebViewQuillEditor extends React.Component {
 	sendMessage = (type, payload) => {
 		// only send message when webview is loaded
 		if (this.webview) {
-			// console.log(`WebViewQuillEditor: sending message ${type}`);
+			console.log(`WebViewQuillEditor: sending message ${type}`);
 			this.webview.postMessage(
 				JSON.stringify({
 					prefix: MESSAGE_PREFIX,
@@ -155,6 +112,24 @@ export default class WebViewQuillEditor extends React.Component {
 		this.sendMessage('GET_DELTA');
 	};
 
+	showLoadingIndicator = () => {
+		return (
+			<View style={styles.activityOverlayStyle}>
+				<View style={styles.activityIndicatorContainer}>
+					<ActivityIndicator size="large" animating={this.state.webViewNotLoaded} color="green" />
+				</View>
+			</View>
+		);
+	};
+
+	onError = (error) => {
+		Alert.alert('WebView onError', error, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
+	};
+
+	renderError = (error) => {
+		Alert.alert('WebView renderError', error, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
+	};
+
 	render = () => {
 		return (
 			<View
@@ -162,48 +137,20 @@ export default class WebViewQuillEditor extends React.Component {
 					flex: 1
 				}}
 			>
-				{renderIf(this.state.webViewFilesNotAvailable)(
-					<View style={styles.activityOverlayStyle}>
-						<View style={styles.activityIndicatorContainer}>
-							<ActivityIndicator
-								size="large"
-								animating={this.state.webViewFilesNotAvailable}
-								color="blue"
-							/>
-						</View>
-					</View>
-				)}
-				{/* renderIf(!this.state.webViewFilesNotAvailable && config.USE_LOCAL_FILES)(
-					<WebView
-						style={{
-							...StyleSheet.absoluteFillObject,
-							padding: 10
-						}}
-						ref={this.createWebViewRef}
-						source={require('./assets/dist/reactQuillEditor-index.html')}
-						onLoadEnd={this.webViewLoaded}
-						onMessage={this.handleMessage}
-					/>
-				) */}
-				{renderIf(!this.state.webViewFilesNotAvailable && !config.USE_LOCAL_FILES)(
-					<WebView
-						style={{
-							...StyleSheet.absoluteFillObject,
-							padding: 10
-						}}
-						ref={this.createWebViewRef}
-						source={{ uri: INDEX_FILE_PATH }}
-						onLoadEnd={this.webViewLoaded}
-						onMessage={this.handleMessage}
-					/>
-				)}
-				{renderIf(this.state.webViewNotLoaded && !this.state.webViewFilesNotAvailable)(
-					<View style={styles.activityOverlayStyle}>
-						<View style={styles.activityIndicatorContainer}>
-							<ActivityIndicator size="large" animating={this.state.webViewNotLoaded} color="orange" />
-						</View>
-					</View>
-				)}
+				<WebView
+					style={{ ...StyleSheet.absoluteFillObject }}
+					ref={this.createWebViewRef}
+					source={INDEX_FILE}
+					onLoadEnd={this.onWebViewLoaded}
+					onMessage={this.handleMessage}
+					startInLoadingState={true}
+					renderLoading={this.showLoadingIndicator}
+					renderError={this.renderError}
+					javaScriptEnabled={true}
+					onError={this.onError}
+					scalesPageToFit={false}
+					mixedContentMode={'always'}
+				/>
 			</View>
 		);
 	};
@@ -213,7 +160,8 @@ WebViewQuillEditor.propTypes = {
 	getDeltaCallback: PropTypes.func,
 	contentToDisplay: PropTypes.object,
 	onDeltaChangeCallback: PropTypes.func,
-	backgroundColor: PropTypes.string
+	backgroundColor: PropTypes.string,
+	onLoad: PropTypes.func
 };
 
 // Specifies the default values for props:

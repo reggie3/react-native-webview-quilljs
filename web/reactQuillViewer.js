@@ -1,32 +1,25 @@
-import Quill from './quill.js';
-import './quill.bubble.css';
+import Quill from 'quill';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.bubble.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
 import renderIf from 'render-if';
 
 const util = require('util');
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
-const SHOW_DEBUG_INFORMATION = false;
-let messageQueue = [];
-let messageCounter = 0;
 
-const MessagesDiv = glamorous.div({
-	backgroundColor: 'orange',
-	maxHeight: 200,
-	overflow: 'auto',
-	position: 'absolute',
-	bottom: 0,
-	left: 0,
-	right: 0,
-	fontSize: 10
-});
+const BROWSER_TESTING_ENABLED = false; // flag to enable testing directly in browser
+const SHOW_DEBUG_INFORMATION = false;
+
+let messageCounter = 0;
 
 export default class ReactQuillViewer extends React.Component {
 	constructor(props) {
 		super(props);
+		this.messageQueue = [];
 		this.state = {
 			viewer: null,
+			debugMessages: [],
 			readyToSendNextMessage: true
 		};
 	}
@@ -35,17 +28,19 @@ export default class ReactQuillViewer extends React.Component {
 	// since console.log and debug statements won't work in a conventional way
 	printElement = (data) => {
 		if (SHOW_DEBUG_INFORMATION) {
+			let message = '';
 			if (typeof data === 'object') {
-				let el = document.createElement('pre');
-				el.innerHTML = util.inspect(data, { showHidden: false, depth: null });
-				document.getElementById('messages').appendChild(el);
-				console.log(JSON.stringify(data));
+				message = util.inspect(data, { showHidden: false, depth: null })
 			} else if (typeof data === 'string') {
-				let el = document.createElement('pre');
-				el.innerHTML = data;
-				document.getElementById('messages').appendChild(el);
-				console.log(data);
+				message = data;
 			}
+			this.setState({
+				debugMessages:
+					this.state.debugMessages.concat([message])
+			});
+
+			console.log(message)
+
 		}
 	};
 
@@ -58,6 +53,10 @@ export default class ReactQuillViewer extends React.Component {
 			console.log('unable to add event listener');
 		}
 		this.printElement(`component mounted`);
+		console.log('mounted');
+		if (BROWSER_TESTING_ENABLED) {
+			this.loadViewer();
+		}
 	}
 
 	// load the viewer.  Don't do it in componentMount so that we can pass a theme
@@ -69,7 +68,7 @@ export default class ReactQuillViewer extends React.Component {
 			{
 				viewer: new Quill('#viewer', {
 					readOnly: true,
-					theme,
+					theme: theme ? theme : 'bubble',
 					bounds: '#Quill-Viewer-Container'
 				})
 			},
@@ -91,7 +90,7 @@ export default class ReactQuillViewer extends React.Component {
 	}
 
 	addMessageToQueue = (type, payload) => {
-		messageQueue.push(
+		this.messageQueue.push(
 			JSON.stringify({
 				messageID: messageCounter++,
 				prefix: MESSAGE_PREFIX,
@@ -99,7 +98,8 @@ export default class ReactQuillViewer extends React.Component {
 				payload
 			})
 		);
-		this.printElement(`adding message ${messageCounter} to queue`);
+		this.printElement(`adding message ${messageCounter} to queue: ${type}`);
+		this.printElement(`queue length: ${this.messageQueue.length}`);
 		if (this.state.readyToSendNextMessage) {
 			this.printElement(`sending message`);
 			this.sendNextMessage();
@@ -107,10 +107,16 @@ export default class ReactQuillViewer extends React.Component {
 	};
 
 	sendNextMessage = () => {
-		if (messageQueue.length > 0) {
-			const nextMessage = messageQueue.shift();
+		if (this.messageQueue.length > 0) {
+			const nextMessage = this.messageQueue.shift();
 			this.printElement(`sending message ${nextMessage}`);
-			window.postMessage(nextMessage, '*');
+			if (document.hasOwnProperty('postMessage')) {
+				document.postMessage(nextMessage, '*');
+			} else if (window.hasOwnProperty('postMessage')) {
+				window.postMessage(nextMessage, '*');
+			} else {
+				this.printElement(`ERROR: unable to find postMessage`);
+			}
 			this.setState({ readyToSendNextMessage: false });
 		}
 	};
@@ -131,7 +137,10 @@ export default class ReactQuillViewer extends React.Component {
 				// this.printElement(msgData);
 				switch (msgData.type) {
 					case 'LOAD_VIEWER':
-						this.loadViewer(msgData.payload.theme);
+						this.loadViewer();
+						break;
+					case 'SEND_VIEWER':
+						this.addMessageToQueue('VIEWER_SENT', { viewer: this.state.viewer });
 						break;
 					case 'SEND_VIEWER':
 						this.addMessageToQueue('VIEWER_SENT', {viewer: this.state.viewer});
@@ -152,7 +161,9 @@ export default class ReactQuillViewer extends React.Component {
 					case 'MESSAGE_ACKNOWLEDGED':
 						this.printElement(`received MESSAGE_ACKNOWLEDGED`);
 						this.setState({ readyToSendNextMessage: true });
-						this.sendNextMessage();
+						this.setState({ readyToSendNextMessage: true }, () => {
+							this.sendNextMessage();
+						});
 						break;
 					default:
 						printElement(`reactQuillViewer Error: Unhandled message type received "${msgData.type}"`);
@@ -171,7 +182,7 @@ export default class ReactQuillViewer extends React.Component {
 				style={{
 					height: '100%',
 					display: 'flex',
-					flexDirection: 'column',
+					flexDirection: 'column'
 				}}
 			>
 				<div
@@ -190,7 +201,23 @@ export default class ReactQuillViewer extends React.Component {
 						}}
 					/>
 				</div>
-				{renderIf(SHOW_DEBUG_INFORMATION)(<MessagesDiv id="messages" />)}
+				{renderIf(SHOW_DEBUG_INFORMATION)(
+					<div
+						style={{
+							backgroundColor: 'orange',
+							maxHeight: 200,
+							overflow: 'auto',
+							padding: 5
+						}}
+						id="messages"
+					>
+						<ul>
+							{this.state.debugMessages.map((message, index) => {
+								return (<li key={index}>{message}</li>)
+							})}
+						</ul>
+					</div>
+				)}
 			</div>
 		);
 	}

@@ -72,8 +72,8 @@ export default class App extends React.Component {
           <Button
             onPress={this.getEditorDelta}
             title="Get Text"
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
+            color="#4286f4"
+            accessibilityLabel="Click this button to copy text from the editor to the viewer"
           />
         </View>
         <View

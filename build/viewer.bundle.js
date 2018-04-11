@@ -1,30 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-</head>
-
-<body style="
-margin: 0 !important;
-padding: 0 !important;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-">
-    <div style="
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-" id="root">
-
-    </div>
-<script type="text/javascript">/******/ (function(modules) { // webpackBootstrap
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -35056,6 +35030,4 @@ exports.default = ReactQuillViewer;
 /***/ })
 
 /******/ });
-//# sourceMappingURL=viewer.bundle.js.map</script></body>
-
-</html>
+//# sourceMappingURL=viewer.bundle.js.map
