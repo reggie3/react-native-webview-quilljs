@@ -158,7 +158,6 @@ export default class WebViewQuillEditor extends React.Component {
 
 WebViewQuillEditor.propTypes = {
 	getDeltaCallback: PropTypes.func,
-	contentToDisplay: PropTypes.object,
 	onDeltaChangeCallback: PropTypes.func,
 	backgroundColor: PropTypes.string,
 	onLoad: PropTypes.func

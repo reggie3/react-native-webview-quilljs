@@ -152,7 +152,6 @@ export default class WebViewQuillViewer extends React.Component {
 }
 
 WebViewQuillViewer.propTypes = {
-	contentToDisplay: PropTypes.object,
 	backgroundColor: PropTypes.string,
 	onLoad: PropTypes.func
 };

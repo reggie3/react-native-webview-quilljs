@@ -63,7 +63,7 @@ This component accepts the following props:
 | ---------------------- | ------------- | ----------- |
 | ref            |    yes        | A reference to the editor componment to be used to retrieve its contents using     this.webViewQuillEditor.getDelta();
 | getDeltaCallback  |    no        | Function called in response to a call to this.webViewQuillEditor.getDelta().  It will receive a Delta object containing the contents of editor |
-| contentToDisplay     |    no        | A Delta object that will be displayed by the editor when it mounts|
+| contentToDisplay     |    no        | A Quill delta that will be displayed by the editor when it loads. A deltas is an array describing the content and formatting of the message.  See delta details [here](https://quilljs.com/guides/designing-the-delta-format/)|
 | onLoad | no| A function called when the Editor finishes loading |
 | onDeltaChangeCallback | no | Function called when the contents of Quill editor have changed.  The function receives a delta containing the new contents, the old contents, and source as described in the Quill.js API [documentation](https://quilljs.com/docs/api/events.html) |
 | backgroundColor| no | String that equates to a valid CSS color value that the background of the editor will be set to|
@@ -84,12 +84,14 @@ This component accepts the following props:
 | Name                   | Required      | Description |
 | ---------------------- | ------------- | ----------- |
 | ref            |    yes        | A reference to the editor componment to be used to update its contents using     this.webViewQuillViewer.sendContentToViewer(delta);
-| contentToDisplay     |    no        | A Delta object that will be displayed by the viewer when it mounts|
+| contentToDisplay     |    no        | A Quill delta that will be displayed by the viewer when it loads. A deltas is an array describing the content and formatting of the message.  See delta details [here](https://quilljs.com/guides/designing-the-delta-format/)|
 |onLoad | no| A function called when the Editor finishes loading |
 | backgroundColor| no | String that equates to a valid CSS color value that the background of the viewer will be set to|
 |getViewerCallback| no | A function that will receive the Quill.js viewer as an arguement |
 
 ## Changelog
+### 0.8.0
+* Removes the propType specification for contentToDisplay to address issue #19
 ### 0.6.5
 * Added initial testing framework
 ### 0.6.0
