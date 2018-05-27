@@ -28,7 +28,6 @@ export default class WebViewQuillEditor extends React.Component {
 
 	handleMessage = (event) => {
 		let msgData;
-		debugger;
 		try {
 			msgData = JSON.parse(event.nativeEvent.data);
 			if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
@@ -134,7 +133,8 @@ export default class WebViewQuillEditor extends React.Component {
 		return (
 			<View
 				style={{
-					flex: 1
+					flex: 1,
+					backgroundColor: 'green'
 				}}
 			>
 				<WebView

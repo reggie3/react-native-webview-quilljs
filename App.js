@@ -55,6 +55,7 @@ export default class App extends React.Component {
           style={{
             flex: 1,
             padding: 5,
+            backgroundColor: 'red'
           }}
         >
           <WebViewQuillEditor
@@ -79,7 +80,8 @@ export default class App extends React.Component {
         <View
           style={{
             flex: 1,
-            padding: 5
+            padding: 5,
+            backgroundColor: 'blue'
           }}
         >
           <WebViewQuillViewer

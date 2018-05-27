@@ -1,6 +1,6 @@
 {
 	"name": "react-native-webview-quilljs",
-	"version": "0.8.1",
+	"version": "0.8.2",
 	"scripts": {
 		"prod": "npm run clean && SET NODE_ENV=PROD && webpack",
 		"dev": "npm run clean && SET NODE_ENV=DEV && webpack -p",
@@ -70,12 +70,7 @@
 		"url": "https://github.com/reggie3/react-native-webview-quilljs/issues"
 	},
 	"homepage": "https://github.com/reggie3/react-native-webview-quilljs#readme",
-	"keywords": [
-		"react-native",
-		"quill-js",
-		"react-native-webview-quilljs",
-		"quilljs"
-	],
+	"keywords": ["react-native", "quill-js", "react-native-webview-quilljs", "quilljs"],
 	"jest": {
 		"preset": "jest-expo",
 		"setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",

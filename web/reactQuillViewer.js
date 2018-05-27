@@ -1,6 +1,6 @@
-import Quill from 'quill';
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.bubble.css';
+import Quill from './quill.js';
+import './quill.snow.css';
+import './quill.bubble.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
@@ -152,11 +152,11 @@ export default class ReactQuillViewer extends React.Component {
 						this.state.viewer.clipboard.dangerouslyPasteHTML(msgData.payload.html);
 						break;
 					case 'SET_BACKGROUND_COLOR':
-						if (document) {
+						/* if (document) {
 							this.printElement(`received SET_BACKGROUND_COLOR: ${msgData.payload.backgroundColor}`);
 							document.getElementById('Quill-Viewer-Container').style.backgroundColor =
 								msgData.payload.backgroundColor;
-						}
+						} */
 						break;
 					case 'MESSAGE_ACKNOWLEDGED':
 						this.printElement(`received MESSAGE_ACKNOWLEDGED`);
