@@ -51,6 +51,7 @@ export default class ReactQuillEditor extends React.Component {
 		}
 		this.printElement(`component mounted`);
 		console.log('mounted');
+		debugger
 		if (BROWSER_TESTING_ENABLED) {
 			this.loadEditor();
 		}
