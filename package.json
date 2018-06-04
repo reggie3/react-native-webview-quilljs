@@ -1,6 +1,6 @@
 {
 	"name": "react-native-webview-quilljs",
-	"version": "0.8.21",
+	"version": "0.8.24",
 	"scripts": {
 		"prod": "npm run clean && SET NODE_ENV=PROD && webpack",
 		"dev": "npm run clean && SET NODE_ENV=DEV && webpack -p",
@@ -11,16 +11,12 @@
 	"author": "Reginald Johnson",
 	"license": "MIT",
 	"private": false,
-	"main": "node_modules/expo/AppEntry.js",
+	"main": "index.js",
 	"dependencies": {
 		"prop-types": "^15.6.0",
 		"render-if": "^0.1.1",
 		"util": "^0.10.3",
-		"quilljs": "^0.18.1",
-		"expo": "^26.0.0",
-		"react": "16.3.0-alpha.1",
-		"react-dom": "^16.3.1",
-		"react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz"
+		"quilljs": "^0.18.1"
 	},
 	"devDependencies": {
 		"babel-jest": "^22.0.6",

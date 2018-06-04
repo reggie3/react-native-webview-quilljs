@@ -130,7 +130,6 @@ export default class WebViewQuillViewer extends React.Component {
 			<View
 				style={{
 					flex: 1,
-					backgroundColor: 'pink'
 				}}
 			>
 					<WebView

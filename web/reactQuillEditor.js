@@ -165,13 +165,6 @@ export default class ReactQuillEditor extends React.Component {
 					case 'SET_HTML_CONTENTS':
 						this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
 						break;
-					case 'SET_BACKGROUND_COLOR':
-						/* if (document) {
-							this.printElement(`received SET_BACKGROUND_COLOR: ${msgData.payload.backgroundColor}`);
-							document.getElementById('Quill-Editor-Container').style.backgroundColor =
-								msgData.payload.backgroundColor;
-						} */
-						break;
 					case 'MESSAGE_ACKNOWLEDGED':
 						this.printElement(`received MESSAGE_ACKNOWLEDGED`);
 						this.setState({ readyToSendNextMessage: true }, () => {
@@ -217,7 +210,7 @@ export default class ReactQuillEditor extends React.Component {
 				{renderIf(SHOW_DEBUG_INFORMATION)(
 					<div
 						style={{
-							backgroundColor: 'orange',
+							backgroundColor: 'rgba(50, 50, 200, 1)',
 							maxHeight: 200,
 							overflow: 'auto',
 							padding: 5

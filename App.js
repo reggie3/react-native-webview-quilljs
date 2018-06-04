@@ -13,7 +13,15 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      messageDelta: {}
+      editorMessageDelta:[
+        { insert: 'Hello World' },
+        { insert: '!', attributes: { bold: true }}
+      ],
+      viewerMessageDelta: [
+        { insert: 'Gandalf', attributes: { bold: true } },
+        { insert: ' the ' },
+        { insert: 'Grey', attributes: { color: '#ccc' } }
+      ]
     };
   }
 
@@ -55,7 +63,7 @@ export default class App extends React.Component {
           style={{
             flex: 1,
             padding: 5,
-            backgroundColor: 'red'
+            backgroundColor: 'rgba(100, 100, 255, 1)'
           }}
         >
           <WebViewQuillEditor
@@ -63,6 +71,8 @@ export default class App extends React.Component {
             getDeltaCallback={this.getDeltaCallback}
             onDeltaChangeCallback={this.onDeltaChangeCallback}
             backgroundColor={'#fffbea'}
+            contentToDisplay={this.state.editorMessageDelta}
+
           />
         </View>
         <View
@@ -81,12 +91,12 @@ export default class App extends React.Component {
           style={{
             flex: 1,
             padding: 5,
-            backgroundColor: 'blue'
+            backgroundColor: 'rgba(255, 255, 100, 1)'
           }}
         >
           <WebViewQuillViewer
             ref={component => (this.webViewQuillViewer = component)}
-            contentToDisplay={this.state.messageDelta}
+            contentToDisplay={this.state.viewerMessageDelta}
             backgroundColor={'#fffbea'}
 
           />

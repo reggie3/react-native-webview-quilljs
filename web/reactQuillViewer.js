@@ -1,5 +1,4 @@
 import Quill from './quill.js';
-import './quill.snow.css';
 import './quill.bubble.css';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -38,9 +37,7 @@ export default class ReactQuillViewer extends React.Component {
 				debugMessages:
 					this.state.debugMessages.concat([message])
 			});
-
 			console.log(message)
-
 		}
 	};
 
@@ -151,13 +148,6 @@ export default class ReactQuillViewer extends React.Component {
 					case 'SET_HTML_CONTENTS':
 						this.state.viewer.clipboard.dangerouslyPasteHTML(msgData.payload.html);
 						break;
-					case 'SET_BACKGROUND_COLOR':
-						/* if (document) {
-							this.printElement(`received SET_BACKGROUND_COLOR: ${msgData.payload.backgroundColor}`);
-							document.getElementById('Quill-Viewer-Container').style.backgroundColor =
-								msgData.payload.backgroundColor;
-						} */
-						break;
 					case 'MESSAGE_ACKNOWLEDGED':
 						this.printElement(`received MESSAGE_ACKNOWLEDGED`);
 						this.setState({ readyToSendNextMessage: true });
@@ -204,7 +194,7 @@ export default class ReactQuillViewer extends React.Component {
 				{renderIf(SHOW_DEBUG_INFORMATION)(
 					<div
 						style={{
-							backgroundColor: 'orange',
+							backgroundColor: 'rgba(50, 50, 200, 1)',
 							maxHeight: 200,
 							overflow: 'auto',
 							padding: 5

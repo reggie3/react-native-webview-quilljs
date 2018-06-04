@@ -35702,13 +35702,6 @@ var ReactQuillEditor = function (_React$Component) {
 						case 'SET_HTML_CONTENTS':
 							_this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
 							break;
-						case 'SET_BACKGROUND_COLOR':
-							/* if (document) {
-       	this.printElement(`received SET_BACKGROUND_COLOR: ${msgData.payload.backgroundColor}`);
-       	document.getElementById('Quill-Editor-Container').style.backgroundColor =
-       		msgData.payload.backgroundColor;
-       } */
-							break;
 						case 'MESSAGE_ACKNOWLEDGED':
 							_this.printElement('received MESSAGE_ACKNOWLEDGED');
 							_this.setState({ readyToSendNextMessage: true }, function () {
@@ -35798,7 +35791,7 @@ var ReactQuillEditor = function (_React$Component) {
 					'div',
 					{
 						style: {
-							backgroundColor: 'orange',
+							backgroundColor: 'rgba(50, 50, 200, 1)',
 							maxHeight: 200,
 							overflow: 'auto',
 							padding: 5
