@@ -72,7 +72,6 @@ export default class App extends React.Component {
             onDeltaChangeCallback={this.onDeltaChangeCallback}
             backgroundColor={'#fffbea'}
             contentToDisplay={this.state.editorMessageDelta}
-
           />
         </View>
         <View
