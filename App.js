@@ -35,8 +35,8 @@ export default class App extends React.Component {
     this.webViewQuillViewer.sendContentToViewer(response.delta);
   };
 
-  onDeltaChangeCallback = delta => {
-    console.log('onDeltaChangeCallback: ', delta);
+  onDeltaChangeCallback = (delta, deltaChange, deltaOld, changeSource) => {
+    console.log('onDeltaChangeCallback: ',{delta}, {deltaChange}, {deltaOld}, changeSource);
   };
 
   render() {
