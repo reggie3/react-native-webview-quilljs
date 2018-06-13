@@ -55,7 +55,6 @@ export default class WebViewQuillEditor extends React.Component {
             if (this.props.onDeltaChangeCallback) {
 			  delete msgData.payload.type;
 			  let {deltaChange, delta, deltaOld, changeSource } = msgData.payload;
-			  debugger;
               this.props.onDeltaChangeCallback(deltaChange, deltaChange, deltaOld, changeSource );
             }
             break;
