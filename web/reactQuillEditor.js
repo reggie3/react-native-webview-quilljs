@@ -62,9 +62,10 @@ export default class ReactQuillEditor extends React.Component {
 		this.state.editor.on('text-change', (delta, oldDelta, source) => {
 			that.addMessageToQueue('TEXT_CHANGED', {
 				type: 'success',
-				delta,
-				oldDelta,
-				source
+				deltaChange: delta,
+				delta: this.state.editor.getContents(),
+				deltaOld: oldDelta,
+				changeSource: source
 			});
 		});
 	};

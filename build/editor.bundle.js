@@ -35588,9 +35588,10 @@ var ReactQuillEditor = function (_React$Component) {
 			_this.state.editor.on('text-change', function (delta, oldDelta, source) {
 				that.addMessageToQueue('TEXT_CHANGED', {
 					type: 'success',
-					delta: delta,
-					oldDelta: oldDelta,
-					source: source
+					deltaChange: delta,
+					delta: _this.state.editor.getContents(),
+					deltaOld: oldDelta,
+					changeSource: source
 				});
 			});
 		};
