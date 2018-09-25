@@ -10,13 +10,16 @@ import {
   ActivityIndicator,
   StyleSheet,
   WebView,
+  Platform,
   Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
-import renderIf from 'render-if';
+import { Asset } from 'expo';
 
 // path to the file that the webview will load
-const INDEX_FILE = require(`./assets/dist/reactQuillEditor-index.html`);
+
+const INDEX_FILE_PATH = `./assets/dist/reactQuillEditor-index.html`;
+const INDEX_FILE_ASSET_URI = Asset.fromModule(require(INDEX_FILE_PATH)).uri;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
 export default class WebViewQuillEditor extends React.Component {
@@ -165,7 +168,11 @@ export default class WebViewQuillEditor extends React.Component {
         <WebView
           style={{ ...StyleSheet.absoluteFillObject }}
           ref={this.createWebViewRef}
-          source={INDEX_FILE}
+          source={
+            Platform.OS === 'ios'
+              ? require('./assets/dist/reactQuillEditor-index.html')
+              : { uri: INDEX_FILE_ASSET_URI }
+          }
           onLoadEnd={this.onWebViewLoaded}
           onMessage={this.handleMessage}
           startInLoadingState={true}
@@ -175,6 +182,7 @@ export default class WebViewQuillEditor extends React.Component {
           onError={this.onError}
           scalesPageToFit={false}
           mixedContentMode={'always'}
+          domStorageEnabled={true}
         />
       </View>
     );

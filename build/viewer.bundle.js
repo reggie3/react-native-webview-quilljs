@@ -21274,7 +21274,7 @@ if (false) {} else {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.3.0-alpha.1
+/** @license React v16.3.1
  * react.development.js
  *
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -21300,7 +21300,7 @@ var checkPropTypes = __webpack_require__(/*! prop-types/checkPropTypes */ "./nod
 
 // TODO: this is special because it gets imported during build.
 
-var ReactVersion = '16.3.0-alpha.1';
+var ReactVersion = '16.3.1';
 
 // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
@@ -21315,6 +21315,7 @@ var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol['for']('react.strict_mode') : 0x
 var REACT_PROVIDER_TYPE = hasSymbol ? Symbol['for']('react.provider') : 0xeacd;
 var REACT_CONTEXT_TYPE = hasSymbol ? Symbol['for']('react.context') : 0xeace;
 var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol['for']('react.async_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol['for']('react.forward_ref') : 0xead0;
 
 var MAYBE_ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL = '@@iterator';
@@ -21400,7 +21401,7 @@ function warnNoop(publicInstance, callerName) {
     if (didWarnStateUpdateForUnmountedComponent[warningKey]) {
       return;
     }
-    warning(false, '%s(...): Can only update a mounted or mounting component. ' + 'This usually means you called %s() on an unmounted component. ' + 'This is a no-op.\n\nPlease check the code for the %s component.', callerName, callerName, componentName);
+    warning(false, "Can't call %s on a component that is not yet mounted. " + 'This is a no-op, but it might indicate a bug in your application. ' + 'Instead, assign to `this.state` directly or define a `state = {};` ' + 'class property with the desired state in the %s component.', callerName, componentName);
     didWarnStateUpdateForUnmountedComponent[warningKey] = true;
   }
 }
@@ -21582,7 +21583,7 @@ pureComponentPrototype.isPureReactComponent = true;
 // an immutable object with a single mutable value
 function createRef() {
   var refObject = {
-    value: null
+    current: null
   };
   {
     Object.seal(refObject);
@@ -21690,7 +21691,7 @@ function defineRefPropWarningGetter(props, displayName) {
  */
 var ReactElement = function (type, key, ref, self, source, owner, props) {
   var element = {
-    // This tag allow us to uniquely identify this as a React Element
+    // This tag allows us to uniquely identify this as a React Element
     $$typeof: REACT_ELEMENT_TYPE,
 
     // Built-in properties that belong on the element
@@ -22255,10 +22256,10 @@ function createContext(defaultValue, calculateChangedBits) {
 
   var context = {
     $$typeof: REACT_CONTEXT_TYPE,
-    calculateChangedBits: calculateChangedBits,
-    defaultValue: defaultValue,
-    currentValue: defaultValue,
-    changedBits: 0,
+    _calculateChangedBits: calculateChangedBits,
+    _defaultValue: defaultValue,
+    _currentValue: defaultValue,
+    _changedBits: 0,
     // These are circular
     Provider: null,
     Consumer: null
@@ -22266,7 +22267,7 @@ function createContext(defaultValue, calculateChangedBits) {
 
   context.Provider = {
     $$typeof: REACT_PROVIDER_TYPE,
-    context: context
+    _context: context
   };
   context.Consumer = context;
 
@@ -22277,9 +22278,26 @@ function createContext(defaultValue, calculateChangedBits) {
   return context;
 }
 
+function forwardRef(render) {
+  {
+    warning(typeof render === 'function', 'forwardRef requires a render function but was given %s.', render === null ? 'null' : typeof render);
+  }
+
+  return {
+    $$typeof: REACT_FORWARD_REF_TYPE,
+    render: render
+  };
+}
+
 var describeComponentFrame = function (name, source, ownerName) {
   return '\n    in ' + (name || 'Unknown') + (source ? ' (at ' + source.fileName.replace(/^.*[\\\/]/, '') + ':' + source.lineNumber + ')' : ownerName ? ' (created by ' + ownerName + ')' : '');
 };
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' ||
+  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_ASYNC_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+}
 
 function getComponentName(fiber) {
   var type = fiber.type;
@@ -22316,8 +22334,6 @@ var propTypesMisspellWarningShown = void 0;
 var getDisplayName = function () {};
 var getStackAddendum = function () {};
 
-var VALID_FRAGMENT_PROPS = void 0;
-
 {
   currentlyValidatingElement = null;
 
@@ -22347,8 +22363,6 @@ var VALID_FRAGMENT_PROPS = void 0;
     stack += ReactDebugCurrentFrame.getStackAddendum() || '';
     return stack;
   };
-
-  VALID_FRAGMENT_PROPS = new Map([['children', true], ['key', true]]);
 }
 
 function getDeclarationErrorAddendum() {
@@ -22508,7 +22522,7 @@ function validateFragmentProps(fragment) {
   var keys = Object.keys(fragment.props);
   for (var i = 0; i < keys.length; i++) {
     var key = keys[i];
-    if (!VALID_FRAGMENT_PROPS.has(key)) {
+    if (key !== 'children' && key !== 'key') {
       warning(false, 'Invalid prop `%s` supplied to `React.Fragment`. ' + 'React.Fragment can only have `key` and `children` props.%s', key, getStackAddendum());
       break;
     }
@@ -22522,9 +22536,7 @@ function validateFragmentProps(fragment) {
 }
 
 function createElementWithValidation(type, props, children) {
-  var validType = typeof type === 'string' || typeof type === 'function' ||
-  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-  type === REACT_FRAGMENT_TYPE || type === REACT_ASYNC_MODE_TYPE || type === REACT_STRICT_MODE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE);
+  var validType = isValidElementType(type);
 
   // We warn in this case but don't throw. We expect the element creation to
   // succeed and there will likely be errors in render.
@@ -22626,6 +22638,7 @@ var React = {
   PureComponent: PureComponent,
 
   createContext: createContext,
+  forwardRef: forwardRef,
 
   Fragment: REACT_FRAGMENT_TYPE,
   StrictMode: REACT_STRICT_MODE_TYPE,

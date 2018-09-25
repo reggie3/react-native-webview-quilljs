@@ -9,20 +9,28 @@ const gutil = require('gulp-util');
 
 // dependencies for npm publishing
 const npmDeps = {
+	expo: '^30.0.0',
 	"prop-types": '^15.6.0',
 	"render-if": "^0.1.1",
 	"util": '^0.10.3',
 	"quilljs": "^0.18.1",
 
 };
-// additional dependencies for expo app
-const expoDeps = {
-	"expo": "^26.0.0",
-	"react": "16.3.0-alpha.1",
-    "react-dom": "^16.3.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
-};
 
+const npmPeerDeps={
+	"react": "16.3.1",
+	"react-dom": "^16.3.1",
+	"react-native": "^0.57.1"
+  }
+  
+  // additional dependencies for expo app
+  const expoDeps = {
+	expo: '^30.0.0',
+	react: '16.3.1',
+	'react-dom': '^16.3.1',
+	'react-native': `https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz`
+  };
+  
 
 // main for npm publishing
 const npmMain = 'index.js';
@@ -48,7 +56,8 @@ gulp.task('forNPM', (done) => {
 		.pipe(
 			jeditor(function (json) {
 				json.dependencies = npmDeps;
-				json.main = npmMain;
+        json.peerDependencies = npmPeerDeps;
+        json.main = npmMain;
 				return json;
 			})
 		)
@@ -121,7 +130,8 @@ gulp.task('forExpo', (done) => {
 		.pipe(
 			jeditor({
 				dependencies: expoDeps,
-				main: expoMain
+        main: expoMain,
+        peerDependencies: {}
 			})
 		)
 		.pipe(concat('package.json'))
@@ -157,13 +167,12 @@ gulp.task(
 );
 
 gulp.task(
-	'beta',
-	gulp.series(
-		'forNPM',
-		'webpack',
-		gulp.parallel(gulp.series('git-add', 'git-commit', 'git-push-inline-javascript-3'), 'npm-publish-beta'),
-		'forExpo'
-	)
+	'beta',gulp.series(
+	'forNPM',
+    'build',
+    'npm-publish-beta',
+    'forExpo',
+    'copy-build-files')
 );
 
 // read and bump the package version in config.js so that it
