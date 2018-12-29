@@ -160,11 +160,8 @@ export default class WebViewQuillEditor extends React.Component {
 
   render = () => {
     return (
-      <View
-        style={{
-          flex: 1
-        }}
-      >
+      <View style={{flex: 1, overflow: 'hidden'}}>
+
         <WebView
           style={{ ...StyleSheet.absoluteFillObject }}
           ref={this.createWebViewRef}
