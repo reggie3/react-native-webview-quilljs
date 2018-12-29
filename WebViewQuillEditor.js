@@ -11,7 +11,6 @@ import {
   StyleSheet,
   WebView,
   Platform,
-  Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Asset } from 'expo';
@@ -23,19 +22,20 @@ const INDEX_FILE_ASSET_URI = Asset.fromModule(require(INDEX_FILE_PATH)).uri;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
 export default class WebViewQuillEditor extends React.Component {
-  constructor() {
-    super();
-    this.webview = null;
+  constructor(props) {
+    super(props);
     this.state = {
-      webViewNotLoaded: true // flag to show activity indicator
+      editorLoaded: false,
+      webviewErrorMessages: [],
+      hasError: false,
+      hasErrorMessage: '',
+      hasErrorInfo: ''
     };
   }
 
-  createWebViewRef = (webview) => {
-    this.webview = webview;
-  };
 
-  handleMessage = (event) => {
+
+  /* handleMessage = (event) => {
     let msgData;
     try {
       msgData = JSON.parse(event.nativeEvent.data);
@@ -77,7 +77,7 @@ export default class WebViewQuillEditor extends React.Component {
       console.warn(err);
       return;
     }
-  };
+  }; */
 
   onWebViewLoaded = () => {
     console.log('Webview loaded');
@@ -111,18 +111,55 @@ export default class WebViewQuillEditor extends React.Component {
     }
   };
 
-  sendMessage = (type, payload) => {
-    // only send message when webview is loaded
-    if (this.webview) {
-      console.log(`WebViewQuillEditor: sending message ${type}`);
-      this.webview.postMessage(
-        JSON.stringify({
-          prefix: MESSAGE_PREFIX,
-          type,
-          payload
-        }),
-        '*'
-      );
+  handleMessage = (data) => {
+    let msgData;
+    // console.log({ data });
+    msgData = JSON.parse(data);
+    if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
+      // console.log(`WebViewLeaflet: received message: `, msgData.payload);
+
+      // if we receive an event, then pass it to the parent by calling
+      // the parent function wtith the same name as the event, and passing
+      // the entire payload as a parameter
+      if (
+        msgData.payload.event &&
+        this.props.eventReceiver.hasOwnProperty(msgData.payload.event)
+      ) {
+        this.props.eventReceiver[msgData.payload.event](msgData.payload);
+      }
+      // WebViewLeaflet will also need to know of some state changes, such as
+      // when the editor is mounted
+      else {
+        this.props.eventReceiver.setState({
+          state: {
+            ...this.props.eventReceiver.state,
+            editorState: {
+              ...this.props.eventReceiver.editorState,
+              ...msgData.payload
+            }
+          }
+        });
+      }
+    }
+  };
+
+  sendMessage = (payload) => {
+    if (this.state.editorLoaded) {
+      // only send message when webview is loaded
+
+      const message = JSON.stringify({
+        prefix: MESSAGE_PREFIX,
+        payload
+      });
+
+      // If the user has sent a centering messaging, then store the location
+      // so that we can refer to it later if the built in centering button
+      // is pressed
+      /* if (payload.centerPosition) {
+        this.setState({ centerPosition: payload.centerPosition });
+      } */
+      // console.log(`WebViewLeaflet: sending message: `, JSON.stringify(message));
+      this.webview.postMessage(message, '*');
     }
   };
 
@@ -132,40 +169,21 @@ export default class WebViewQuillEditor extends React.Component {
     this.sendMessage('GET_DELTA');
   };
 
-  showLoadingIndicator = () => {
+  renderLoadingIndicator = () => {
     return (
       <View style={styles.activityOverlayStyle}>
         <View style={styles.activityIndicatorContainer}>
           <ActivityIndicator
             size="large"
-            animating={this.state.webViewNotLoaded}
-            color="green"
+            animating={!this.props.eventReceiver.state.editorState.editorLoaded}
           />
         </View>
       </View>
     );
   };
 
-  onError = (error) => {
-    Alert.alert('WebView onError', error, [
-      { text: 'OK', onPress: () => console.log('OK Pressed') }
-    ]);
-  };
 
-  renderError = (error) => {
-    Alert.alert('WebView renderError', error, [
-      { text: 'OK', onPress: () => console.log('OK Pressed') }
-    ]);
-  };
-
-  render = () => {
-    return (
-      <View
-        style={{
-          flex: 1
-        }}
-      >
-        <WebView
+  /* <WebView
           style={{ ...StyleSheet.absoluteFillObject }}
           ref={this.createWebViewRef}
           source={
@@ -183,7 +201,112 @@ export default class WebViewQuillEditor extends React.Component {
           scalesPageToFit={false}
           mixedContentMode={'always'}
           domStorageEnabled={true}
-        />
+        /> */
+
+  maybeRenderEditor = () => {
+    return (
+      <View style={{flex: 1, overflow: 'hidden'}}>
+      <WebView
+        style={{
+          ...StyleSheet.absoluteFillObject
+        }}
+        ref={(ref) => {
+          this.webview = ref;
+        }}
+        source={
+          Platform.OS === 'ios'
+            ? require('./assets/dist/reactQuillEditor-index.html')
+            : { uri: INDEX_FILE_ASSET_URI }
+        }
+        startInLoadingState={true}
+        renderLoading={this.renderLoading}
+        renderError={(error) => {
+          console.log(
+            'RENDER ERROR: ',
+            util.inspect(error, {
+              showHidden: false,
+              depth: null
+            })
+          );
+        }}
+        javaScriptEnabled={true}
+        onError={(error) => {
+          console.log(
+            'ERROR: ',
+            util.inspect(error, {
+              showHidden: false,
+              depth: null
+            })
+          );
+        }}
+        scalesPageToFit={false}
+        mixedContentMode={'always'}
+        onMessage={(event) => {
+          if (event && event.nativeEvent && event.nativeEvent.data) {
+            this.handleMessage(event.nativeEvent.data);
+          }
+        }}
+        onLoadStart={() => {}}
+        onLoadEnd={() => {
+          if (this.props.eventReceiver.hasOwnProperty('onLoad')) {
+            this.props.eventReceiver.onLoad();
+          }
+          // Set the component state to showw that the map has been loaded.
+          // This will let us do things during component update once the map
+          // is loaded.
+          this.setState({ editorLoaded: true });
+        }}
+        domStorageEnabled={true}
+      />
+      </View>
+    );
+  };
+
+
+  maybeRenderWebviewError = () => {
+    if (this.state.webviewErrorMessages.length > 0) {
+      return (
+        <View style={{ zIndex: 2000, backgroundColor: 'orange', margin: 4 }}>
+          {this.state.webviewErrorMessages.map((errorMessage, index) => {
+            return <Text key={index}>{errorMessage}</Text>;
+          })}
+        </View>
+      );
+    }
+    return null;
+  };
+
+  maybeRenderErrorBoundaryMessage = () => {
+    if (this.state.hasError)
+      return (
+        <View style={{ zIndex: 2000, backgroundColor: 'red', margin: 5 }}>
+          {util.inspect(this.state.webviewErrorMessages, {
+            showHidden: false,
+            depth: null
+          })}
+        </View>
+      );
+    return null;
+  };
+
+  render = () => {
+    return (
+      <View
+        style={{
+          flex: 1
+        }}
+      >
+      <View
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: '#fff1ad'
+          }}
+        >
+          {this.maybeRenderEditor()}
+          {this.maybeRenderErrorBoundaryMessage()}
+          {this.maybeRenderWebviewError()}
+        </View>
+        
       </View>
     );
   };

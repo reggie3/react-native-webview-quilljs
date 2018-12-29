@@ -39,9 +39,23 @@ export default class App extends React.Component {
     console.log('onDeltaChangeCallback: ',{delta}, {deltaChange}, {deltaOld}, changeSource);
   };
 
+  onLoadWebViewQuillViewerCallback=()=>{
+    console.log('onLoadWebViewQuillViewerCallback');
+    this.setState({editorLoaded: true})
+  }
+  onLoadWebViewQuillEditorCallback=()=>{
+    console.log('onLoadWebViewQuillEditorCallback');
+    this.setState({viewerLoaded: true})
+  }
+
+  onLoad = (event) => {
+    // console.log('onLoad received ');
+  }
+
   render() {
+    console.log('rendering');
     return (
-      <View
+      <View 
         style={{
           ...StyleSheet.absoluteFillObject,
           backgroundColor: '#e2e2e2'
@@ -72,7 +86,9 @@ export default class App extends React.Component {
             onDeltaChangeCallback={this.onDeltaChangeCallback}
             backgroundColor={'#fffbea'}
             contentToDisplay={this.state.editorMessageDelta}
-          />
+            onLoad={this.onLoadWebViewQuillEditorCallback}
+            eventReceiver={this}
+          />  
         </View>
         <View
           style={{
@@ -93,12 +109,13 @@ export default class App extends React.Component {
             backgroundColor: 'rgba(255, 255, 100, 1)'
           }}
         >
-          <WebViewQuillViewer
+          {/*  <WebViewQuillViewer
             ref={component => (this.webViewQuillViewer = component)}
             contentToDisplay={this.state.viewerMessageDelta}
             backgroundColor={'#fffbea'}
-
-          />
+            onLoad={this.onLoadWebViewQuillViewerCallback}
+            eventRecevier={this}
+          />  */}
         </View>
       </View>
     );

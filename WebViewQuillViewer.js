@@ -8,7 +8,6 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet, WebView, Platform } from 'react-native';
 import PropTypes from 'prop-types';
-import renderIf from 'render-if';
 import { Asset } from 'expo';
 // path to the file that the webview will load
 const INDEX_FILE_PATH = `./assets/dist/reactQuillViewer-index.html`;
