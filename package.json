@@ -1,6 +1,6 @@
 {
 	"name": "react-native-webview-quilljs",
-	"version": "0.8.38",
+	"version": "0.8.39",
 	"scripts": {
 		"prod": "npm run clean && SET NODE_ENV=PROD && webpack",
 		"dev": "npm run clean && SET NODE_ENV=DEV && webpack -p",
@@ -11,21 +11,17 @@
 	"author": "Reginald Johnson",
 	"license": "MIT",
 	"private": false,
-	"main": "node_modules/expo/AppEntry.js",
+	"main": "index.js",
 	"dependencies": {
-		"expo": "^32.0.6",
-		"expo-asset-utils": "^1.0.0",
 		"prop-types": "^15.7.2",
-		"quilljs": "^0.18.1",
-		"react": "16.5.0",
-		"react-dom": "^16.5.0",
-		"react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+		"expo-asset-utils": "^1.0.0",
 		"render-if": "^0.1.1",
-		"util": "^0.10.3"
+		"util": "^0.10.3",
+		"quilljs": "^0.18.1"
 	},
 	"peerDependencies": {
-		"react": "16.3.1",
-		"react-dom": "^16.3.1",
+		"react": "16.5.0",
+		"react-dom": "^16.5.0",
 		"react-native": "^0.57.1"
 	},
 	"devDependencies": {
@@ -79,12 +75,7 @@
 		"url": "https://github.com/reggie3/react-native-webview-quilljs/issues"
 	},
 	"homepage": "https://github.com/reggie3/react-native-webview-quilljs#readme",
-	"keywords": [
-		"react-native",
-		"quill-js",
-		"react-native-webview-quilljs",
-		"quilljs"
-	],
+	"keywords": ["react-native", "quill-js", "react-native-webview-quilljs", "quilljs"],
 	"jest": {
 		"preset": "jest-expo",
 		"setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
