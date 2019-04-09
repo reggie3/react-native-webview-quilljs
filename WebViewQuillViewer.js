@@ -15,10 +15,11 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import renderIf from 'render-if';
-import { Asset } from 'expo';
+import AssetUtils from 'expo-asset-utils';
+
 // path to the file that the webview will load
-const INDEX_FILE_PATH = `./assets/dist/reactQuillViewer-index.html`;
-const INDEX_FILE_ASSET_URI = Asset.fromModule(require(INDEX_FILE_PATH)).uri;
+const VIEWER_INDEX_FILE_PATH = require(`./assets/dist/reactQuillViewer-index.html`);
+// const INDEX_FILE_ASSET_URI = Asset.fromModule(require(VIEWER_INDEX_FILE_PATH)).uri;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
 export default class WebViewQuillViewer extends React.Component {
@@ -28,7 +29,18 @@ export default class WebViewQuillViewer extends React.Component {
     this.state = {
       webViewNotLoaded: true // flag to show activity indicator
     };
+    this.viewerIndexFileAsset = undefined;
   }
+
+  componentDidMount = async () => {
+    try {
+      this.viewerIndexFileAsset = await AssetUtils.resolveAsync(VIEWER_INDEX_FILE_PATH);
+      console.log(this.viewerIndexFileAsset);
+    } catch (error) {
+      console.log({ error });
+      debugger;
+    }
+  };
 
   createWebViewRef = (webview) => {
     this.webview = webview;
@@ -122,14 +134,8 @@ export default class WebViewQuillViewer extends React.Component {
 
   showLoadingIndicator = () => {
     return (
-      <View style={styles.activityOverlayStyle}>
-        <View style={styles.activityIndicatorContainer}>
-          <ActivityIndicator
-            size="large"
-            animating={this.state.webViewNotLoaded}
-            color="green"
-          />
-        </View>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color="green" />
       </View>
     );
   };
@@ -149,24 +155,28 @@ export default class WebViewQuillViewer extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1, overflow: 'hidden' }}>
-        <WebView
-          style={{ ...StyleSheet.absoluteFillObject }}
-          ref={this.createWebViewRef}
-          source={
-            Platform.OS === 'ios'
-              ? require('./assets/dist/reactQuillViewer-index.html')
-              : { uri: INDEX_FILE_ASSET_URI }
-          }
-          onLoadEnd={this.onWebViewLoaded}
-          onMessage={this.handleMessage}
-          startInLoadingState={true}
-          renderLoading={this.showLoadingIndicator}
-          renderError={this.renderError}
-          javaScriptEnabled={true}
-          onError={this.onError}
-          scalesPageToFit={false}
-          mixedContentMode={'always'}
-        />
+        {this.viewerIndexFileAsset ? (
+          <WebView
+            style={{ ...StyleSheet.absoluteFillObject }}
+            ref={this.createWebViewRef}
+            source={{ uri: this.viewerIndexFileAsset.uri }}
+            onLoadEnd={this.onWebViewLoaded}
+            onMessage={this.handleMessage}
+            startInLoadingState={true}
+            renderLoading={this.showLoadingIndicator}
+            renderError={this.renderError}
+            javaScriptEnabled={true}
+            onError={this.onError}
+            scalesPageToFit={false}
+            mixedContentMode={'always'}
+          />
+        ) : (
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <ActivityIndicator color="blue" />
+          </View>
+        )}
       </View>
     );
   };

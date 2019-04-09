@@ -57,7 +57,7 @@ export default class App extends React.Component {
             color: 'black'
           }}
         >
-          React Native Webview Quill-js
+          React Native Webview Quill-js Demo .02
         </Text>
         <View
           style={{
