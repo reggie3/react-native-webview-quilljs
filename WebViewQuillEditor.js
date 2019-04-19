@@ -27,15 +27,17 @@ export default class WebViewQuillEditor extends React.Component {
     super();
     this.webview = null;
     this.state = {
-      webViewNotLoaded: true // flag to show activity indicator
+      webViewNotLoaded: true,
+      editorIndexFileAsset: undefined
     };
-    this.editorIndexFileAsset = undefined;
   }
 
   componentDidMount = async () => {
     try {
-      this.editorIndexFileAsset = await AssetUtils.resolveAsync(EDITOR_INDEX_FILE_PATH);
-      console.log(this.editorIndexFileAsset);
+      let editorIndexFileAsset = await AssetUtils.resolveAsync(
+        EDITOR_INDEX_FILE_PATH
+      );
+      this.setState({ editorIndexFileAsset });
     } catch (error) {
       console.log({ error });
       debugger;
@@ -176,11 +178,11 @@ export default class WebViewQuillEditor extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1, overflow: 'hidden' }}>
-        {this.editorIndexFileAsset ? (
+        {this.state.editorIndexFileAsset ? (
           <WebView
             style={{ ...StyleSheet.absoluteFillObject }}
             ref={this.createWebViewRef}
-            source={{ uri: this.editorIndexFileAsset.uri }}
+            source={{ uri: this.state.editorIndexFileAsset.uri }}
             onLoadEnd={this.onWebViewLoaded}
             onMessage={this.handleMessage}
             startInLoadingState={true}

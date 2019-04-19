@@ -27,15 +27,17 @@ export default class WebViewQuillViewer extends React.Component {
     super();
     this.webview = null;
     this.state = {
-      webViewNotLoaded: true // flag to show activity indicator
+      webViewNotLoaded: true, // flag to show activity indicator
+      viewerIndexFileAsset: undefined
     };
-    this.viewerIndexFileAsset = undefined;
   }
 
   componentDidMount = async () => {
     try {
-      this.viewerIndexFileAsset = await AssetUtils.resolveAsync(VIEWER_INDEX_FILE_PATH);
-      console.log(this.viewerIndexFileAsset);
+      let viewerIndexFileAsset = await AssetUtils.resolveAsync(
+        VIEWER_INDEX_FILE_PATH
+      );
+      this.setState({ viewerIndexFileAsset });
     } catch (error) {
       console.log({ error });
       debugger;
@@ -155,11 +157,11 @@ export default class WebViewQuillViewer extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1, overflow: 'hidden' }}>
-        {this.viewerIndexFileAsset ? (
+        {this.state.viewerIndexFileAsset ? (
           <WebView
             style={{ ...StyleSheet.absoluteFillObject }}
             ref={this.createWebViewRef}
-            source={{ uri: this.viewerIndexFileAsset.uri }}
+            source={{ uri: this.state.viewerIndexFileAsset.uri }}
             onLoadEnd={this.onWebViewLoaded}
             onMessage={this.handleMessage}
             startInLoadingState={true}
