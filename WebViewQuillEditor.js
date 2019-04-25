@@ -10,7 +10,6 @@ import {
   ActivityIndicator,
   StyleSheet,
   WebView,
-  Platform,
   Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -18,7 +17,7 @@ import AssetUtils from 'expo-asset-utils';
 
 // path to the file that the webview will load
 
-const EDITOR_INDEX_FILE_PATH = require(`./assets/dist/reactQuillEditor-index.html`);
+const requiredAsset = require(`./assets/dist/reactQuillEditor-index.html`);
 // const INDEX_FILE_ASSET_URI = Asset.fromModule(require(EDITOR_INDEX_FILE_PATH)).uri;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -27,18 +26,18 @@ export default class WebViewQuillEditor extends React.Component {
     super();
     this.webview = null;
     this.state = {
-      webViewNotLoaded: true // flag to show activity indicator
+      webViewNotLoaded: true, // flag to show activity indicator,
+      asset: undefined
     };
-    this.editorIndexFileAsset = undefined;
   }
 
   componentDidMount = async () => {
     try {
-      this.editorIndexFileAsset = await AssetUtils.resolveAsync(EDITOR_INDEX_FILE_PATH);
-      console.log(this.editorIndexFileAsset);
+      const asset = await AssetUtils.resolveAsync(requiredAsset)
+      console.log({asset})
+      this.setState({ asset })
     } catch (error) {
-      console.log({ error });
-      debugger;
+      console.log({ error })
     }
   };
 
@@ -174,14 +173,14 @@ export default class WebViewQuillEditor extends React.Component {
   };
 
   render = () => {
+    if (this.state.asset) {
     return (
       <View style={{ flex: 1, overflow: 'hidden' }}>
         {this.editorIndexFileAsset ? (
           <WebView
             style={{ ...StyleSheet.absoluteFillObject }}
             ref={this.createWebViewRef}
-            source={{ uri: this.editorIndexFileAsset.uri }}
-            onLoadEnd={this.onWebViewLoaded}
+            source={{ uri: this.state.asset.uri }}            onLoadEnd={this.onWebViewLoaded}
             onMessage={this.handleMessage}
             startInLoadingState={true}
             renderLoading={this.showLoadingIndicator}
@@ -201,6 +200,10 @@ export default class WebViewQuillEditor extends React.Component {
         )}
       </View>
     );
+  }
+  return (
+    <ActivityIndicator />
+  )
   };
 }
 

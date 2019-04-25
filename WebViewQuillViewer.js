@@ -10,15 +10,14 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
+  Alert,
   WebView,
-  Platform
 } from 'react-native';
 import PropTypes from 'prop-types';
-import renderIf from 'render-if';
 import AssetUtils from 'expo-asset-utils';
 
 // path to the file that the webview will load
-const VIEWER_INDEX_FILE_PATH = require(`./assets/dist/reactQuillViewer-index.html`);
+const requiredAsset = require(`./assets/dist/reactQuillViewer-index.html`);
 // const INDEX_FILE_ASSET_URI = Asset.fromModule(require(VIEWER_INDEX_FILE_PATH)).uri;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -27,18 +26,18 @@ export default class WebViewQuillViewer extends React.Component {
     super();
     this.webview = null;
     this.state = {
-      webViewNotLoaded: true // flag to show activity indicator
+      webViewNotLoaded: true, // flag to show activity indicator
+      asset: undefined
     };
-    this.viewerIndexFileAsset = undefined;
   }
 
   componentDidMount = async () => {
     try {
-      this.viewerIndexFileAsset = await AssetUtils.resolveAsync(VIEWER_INDEX_FILE_PATH);
-      console.log(this.viewerIndexFileAsset);
+      const asset = await AssetUtils.resolveAsync(requiredAsset)
+      console.log({ asset })
+      this.setState({ asset })
     } catch (error) {
-      console.log({ error });
-      debugger;
+      console.log({ error })
     }
   };
 
@@ -68,7 +67,7 @@ export default class WebViewQuillViewer extends React.Component {
           default:
             console.warn(
               `WebViewQuillViewer Error: Unhandled message type received "${
-                msgData.type
+              msgData.type
               }"`
             );
         }
@@ -153,33 +152,38 @@ export default class WebViewQuillViewer extends React.Component {
   };
 
   render = () => {
+    if (this.state.asset) {
+      return (
+        <View style={{ flex: 1, overflow: 'hidden' }}>
+          {this.viewerIndexFileAsset ? (
+            <WebView
+              style={{ ...StyleSheet.absoluteFillObject }}
+              ref={this.createWebViewRef}
+              source={{ uri: this.state.asset.uri }} onLoadEnd={this.onWebViewLoaded}
+              onMessage={this.handleMessage}
+              startInLoadingState={true}
+              renderLoading={this.showLoadingIndicator}
+              renderError={this.renderError}
+              javaScriptEnabled={true}
+              onError={this.onError}
+              scalesPageToFit={false}
+              mixedContentMode={'always'}
+            />
+          ) : (
+              <View
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+              >
+                <ActivityIndicator color="blue" />
+              </View>
+            )}
+        </View>
+      );
+    }
     return (
-      <View style={{ flex: 1, overflow: 'hidden' }}>
-        {this.viewerIndexFileAsset ? (
-          <WebView
-            style={{ ...StyleSheet.absoluteFillObject }}
-            ref={this.createWebViewRef}
-            source={{ uri: this.viewerIndexFileAsset.uri }}
-            onLoadEnd={this.onWebViewLoaded}
-            onMessage={this.handleMessage}
-            startInLoadingState={true}
-            renderLoading={this.showLoadingIndicator}
-            renderError={this.renderError}
-            javaScriptEnabled={true}
-            onError={this.onError}
-            scalesPageToFit={false}
-            mixedContentMode={'always'}
-          />
-        ) : (
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
-            <ActivityIndicator color="blue" />
-          </View>
-        )}
-      </View>
+      <ActivityIndicator />
     );
-  };
+  }
+
 }
 
 WebViewQuillViewer.propTypes = {
