@@ -176,7 +176,7 @@ export default class WebViewQuillEditor extends React.Component {
     if (this.state.asset) {
     return (
       <View style={{ flex: 1, overflow: 'hidden' }}>
-        {this.editorIndexFileAsset ? (
+        {this.state.editorIndexFileAsset ? (
           <WebView
             style={{ ...StyleSheet.absoluteFillObject }}
             ref={this.createWebViewRef}
