@@ -4,4 +4,4 @@ npm-debug.*
 *.ppt*
 build/**/*
 dist/**/*
-
+.idea
