@@ -3,5 +3,5 @@ import WebViewQuillViewer from './WebViewQuillViewer';
 
 module.exports = {
     WebViewQuillEditor,
-    WebViewQuillViewer
-  };
+    WebViewQuillViewer,
+};
