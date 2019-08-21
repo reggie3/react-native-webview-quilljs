@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { WebViewQuillEditor, WebViewQuillViewer } from 'react-native-webview-quilljs';
 
 // example content to display
@@ -24,17 +24,20 @@ export default class App extends React.Component {
     }
 
     getEditorDelta = () => {
-        this.webViewQuillEditor.getDelta();
+        this.webViewQuillEditor.getDelta()
     };
 
     getDeltaCallback = response => {
-        console.log('getDeltaCallback');
-        console.log(response.delta);
-        this.webViewQuillViewer.sendContentToViewer(response.delta);
+        // this.webViewQuillViewer.sendContentToViewer(response);
+        this.setState({
+            viewerMessageDelta: response
+        });
+        alert('React Native获取到数据：'+response);
     };
 
     onDeltaChangeCallback = (delta, deltaChange, deltaOld, changeSource) => {
         console.log('onDeltaChangeCallback: ', {delta}, {deltaChange}, {deltaOld}, changeSource);
+
     };
 
     render() {
@@ -71,6 +74,7 @@ export default class App extends React.Component {
                         contentToDisplay={this.state.editorMessageDelta}
                     />
                 </View>
+
                 <View
                     style={{
                         margin: 5
@@ -83,6 +87,7 @@ export default class App extends React.Component {
                         accessibilityLabel="Click this button to copy text from the editor to the viewer"
                     />
                 </View>
+
                 <View
                     style={{
                         flex: 1,

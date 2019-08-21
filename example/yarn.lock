@@ -2379,11 +2379,6 @@ event-target-shim@^5.0.0, event-target-shim@^5.0.1:
   resolved "https://registry.npmjs.org/event-target-shim/-/event-target-shim-5.0.1.tgz#5d4d3ebdf9583d63a5333ce2deb7480ab2b05789"
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
 
-eventemitter2@~0.4.13:
-  version "0.4.14"
-  resolved "https://registry.npmjs.org/eventemitter2/-/eventemitter2-0.4.14.tgz#8f61b75cde012b2e9eb284d4545583b5643b61ab"
-  integrity sha1-j2G3XN4BKy6esoTUVFWDtWQ7Yas=
-
 eventemitter3@^3.0.0:
   version "3.1.2"
   resolved "https://registry.npmjs.org/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
@@ -2538,11 +2533,6 @@ fast-diff@^1.1.1:
   version "1.2.0"
   resolved "https://registry.npmjs.org/fast-diff/-/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
   integrity sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
-
-fast-diff@~1.0.0:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/fast-diff/-/fast-diff-1.0.1.tgz#76532d5b8e49f6770fd464658628f9ed47eb5ac8"
-  integrity sha1-dlMtW45J9ncP1GRlhij57UfrWsg=
 
 fast-json-stable-stringify@^2.0.0:
   version "2.0.0"
@@ -3043,11 +3033,6 @@ inherits@2, inherits@2.0.4, inherits@^2.0.3, inherits@~2.0.3:
   version "2.0.4"
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
-
-inherits@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
-  integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
 ini@~1.3.0:
   version "1.3.5"
@@ -4000,11 +3985,6 @@ lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17
   version "4.17.15"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
-
-lodash@~2.4.1:
-  version "2.4.2"
-  resolved "https://registry.npmjs.org/lodash/-/lodash-2.4.2.tgz#fadd834b9683073da179b3eae6d9c0d15053f73e"
-  integrity sha1-+t2DS5aDBz2hebPq5tnA0VBT9z4=
 
 log-symbols@^2.2.0:
   version "2.2.0"
@@ -5187,15 +5167,6 @@ qs@~6.5.2:
   resolved "https://registry.npmjs.org/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-quilljs@^0.18.1:
-  version "0.18.1"
-  resolved "https://registry.npmjs.org/quilljs/-/quilljs-0.18.1.tgz#7d7696ed95e0e1db79c439e5924b6eea5f67706c"
-  integrity sha1-fXaW7ZXg4dt5xDnlkktu6l9ncGw=
-  dependencies:
-    eventemitter2 "~0.4.13"
-    lodash "~2.4.1"
-    rich-text "~1.0.2"
-
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
@@ -5243,10 +5214,7 @@ react-native-webview-quilljs@../:
   version "0.8.41"
   dependencies:
     prop-types "^15.7.2"
-    quilljs "^0.18.1"
     react-native-webview "*"
-    render-if "^0.1.1"
-    util "^0.10.3"
 
 react-native-webview@*, react-native-webview@^6.9.0:
   version "6.9.0"
@@ -5451,11 +5419,6 @@ remove-trailing-separator@^1.0.1:
   resolved "https://registry.npmjs.org/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
-render-if@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/render-if/-/render-if-0.1.1.tgz#f255a47bf973814ac077735b994b95fa3d1cd42e"
-  integrity sha1-8lWke/lzgUrAd3NbmUuV+j0c1C4=
-
 repeat-element@^1.1.2:
   version "1.1.3"
   resolved "https://registry.npmjs.org/repeat-element/-/repeat-element-1.1.3.tgz#782e0d825c0c5a3bb39731f84efee6b742e6b1ce"
@@ -5577,13 +5540,6 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.npmjs.org/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
-
-rich-text@~1.0.2:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/rich-text/-/rich-text-1.0.3.tgz#ac4d825f2fca123d8282842ed55fc57fc7b9c710"
-  integrity sha1-rE2CXy/KEj2CgoQu1V/Ff8e5xxA=
-  dependencies:
-    fast-diff "~1.0.0"
 
 rimraf@2.6.3:
   version "2.6.3"
@@ -6425,13 +6381,6 @@ util.promisify@^1.0.0:
   dependencies:
     define-properties "^1.1.2"
     object.getownpropertydescriptors "^2.0.3"
-
-util@^0.10.3:
-  version "0.10.4"
-  resolved "https://registry.npmjs.org/util/-/util-0.10.4.tgz#3aa0125bfe668a4672de58857d3ace27ecb76901"
-  integrity sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==
-  dependencies:
-    inherits "2.0.3"
 
 utils-merge@1.0.1:
   version "1.0.1"
