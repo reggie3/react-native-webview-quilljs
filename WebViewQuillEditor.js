@@ -109,6 +109,9 @@ export default class WebViewQuillEditor extends React.Component {
         if (this.props.hasOwnProperty('getEditorCallback')) {
             this.sendMessage('SEND_EDITOR');
         }
+        if (this.props.hasOwnProperty('contentToDisplay')) {
+            this.props.contentToDisplay();
+        }
     };
 
     editorLoaded = () => {
@@ -147,6 +150,9 @@ export default class WebViewQuillEditor extends React.Component {
         this.sendMessage('GET_DELTA');
     };
 
+    contentToDisplay = (content) => {
+        this.sendMessage('SET_CONTENTS',content);
+    };
     showLoadingIndicator = () => {
         return (
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -203,7 +209,8 @@ WebViewQuillEditor.propTypes = {
     getDeltaCallback: PropTypes.func,
     onDeltaChangeCallback: PropTypes.func,
     backgroundColor: PropTypes.string,
-    onLoad: PropTypes.func
+    onLoad: PropTypes.func,
+    contentToDisplay: PropTypes.func
 };
 
 // Specifies the default values for props:

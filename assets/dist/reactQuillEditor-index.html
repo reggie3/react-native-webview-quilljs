@@ -28,6 +28,45 @@ padding: 0 !important;
     var quill = new Quill('#editor', {
         theme: 'snow'
     });
+
+    window.addEventListener('message', function(event) {
+        const MESSAGE_PREFIX = 'react-native-webview-quilljs';
+        let msgData = JSON.parse(event.data);
+        try {
+            if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
+                switch (msgData.type) {
+                    case 'LOAD_EDITOR':
+
+                        break;
+                    case 'SEND_EDITOR':
+
+                        break;
+                    case 'GET_DELTA':
+                        const html = document.querySelector('#editor').children[0].innerHTML;
+                        const msg = {
+                            prefix: MESSAGE_PREFIX,
+                            type: 'RECEIVE_DELTA',
+                            payload: html
+                        };
+                        window.ReactNativeWebView.postMessage(JSON.stringify(msg));
+                        break;
+                    case 'SET_CONTENTS':
+                        document.querySelector('#editor').children[0].innerHTML = msgData.payload;
+                        break;
+                    case 'SET_HTML_CONTENTS':
+
+                        break;
+                    case 'MESSAGE_ACKNOWLEDGED':
+
+                        break;
+                    default:
+
+                }
+            }
+        } catch (err) {
+            return;
+        }
+    });
 </script>
 </body>
 </html>
