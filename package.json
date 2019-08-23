@@ -9,13 +9,11 @@
 	"license": "MIT",
 	"private": false,
 	"main": "index.js",
-	"dependencies": {
-		"prop-types": "^15.7.2"
-	},
 	"peerDependencies": {
 		"react": "*",
 		"react-native": "*",
-        "react-native-webview": "*"
+        "react-native-webview": "*",
+        "prop-types": "*"
 	},
 	"repository": {
 		"type": "git",
