@@ -94,25 +94,24 @@ export default class WebViewQuillEditor extends React.Component {
         }
     };
 
-    onWebViewLoaded = () => {
-        console.log('Webview loaded');
-        this.setState({webViewNotLoaded: false});
-        this.sendMessage('LOAD_EDITOR');
-        if (this.props.hasOwnProperty('backgroundColor')) {
-            this.sendMessage('SET_BACKGROUND_COLOR', {
-                backgroundColor: this.props.backgroundColor
-            });
-        }
-        if (this.props.hasOwnProperty('onLoad')) {
-            this.props.onLoad();
-        }
-        if (this.props.hasOwnProperty('getEditorCallback')) {
-            this.sendMessage('SEND_EDITOR');
-        }
-        if (this.props.hasOwnProperty('contentToDisplay')) {
+  onWebViewLoaded = () => {
+    console.log('Webview loaded');
+    this.setState({ webViewNotLoaded: false });
+    this.sendMessage('LOAD_EDITOR');
+    if (this.props.hasOwnProperty('backgroundColor')) {
+      this.sendMessage('SET_BACKGROUND_COLOR', {
+        backgroundColor: this.props.backgroundColor
+      });
+    }
+    if (this.props.hasOwnProperty('onLoad')) {
+      this.props.onLoad();
+    }
+    if (this.props.hasOwnProperty('getEditorCallback')) {
+      this.sendMessage('SEND_EDITOR');
+    }
+  if (this.props.hasOwnProperty('contentToDisplay')) {
             this.props.contentToDisplay();
-        }
-    };
+        }};
 
     editorLoaded = () => {
         // send the content to the editor if we have it
@@ -150,16 +149,15 @@ export default class WebViewQuillEditor extends React.Component {
         this.sendMessage('GET_DELTA');
     };
 
-    contentToDisplay = (content) => {
+  contentToDisplay = (content) => {
         this.sendMessage('SET_CONTENTS',content);
-    };
-    showLoadingIndicator = () => {
-        return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <ActivityIndicator color="green" />
-            </View>
-        );
-    };
+    };showLoadingIndicator = () => {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color="green" />
+      </View>
+    );
+  };
 
     onError = (error) => {
         Alert.alert('WebView onError', error, [

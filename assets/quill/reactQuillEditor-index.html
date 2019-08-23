@@ -26,11 +26,11 @@ padding: 0 !important;
 <!-- Initialize Quill editor -->
 <script>
     const toolbarOptions = [
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{'header': [1, 2, 3, 4, 5, 6, false]}],
         ['bold', 'italic', 'underline', 'strike'],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'indent': '-1'}, { 'indent': '+1' }],
-        [{ 'align': [] }],
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        [{'indent': '-1'}, {'indent': '+1'}],
+        [{'align': []}],
     ];
 
     var quill = new Quill('#editor', {
@@ -41,7 +41,7 @@ padding: 0 !important;
         }
     });
 
-    window.addEventListener('message', function(event) {
+    function handleMessage(event) {
         const MESSAGE_PREFIX = 'react-native-webview-quilljs';
         let msgData = JSON.parse(event.data);
         try {
@@ -76,19 +76,23 @@ padding: 0 !important;
                 }
             }
         } catch (err) {
-            return;
         }
-    });
+    }
 
-    window.addEventListener("resize", function() {
-        if(document.activeElement.tagName=="INPUT" ||
-            document.activeElement.tagName=="TEXTAREA") {
-            window.setTimeout(function() {
+    window.document.addEventListener('message', handleMessage);
+    window.addEventListener('message', handleMessage);
+
+    function resize() {
+        if (document.activeElement.tagName == "INPUT" ||
+            document.activeElement.tagName == "TEXTAREA") {
+            window.setTimeout(function () {
                 document.activeElement.scrollIntoViewIfNeeded();
-            },0);
+            }, 0);
         }
-    });
+    }
 
+    window.document.addEventListener('resize', resize);
+    window.addEventListener('resize', resize);
 </script>
 </body>
 </html>
