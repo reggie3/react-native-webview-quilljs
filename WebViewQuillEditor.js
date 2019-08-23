@@ -11,8 +11,8 @@ import WebView from 'react-native-webview';
 
 // path to the file that the webview will load
 
-const requiredAsset = Platform.OS === 'ios' ? require(`./assets/dist/reactQuillEditor-index.html`)
-    : {uri: 'file:///android_asset/dist/reactQuillEditor-index.html'};
+const requiredAsset = Platform.OS === 'ios' ? require(`./assets/quill/reactQuillEditor-index.html`)
+    : {uri: 'file:///android_asset/quill/reactQuillEditor-index.html'};
 // const INDEX_FILE_ASSET_URI = Asset.fromModule(require(EDITOR_INDEX_FILE_PATH)).uri;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -94,24 +94,25 @@ export default class WebViewQuillEditor extends React.Component {
         }
     };
 
-  onWebViewLoaded = () => {
-    console.log('Webview loaded');
-    this.setState({ webViewNotLoaded: false });
-    this.sendMessage('LOAD_EDITOR');
-    if (this.props.hasOwnProperty('backgroundColor')) {
-      this.sendMessage('SET_BACKGROUND_COLOR', {
-        backgroundColor: this.props.backgroundColor
-      });
-    }
-    if (this.props.hasOwnProperty('onLoad')) {
-      this.props.onLoad();
-    }
-    if (this.props.hasOwnProperty('getEditorCallback')) {
-      this.sendMessage('SEND_EDITOR');
-    }
-  if (this.props.hasOwnProperty('contentToDisplay')) {
+    onWebViewLoaded = () => {
+        console.log('Webview loaded');
+        this.setState({webViewNotLoaded: false});
+        this.sendMessage('LOAD_EDITOR');
+        if (this.props.hasOwnProperty('backgroundColor')) {
+            this.sendMessage('SET_BACKGROUND_COLOR', {
+                backgroundColor: this.props.backgroundColor
+            });
+        }
+        if (this.props.hasOwnProperty('onLoad')) {
+            this.props.onLoad();
+        }
+        if (this.props.hasOwnProperty('getEditorCallback')) {
+            this.sendMessage('SEND_EDITOR');
+        }
+        if (this.props.hasOwnProperty('contentToDisplay')) {
             this.props.contentToDisplay();
-        }};
+        }
+    };
 
     editorLoaded = () => {
         // send the content to the editor if we have it
@@ -149,15 +150,16 @@ export default class WebViewQuillEditor extends React.Component {
         this.sendMessage('GET_DELTA');
     };
 
-  contentToDisplay = (content) => {
-        this.sendMessage('SET_CONTENTS',content);
-    };showLoadingIndicator = () => {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator color="green" />
-      </View>
-    );
-  };
+    contentToDisplay = (content) => {
+        this.sendMessage('SET_CONTENTS', content);
+    };
+    showLoadingIndicator = () => {
+        return (
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <ActivityIndicator color="green" />
+            </View>
+        );
+    };
 
     onError = (error) => {
         Alert.alert('WebView onError', error, [
