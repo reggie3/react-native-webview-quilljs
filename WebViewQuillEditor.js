@@ -191,6 +191,7 @@ export default class WebViewQuillEditor extends React.Component {
                         scalesPageToFit={false}
                         mixedContentMode={'always'}
                         domStorageEnabled={true}
+                        originWhitelist={["*"]}
                     />
                 </View>
             );

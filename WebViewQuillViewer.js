@@ -163,6 +163,7 @@ export default class WebViewQuillViewer extends React.Component {
                         onError={this.onError}
                         scalesPageToFit={false}
                         mixedContentMode={'always'}
+                        originWhitelist={["*"]}
                     />
                 </View>
             );
