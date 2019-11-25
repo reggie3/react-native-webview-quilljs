@@ -48118,7 +48118,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -48160,221 +48160,221 @@ var SHOW_DEBUG_INFORMATION = false;
 var messageCounter = 0;
 
 var ReactQuillViewer = function (_React$Component) {
-	_inherits(ReactQuillViewer, _React$Component);
+    _inherits(ReactQuillViewer, _React$Component);
 
-	function ReactQuillViewer(props) {
-		_classCallCheck(this, ReactQuillViewer);
+    function ReactQuillViewer(props) {
+        _classCallCheck(this, ReactQuillViewer);
 
-		var _this = _possibleConstructorReturn(this, (ReactQuillViewer.__proto__ || Object.getPrototypeOf(ReactQuillViewer)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ReactQuillViewer.__proto__ || Object.getPrototypeOf(ReactQuillViewer)).call(this, props));
 
-		_this.printElement = function (data) {
-			if (SHOW_DEBUG_INFORMATION) {
-				var message = '';
-				if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
-					message = util.inspect(data, { showHidden: false, depth: null });
-				} else if (typeof data === 'string') {
-					message = data;
-				}
-				_this.setState({
-					debugMessages: _this.state.debugMessages.concat([message])
-				});
-				console.log(message);
-			}
-		};
+        _this.printElement = function (data) {
+            if (SHOW_DEBUG_INFORMATION) {
+                var message = '';
+                if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
+                    message = util.inspect(data, { showHidden: false, depth: null });
+                } else if (typeof data === 'string') {
+                    message = data;
+                }
+                _this.setState({
+                    debugMessages: _this.state.debugMessages.concat([message])
+                });
+                console.log(message);
+            }
+        };
 
-		_this.loadViewer = function (theme) {
-			var that = _this;
-			_this.printElement('loading viewer, theme = ' + theme);
-			_this.setState({
-				viewer: new _quill2.default('#viewer', {
-					readOnly: true,
-					theme: theme ? theme : 'bubble',
-					bounds: '#Quill-Viewer-Container'
-				})
-			}, function () {
-				that.printElement('viewer initialized');
-				that.addMessageToQueue('VIEWER_LOADED', {
-					type: 'success'
-				});
-			});
-		};
+        _this.loadViewer = function (theme) {
+            var that = _this;
+            _this.printElement('loading viewer, theme = ' + theme);
+            _this.setState({
+                viewer: new _quill2.default('#viewer', {
+                    readOnly: true,
+                    theme: theme ? theme : 'bubble',
+                    bounds: '#Quill-Viewer-Container'
+                })
+            }, function () {
+                that.printElement('viewer initialized');
+                that.addMessageToQueue('VIEWER_LOADED', {
+                    type: 'success'
+                });
+            });
+        };
 
-		_this.addMessageToQueue = function (type, payload) {
-			_this.messageQueue.push(JSON.stringify({
-				messageID: messageCounter++,
-				prefix: MESSAGE_PREFIX,
-				type: type,
-				payload: payload
-			}));
-			_this.printElement('adding message ' + messageCounter + ' to queue: ' + type);
-			_this.printElement('queue length: ' + _this.messageQueue.length);
-			if (_this.state.readyToSendNextMessage) {
-				_this.printElement('sending message');
-				_this.sendNextMessage();
-			}
-		};
+        _this.addMessageToQueue = function (type, payload) {
+            _this.messageQueue.push(JSON.stringify({
+                messageID: messageCounter++,
+                prefix: MESSAGE_PREFIX,
+                type: type,
+                payload: payload
+            }));
+            _this.printElement('adding message ' + messageCounter + ' to queue: ' + type);
+            _this.printElement('queue length: ' + _this.messageQueue.length);
+            if (_this.state.readyToSendNextMessage) {
+                _this.printElement('sending message');
+                _this.sendNextMessage();
+            }
+        };
 
-		_this.sendNextMessage = function () {
-			if (_this.messageQueue.length > 0) {
-				var nextMessage = _this.messageQueue.shift();
-				_this.printElement('sending message ' + nextMessage);
-				if (document.hasOwnProperty('postMessage')) {
-					document.postMessage(nextMessage, '*');
-				} else if (window.hasOwnProperty('postMessage')) {
-					window.postMessage(nextMessage, '*');
-				} else {
-					_this.printElement('ERROR: unable to find postMessage');
-				}
-				_this.setState({ readyToSendNextMessage: false });
-			}
-		};
+        _this.sendNextMessage = function () {
+            if (_this.messageQueue.length > 0) {
+                var nextMessage = _this.messageQueue.shift();
+                _this.printElement('sending message ' + nextMessage);
+                if (document.hasOwnProperty('postMessage')) {
+                    document.postMessage(nextMessage, '*');
+                } else if (window.hasOwnProperty('ReactNativeWebView') && window.ReactNativeWebView.hasOwnProperty('postMessage')) {
+                    window.ReactNativeWebView.postMessage(nextMessage, '*');
+                } else {
+                    _this.printElement('ERROR: unable to find postMessage');
+                }
+                _this.setState({ readyToSendNextMessage: false });
+            }
+        };
 
-		_this.handleMessage = function (event) {
-			_this.printElement('viewer received message');
-			_this.printElement(util.inspect(event.data, {
-				showHidden: false,
-				depth: null
-			}));
+        _this.handleMessage = function (event) {
+            _this.printElement('viewer received message');
+            _this.printElement(util.inspect(event.data, {
+                showHidden: false,
+                depth: null
+            }));
 
-			var msgData = void 0;
-			try {
-				msgData = JSON.parse(event.data);
-				if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
-					// this.printElement(msgData);
-					switch (msgData.type) {
-						case 'LOAD_VIEWER':
-							_this.loadViewer();
-							break;
-						case 'SEND_VIEWER':
-							_this.addMessageToQueue('VIEWER_SENT', { viewer: _this.state.viewer });
-							break;
-						case 'SEND_VIEWER':
-							_this.addMessageToQueue('VIEWER_SENT', { viewer: _this.state.viewer });
-							break;
-						case 'SET_CONTENTS':
-							_this.state.viewer.setContents(msgData.payload.ops);
-							break;
-						case 'SET_HTML_CONTENTS':
-							_this.state.viewer.clipboard.dangerouslyPasteHTML(msgData.payload.html);
-							break;
-						case 'MESSAGE_ACKNOWLEDGED':
-							_this.printElement('received MESSAGE_ACKNOWLEDGED');
-							_this.setState({ readyToSendNextMessage: true });
-							_this.setState({ readyToSendNextMessage: true }, function () {
-								_this.sendNextMessage();
-							});
-							break;
-						default:
-							printElement('reactQuillViewer Error: Unhandled message type received "' + msgData.type + '"');
-					}
-				}
-			} catch (err) {
-				_this.printElement('reactQuillViewer error: ' + err);
-				return;
-			}
-		};
+            var msgData = void 0;
+            try {
+                msgData = event.data;
+                if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
+                    // this.printElement(msgData);
+                    switch (msgData.type) {
+                        case 'LOAD_VIEWER':
+                            _this.loadViewer();
+                            break;
+                        case 'SEND_VIEWER':
+                            _this.addMessageToQueue('VIEWER_SENT', { viewer: _this.state.viewer });
+                            break;
+                        case 'SEND_VIEWER':
+                            _this.addMessageToQueue('VIEWER_SENT', { viewer: _this.state.viewer });
+                            break;
+                        case 'SET_CONTENTS':
+                            _this.state.viewer.setContents(msgData.payload.ops);
+                            break;
+                        case 'SET_HTML_CONTENTS':
+                            _this.state.viewer.clipboard.dangerouslyPasteHTML(msgData.payload.html);
+                            break;
+                        case 'MESSAGE_ACKNOWLEDGED':
+                            _this.printElement('received MESSAGE_ACKNOWLEDGED');
+                            _this.setState({ readyToSendNextMessage: true });
+                            _this.setState({ readyToSendNextMessage: true }, function () {
+                                _this.sendNextMessage();
+                            });
+                            break;
+                        default:
+                            _this.printElement('reactQuillViewer Error: Unhandled message type received "' + msgData.type + '"');
+                    }
+                }
+            } catch (err) {
+                _this.printElement('reactQuillViewer error: ' + err);
+                return;
+            }
+        };
 
-		_this.messageQueue = [];
-		_this.state = {
-			viewer: null,
-			debugMessages: [],
-			readyToSendNextMessage: true
-		};
-		return _this;
-	}
+        _this.messageQueue = [];
+        _this.state = {
+            viewer: null,
+            debugMessages: [],
+            readyToSendNextMessage: true
+        };
+        return _this;
+    }
 
-	// print passed information in an html element; useful for debugging
-	// since console.log and debug statements won't work in a conventional way
+    // print passed information in an html element; useful for debugging
+    // since console.log and debug statements won't work in a conventional way
 
 
-	_createClass(ReactQuillViewer, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			if (document) {
-				document.addEventListener('message', this.handleMessage), false;
-			} else if (window) {
-				window.addEventListener('message', this.handleMessage), false;
-			} else {
-				console.log('unable to add event listener');
-			}
-			this.printElement('component mounted');
-			console.log('mounted');
-			if (BROWSER_TESTING_ENABLED) {
-				this.loadViewer();
-			}
-		}
+    _createClass(ReactQuillViewer, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            if (document) {
+                document.addEventListener('message', this.handleMessage), false;
+            } else if (window) {
+                window.addEventListener('message', this.handleMessage), false;
+            } else {
+                console.log('unable to add event listener');
+            }
+            this.printElement('component mounted');
+            console.log('mounted');
+            if (BROWSER_TESTING_ENABLED) {
+                this.loadViewer();
+            }
+        }
 
-		// load the viewer.  Don't do it in componentMount so that we can pass a theme
-		// to this component based on component props
+        // load the viewer.  Don't do it in componentMount so that we can pass a theme
+        // to this component based on component props
 
-	}, {
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			if (document) {
-				document.removeEventListener('message', this.handleMessage);
-			} else if (window) {
-				window.removeEventListener('message', this.handleMessage);
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'div',
-				{
-					id: 'Quill-Viewer-Container',
-					style: {
-						height: '100%',
-						display: 'flex',
-						flexDirection: 'column'
-					}
-				},
-				_react2.default.createElement(
-					'div',
-					{
-						style: {
-							height: '100%',
-							display: 'flex',
-							flexDirection: 'column',
-							paddingVertical: 5
-						}
-					},
-					_react2.default.createElement('div', {
-						id: 'viewer',
-						style: {
-							fontSize: '20px',
-							height: '100%'
-						}
-					})
-				),
-				(0, _renderIf2.default)(SHOW_DEBUG_INFORMATION)(_react2.default.createElement(
-					'div',
-					{
-						style: {
-							backgroundColor: 'rgba(50, 50, 200, 1)',
-							maxHeight: 200,
-							overflow: 'auto',
-							padding: 5
-						},
-						id: 'messages'
-					},
-					_react2.default.createElement(
-						'ul',
-						null,
-						this.state.debugMessages.map(function (message, index) {
-							return _react2.default.createElement(
-								'li',
-								{ key: index },
-								message
-							);
-						})
-					)
-				))
-			);
-		}
-	}]);
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            if (document) {
+                document.removeEventListener('message', this.handleMessage);
+            } else if (window) {
+                window.removeEventListener('message', this.handleMessage);
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                {
+                    id: 'Quill-Viewer-Container',
+                    style: {
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }
+                },
+                _react2.default.createElement(
+                    'div',
+                    {
+                        style: {
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            paddingVertical: 5
+                        }
+                    },
+                    _react2.default.createElement('div', {
+                        id: 'viewer',
+                        style: {
+                            fontSize: '20px',
+                            height: '100%'
+                        }
+                    })
+                ),
+                (0, _renderIf2.default)(SHOW_DEBUG_INFORMATION)(_react2.default.createElement(
+                    'div',
+                    {
+                        style: {
+                            backgroundColor: 'rgba(50, 50, 200, 1)',
+                            maxHeight: 200,
+                            overflow: 'auto',
+                            padding: 5
+                        },
+                        id: 'messages'
+                    },
+                    _react2.default.createElement(
+                        'ul',
+                        null,
+                        this.state.debugMessages.map(function (message, index) {
+                            return _react2.default.createElement(
+                                'li',
+                                { key: index },
+                                message
+                            );
+                        })
+                    )
+                ))
+            );
+        }
+    }]);
 
-	return ReactQuillViewer;
+    return ReactQuillViewer;
 }(_react2.default.Component);
 
 exports.default = ReactQuillViewer;

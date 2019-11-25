@@ -9,9 +9,9 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
-  WebView,
   Alert
 } from 'react-native';
+import {WebView}  from 'react-native-webview'
 import PropTypes from 'prop-types';
 import AssetUtils from 'expo-asset-utils';
 
@@ -135,14 +135,8 @@ export default class WebViewQuillEditor extends React.Component {
     // only send message when webview is loaded
     if (this.webview) {
       console.log(`WebViewQuillEditor: sending message ${type}`);
-      this.webview.postMessage(
-        JSON.stringify({
-          prefix: MESSAGE_PREFIX,
-          type,
-          payload
-        }),
-        '*'
-      );
+      const data = JSON.stringify({ prefix: MESSAGE_PREFIX, type, payload })
+      this.webview.injectJavaScript(`document.dispatchEvent(new MessageEvent('message', { data: ${data} }))`)
     }
   };
 
