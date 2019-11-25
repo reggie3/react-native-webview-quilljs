@@ -48118,7 +48118,7 @@ if(false) {}
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -48161,235 +48161,235 @@ var SHOW_DEBUG_INFORMATION = false;
 var messageCounter = 0;
 
 var ReactQuillEditor = function (_React$Component) {
-	_inherits(ReactQuillEditor, _React$Component);
+    _inherits(ReactQuillEditor, _React$Component);
 
-	function ReactQuillEditor(props) {
-		_classCallCheck(this, ReactQuillEditor);
+    function ReactQuillEditor(props) {
+        _classCallCheck(this, ReactQuillEditor);
 
-		var _this = _possibleConstructorReturn(this, (ReactQuillEditor.__proto__ || Object.getPrototypeOf(ReactQuillEditor)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ReactQuillEditor.__proto__ || Object.getPrototypeOf(ReactQuillEditor)).call(this, props));
 
-		_this.printElement = function (data) {
-			if (SHOW_DEBUG_INFORMATION) {
-				var message = '';
-				if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
-					message = util.inspect(data, { showHidden: false, depth: null });
-				} else if (typeof data === 'string') {
-					message = data;
-				}
-				_this.setState({
-					debugMessages: _this.state.debugMessages.concat([message])
-				});
-				console.log(message);
-			}
-		};
+        _this.printElement = function (data) {
+            if (SHOW_DEBUG_INFORMATION) {
+                var message = '';
+                if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
+                    message = util.inspect(data, { showHidden: false, depth: null });
+                } else if (typeof data === 'string') {
+                    message = data;
+                }
+                _this.setState({
+                    debugMessages: _this.state.debugMessages.concat([message])
+                });
+                console.log(message);
+            }
+        };
 
-		_this.addTextChangeEventToEditor = function () {
-			var that = _this;
-			_this.state.editor.on('text-change', function (delta, oldDelta, source) {
-				that.addMessageToQueue('TEXT_CHANGED', {
-					type: 'success',
-					deltaChange: delta,
-					delta: _this.state.editor.getContents(),
-					deltaOld: oldDelta,
-					changeSource: source
-				});
-			});
-		};
+        _this.addTextChangeEventToEditor = function () {
+            var that = _this;
+            _this.state.editor.on('text-change', function (delta, oldDelta, source) {
+                that.addMessageToQueue('TEXT_CHANGED', {
+                    type: 'success',
+                    deltaChange: delta,
+                    delta: _this.state.editor.getContents(),
+                    deltaOld: oldDelta,
+                    changeSource: source
+                });
+            });
+        };
 
-		_this.loadEditor = function (theme) {
-			var that = _this;
-			_this.printElement('loading editor');
-			_this.setState({
-				editor: new _quill2.default('#editor', {
-					theme: theme ? theme : 'snow',
-					bounds: '#Quill-Editor-Container'
-				})
-			}, function () {
-				that.printElement('editor initialized');
-				that.addMessageToQueue('EDITOR_LOADED', {
-					type: 'success',
-					delta: _this.state.editor.getContents()
-				});
-				that.addTextChangeEventToEditor();
-			});
-		};
+        _this.loadEditor = function (theme) {
+            var that = _this;
+            _this.printElement('loading editor');
+            _this.setState({
+                editor: new _quill2.default('#editor', {
+                    theme: theme ? theme : 'snow',
+                    bounds: '#Quill-Editor-Container'
+                })
+            }, function () {
+                that.printElement('editor initialized');
+                that.addMessageToQueue('EDITOR_LOADED', {
+                    type: 'success',
+                    delta: _this.state.editor.getContents()
+                });
+                that.addTextChangeEventToEditor();
+            });
+        };
 
-		_this.addMessageToQueue = function (type, payload) {
-			_this.messageQueue.push(JSON.stringify({
-				messageID: messageCounter++,
-				prefix: MESSAGE_PREFIX,
-				type: type,
-				payload: payload
-			}));
-			_this.printElement('adding message ' + messageCounter + ' to queue: ' + type);
-			_this.printElement('queue length: ' + _this.messageQueue.length);
-			if (_this.state.readyToSendNextMessage) {
-				_this.printElement('sending message');
-				_this.sendNextMessage();
-			}
-		};
+        _this.addMessageToQueue = function (type, payload) {
+            _this.messageQueue.push(JSON.stringify({
+                messageID: messageCounter++,
+                prefix: MESSAGE_PREFIX,
+                type: type,
+                payload: payload
+            }));
+            _this.printElement('adding message ' + messageCounter + ' to queue: ' + type);
+            _this.printElement('queue length: ' + _this.messageQueue.length);
+            if (_this.state.readyToSendNextMessage) {
+                _this.printElement('sending message');
+                _this.sendNextMessage();
+            }
+        };
 
-		_this.sendNextMessage = function () {
-			if (_this.messageQueue.length > 0) {
-				var nextMessage = _this.messageQueue.shift();
-				_this.printElement('sending message ' + nextMessage);
-				if (document.hasOwnProperty('postMessage')) {
-					document.postMessage(nextMessage, '*');
-				} else if (window.hasOwnProperty('postMessage')) {
-					window.postMessage(nextMessage, '*');
-				} else {
-					_this.printElement('ERROR: unable to find postMessage');
-				}
-				_this.setState({ readyToSendNextMessage: false });
-			}
-		};
+        _this.sendNextMessage = function () {
+            if (_this.messageQueue.length > 0) {
+                var nextMessage = _this.messageQueue.shift();
+                _this.printElement('sending message ' + nextMessage);
+                if (document.hasOwnProperty('postMessage')) {
+                    document.postMessage(nextMessage, '*');
+                } else if (window.hasOwnProperty('ReactNativeWebView') && window.ReactNativeWebView.hasOwnProperty('postMessage')) {
+                    window.ReactNativeWebView.postMessage(nextMessage, '*');
+                } else {
+                    _this.printElement('ERROR: unable to find postMessage');
+                }
+                _this.setState({ readyToSendNextMessage: false });
+            }
+        };
 
-		_this.handleMessage = function (event) {
-			_this.printElement('received message');
-			_this.printElement(util.inspect(event.data, {
-				showHidden: false,
-				depth: null
-			}));
+        _this.handleMessage = function (event) {
+            _this.printElement('received message');
+            _this.printElement(util.inspect(event.data, {
+                showHidden: false,
+                depth: null
+            }));
 
-			var msgData = void 0;
-			try {
-				msgData = event.data;
-				if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
-					// this.printElement(msgData);
-					switch (msgData.type) {
-						case 'LOAD_EDITOR':
-							_this.loadEditor();
-							break;
-						case 'SEND_EDITOR':
-							_this.addMessageToQueue('EDITOR_SENT', { editor: _this.state.editor });
-							break;
-						case 'SEND_EDITOR':
-							_this.addMessageToQueue('EDITOR_SENT', { viewer: _this.state.editor });
-						case 'GET_DELTA':
-							_this.addMessageToQueue('RECEIVE_DELTA', {
-								type: 'success',
-								delta: _this.state.editor.getContents()
-							});
-							break;
-						case 'SET_CONTENTS':
-							_this.state.editor.setContents(msgData.payload.delta);
-							break;
-						case 'SET_HTML_CONTENTS':
-							_this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
-							break;
-						case 'MESSAGE_ACKNOWLEDGED':
-							_this.printElement('received MESSAGE_ACKNOWLEDGED');
-							_this.setState({ readyToSendNextMessage: true }, function () {
-								_this.sendNextMessage();
-							});
-							break;
-						default:
-							printElement('reactQuillEditor Error: Unhandled message type received "' + msgData.type + '"');
-					}
-				}
-			} catch (err) {
-				_this.printElement('reactQuillEditor error: ' + err);
-				return;
-			}
-		};
+            var msgData = void 0;
+            try {
+                msgData = event.data;
+                if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
+                    // this.printElement(msgData);
+                    switch (msgData.type) {
+                        case 'LOAD_EDITOR':
+                            _this.loadEditor();
+                            break;
+                        case 'SEND_EDITOR':
+                            _this.addMessageToQueue('EDITOR_SENT', { editor: _this.state.editor });
+                            break;
+                        case 'SEND_EDITOR':
+                            _this.addMessageToQueue('EDITOR_SENT', { viewer: _this.state.editor });
+                        case 'GET_DELTA':
+                            _this.addMessageToQueue('RECEIVE_DELTA', {
+                                type: 'success',
+                                delta: _this.state.editor.getContents()
+                            });
+                            break;
+                        case 'SET_CONTENTS':
+                            _this.state.editor.setContents(msgData.payload.delta);
+                            break;
+                        case 'SET_HTML_CONTENTS':
+                            _this.state.editor.clipboard.dangerouslyPasteHTML(msgData.payload.html);
+                            break;
+                        case 'MESSAGE_ACKNOWLEDGED':
+                            _this.printElement('received MESSAGE_ACKNOWLEDGED');
+                            _this.setState({ readyToSendNextMessage: true }, function () {
+                                _this.sendNextMessage();
+                            });
+                            break;
+                        default:
+                            _this.printElement('reactQuillEditor Error: Unhandled message type received "' + msgData.type + '"');
+                    }
+                }
+            } catch (err) {
+                _this.printElement('reactQuillEditor error: ' + err);
+                return;
+            }
+        };
 
-		_this.messageQueue = [];
-		_this.state = {
-			editor: null,
-			debugMessages: [],
-			readyToSendNextMessage: true
-		};
-		return _this;
-	}
-	// print passed information in an html element; useful for debugging
-	// since console.log and debug statements won't work in a conventional way
+        _this.messageQueue = [];
+        _this.state = {
+            editor: null,
+            debugMessages: [],
+            readyToSendNextMessage: true
+        };
+        return _this;
+    }
+    // print passed information in an html element; useful for debugging
+    // since console.log and debug statements won't work in a conventional way
 
 
-	_createClass(ReactQuillEditor, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			if (document) {
-				document.addEventListener('message', this.handleMessage);
-			} else if (window) {
-				window.addEventListener('message', this.handleMessage);
-			} else {
-				console.log('unable to add event listener');
-			}
-			this.printElement('component mounted');
-			console.log('mounted');
-			debugger;
-			if (BROWSER_TESTING_ENABLED) {
-				this.loadEditor();
-			}
-		}
-	}, {
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			if (document) {
-				document.removeEventListener('message', this.handleMessage);
-			} else if (window) {
-				window.removeEventListener('message', this.handleMessage);
-			}
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'div',
-				{
-					id: 'Quill-Editor-Container',
-					style: {
-						height: '100%',
-						display: 'flex',
-						flexDirection: 'column'
-					}
-				},
-				_react2.default.createElement(
-					'div',
-					{
-						style: {
-							height: '100%',
-							display: 'flex',
-							flexDirection: 'column',
-							paddingVertical: 5
-						}
-					},
-					_react2.default.createElement('div', {
-						id: 'editor',
-						style: {
-							fontSize: '20px',
-							height: 'calc(100% - 42px)'
-						}
-					})
-				),
-				(0, _renderIf2.default)(SHOW_DEBUG_INFORMATION)(_react2.default.createElement(
-					'div',
-					{
-						style: {
-							backgroundColor: 'rgba(50, 50, 200, 1)',
-							maxHeight: 200,
-							overflow: 'auto',
-							padding: 5
-						},
-						id: 'messages'
-					},
-					_react2.default.createElement(
-						'ul',
-						null,
-						this.state.debugMessages.map(function (message, index) {
-							return _react2.default.createElement(
-								'li',
-								{ key: index },
-								message
-							);
-						})
-					)
-				))
-			);
-		}
-	}]);
+    _createClass(ReactQuillEditor, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            if (document) {
+                document.addEventListener('message', this.handleMessage);
+            } else if (window) {
+                window.addEventListener('message', this.handleMessage);
+            } else {
+                console.log('unable to add event listener');
+            }
+            this.printElement('component mounted');
+            console.log('mounted');
+            debugger;
+            if (BROWSER_TESTING_ENABLED) {
+                this.loadEditor();
+            }
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            if (document) {
+                document.removeEventListener('message', this.handleMessage);
+            } else if (window) {
+                window.removeEventListener('message', this.handleMessage);
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                {
+                    id: 'Quill-Editor-Container',
+                    style: {
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }
+                },
+                _react2.default.createElement(
+                    'div',
+                    {
+                        style: {
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            paddingVertical: 5
+                        }
+                    },
+                    _react2.default.createElement('div', {
+                        id: 'editor',
+                        style: {
+                            fontSize: '20px',
+                            height: 'calc(100% - 42px)'
+                        }
+                    })
+                ),
+                (0, _renderIf2.default)(SHOW_DEBUG_INFORMATION)(_react2.default.createElement(
+                    'div',
+                    {
+                        style: {
+                            backgroundColor: 'rgba(50, 50, 200, 1)',
+                            maxHeight: 200,
+                            overflow: 'auto',
+                            padding: 5
+                        },
+                        id: 'messages'
+                    },
+                    _react2.default.createElement(
+                        'ul',
+                        null,
+                        this.state.debugMessages.map(function (message, index) {
+                            return _react2.default.createElement(
+                                'li',
+                                { key: index },
+                                message
+                            );
+                        })
+                    )
+                ))
+            );
+        }
+    }]);
 
-	return ReactQuillEditor;
+    return ReactQuillEditor;
 }(_react2.default.Component);
 
 exports.default = ReactQuillEditor;
