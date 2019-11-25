@@ -126,92 +126,92 @@ export default class WebViewQuillViewer extends React.Component {
     }
 
 
-        showLoadingIndicator = () => {
+    showLoadingIndicator = () => {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator color="green" />
+            </View>
+        );
+    };
+
+    onError = (error) => {
+        Alert.alert('WebView onError', error, [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }
+        ]);
+    };
+
+    renderError = (error) => {
+        Alert.alert('WebView renderError', error, [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }
+        ]);
+    };
+
+    render = () => {
+        if (this.state.asset) {
             return (
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator color="green" />
+                <View style={{ flex: 1, overflow: 'hidden' }}>
+                    {this.viewerIndexFileAsset ? (
+                        <WebView
+                            style={{ ...StyleSheet.absoluteFillObject }}
+                            ref={this.createWebViewRef}
+                            source={{ uri: this.state.asset.uri }} onLoadEnd={this.onWebViewLoaded}
+                            onMessage={this.handleMessage}
+                            startInLoadingState={true}
+                            renderLoading={this.showLoadingIndicator}
+                            renderError={this.renderError}
+                            javaScriptEnabled={true}
+                            onError={this.onError}
+                            scalesPageToFit={false}
+                            mixedContentMode={'always'}
+                        />
+                    ) : (
+                            <View
+                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                            >
+                                <ActivityIndicator color="blue" />
+                            </View>
+                        )}
                 </View>
             );
-        };
-
-        onError = (error) => {
-            Alert.alert('WebView onError', error, [
-                { text: 'OK', onPress: () => console.log('OK Pressed') }
-            ]);
-        };
-
-        renderError = (error) => {
-            Alert.alert('WebView renderError', error, [
-                { text: 'OK', onPress: () => console.log('OK Pressed') }
-            ]);
-        };
-
-        render = () => {
-            if (this.state.asset) {
-                return (
-                    <View style={{ flex: 1, overflow: 'hidden' }}>
-                        {this.viewerIndexFileAsset ? (
-                            <WebView
-                                style={{ ...StyleSheet.absoluteFillObject }}
-                                ref={this.createWebViewRef}
-                                source={{ uri: this.state.asset.uri }} onLoadEnd={this.onWebViewLoaded}
-                                onMessage={this.handleMessage}
-                                startInLoadingState={true}
-                                renderLoading={this.showLoadingIndicator}
-                                renderError={this.renderError}
-                                javaScriptEnabled={true}
-                                onError={this.onError}
-                                scalesPageToFit={false}
-                                mixedContentMode={'always'}
-                            />
-                        ) : (
-                                <View
-                                    style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                                >
-                                    <ActivityIndicator color="blue" />
-                                </View>
-                            )}
-                    </View>
-                );
-            }
-            return (
-                <ActivityIndicator />
-            );
         }
-
+        return (
+            <ActivityIndicator />
+        );
     }
 
-    WebViewQuillViewer.propTypes = {
-        backgroundColor: PropTypes.string,
-        onLoad: PropTypes.func
-    };
+}
 
-    // Specifies the default values for props:
-    WebViewQuillViewer.defaultProps = {
-        theme: 'bubble'
-    };
+WebViewQuillViewer.propTypes = {
+    backgroundColor: PropTypes.string,
+    onLoad: PropTypes.func
+};
 
-    const styles = StyleSheet.create({
-        activityOverlayStyle: {
-            ...StyleSheet.absoluteFillObject,
-            marginHorizontal: 20,
-            marginVertical: 60,
-            display: 'flex',
-            justifyContent: 'center',
-            alignContent: 'center',
-            borderRadius: 5
+// Specifies the default values for props:
+WebViewQuillViewer.defaultProps = {
+    theme: 'bubble'
+};
+
+const styles = StyleSheet.create({
+    activityOverlayStyle: {
+        ...StyleSheet.absoluteFillObject,
+        marginHorizontal: 20,
+        marginVertical: 60,
+        display: 'flex',
+        justifyContent: 'center',
+        alignContent: 'center',
+        borderRadius: 5
+    },
+    activityIndicatorContainer: {
+        backgroundColor: 'white',
+        padding: 10,
+        borderRadius: 50,
+        alignSelf: 'center',
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 3
         },
-        activityIndicatorContainer: {
-            backgroundColor: 'white',
-            padding: 10,
-            borderRadius: 50,
-            alignSelf: 'center',
-            shadowColor: '#000000',
-            shadowOffset: {
-                width: 0,
-                height: 3
-            },
-            shadowRadius: 5,
-            shadowOpacity: 1.0
-        }
-    });
+        shadowRadius: 5,
+        shadowOpacity: 1.0
+    }
+});
