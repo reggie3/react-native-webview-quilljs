@@ -123,6 +123,8 @@ export default class WebViewQuillViewer extends React.Component {
             const data = JSON.stringify({ prefix: MESSAGE_PREFIX, type, payload })
             this.webview.injectJavaScript(`document.dispatchEvent(new MessageEvent('message', { data: ${data} }))`)
         };
+    }
+
 
         showLoadingIndicator = () => {
             return (
