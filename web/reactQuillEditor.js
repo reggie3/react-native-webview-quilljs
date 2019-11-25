@@ -142,7 +142,7 @@ export default class ReactQuillEditor extends React.Component {
 
 		let msgData;
 		try {
-			msgData = JSON.parse(event.data);
+			msgData = event.data;
 			if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
 				// this.printElement(msgData);
 				switch (msgData.type) {

@@ -16,6 +16,8 @@
 		"expo-asset-utils": "^1.0.0",
 		"prop-types": "^15.7.2",
 		"quilljs": "^0.18.1",
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0",
 		"react-native-webview": "^7.0.5",
 		"render-if": "^0.1.1",
 		"util": "^0.10.3"

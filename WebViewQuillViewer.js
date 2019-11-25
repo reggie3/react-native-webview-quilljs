@@ -147,35 +147,30 @@ export default class WebViewQuillViewer extends React.Component {
     };
 
     render = () => {
-        if (this.state.asset) {
-            return (
-                <View style={{ flex: 1, overflow: 'hidden' }}>
-                    {this.viewerIndexFileAsset ? (
-                        <WebView
-                            style={{ ...StyleSheet.absoluteFillObject }}
-                            ref={this.createWebViewRef}
-                            source={{ uri: this.state.asset.uri }} onLoadEnd={this.onWebViewLoaded}
-                            onMessage={this.handleMessage}
-                            startInLoadingState={true}
-                            renderLoading={this.showLoadingIndicator}
-                            renderError={this.renderError}
-                            javaScriptEnabled={true}
-                            onError={this.onError}
-                            scalesPageToFit={false}
-                            mixedContentMode={'always'}
-                        />
-                    ) : (
-                            <View
-                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                            >
-                                <ActivityIndicator color="blue" />
-                            </View>
-                        )}
-                </View>
-            );
-        }
         return (
-            <ActivityIndicator />
+            <View style={{ flex: 1, overflow: 'hidden' }}>
+                {this.asset ? (
+                    <WebView
+                        style={{ ...StyleSheet.absoluteFillObject }}
+                        ref={this.createWebViewRef}
+                        source={{ uri: this.state.asset.uri }} onLoadEnd={this.onWebViewLoaded}
+                        onMessage={this.handleMessage}
+                        startInLoadingState={true}
+                        renderLoading={this.showLoadingIndicator}
+                        renderError={this.renderError}
+                        javaScriptEnabled={true}
+                        onError={this.onError}
+                        scalesPageToFit={false}
+                        mixedContentMode={'always'}
+                    />
+                ) : (
+                        <View
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                        >
+                            <ActivityIndicator />
+                        </View>
+                    )}
+            </View>
         );
     }
 

@@ -48253,7 +48253,7 @@ var ReactQuillEditor = function (_React$Component) {
 
 			var msgData = void 0;
 			try {
-				msgData = JSON.parse(event.data);
+				msgData = event.data;
 				if (msgData.hasOwnProperty('prefix') && msgData.prefix === MESSAGE_PREFIX) {
 					// this.printElement(msgData);
 					switch (msgData.type) {

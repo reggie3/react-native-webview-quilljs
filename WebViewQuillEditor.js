@@ -47,8 +47,9 @@ export default class WebViewQuillEditor extends React.Component {
 
     handleMessage = (event) => {
         let msgData;
+        const decoded = unescape(decodeURIComponent(event.nativeEvent.data))
         try {
-            msgData = JSON.parse(event.nativeEvent.data);
+            msgData = JSON.parse(decoded);
             if (
                 msgData.hasOwnProperty('prefix') &&
                 msgData.prefix === MESSAGE_PREFIX
@@ -167,39 +168,34 @@ export default class WebViewQuillEditor extends React.Component {
     };
 
     render = () => {
-        if (this.state.asset) {
-            return (
-                <View style={{ flex: 1, overflow: 'hidden' }}>
-                    {this.state.editorIndexFileAsset ? (
-                        <WebView
-                            style={{ ...StyleSheet.absoluteFillObject }}
-                            ref={this.createWebViewRef}
-                            source={{ uri: this.state.asset.uri }} onLoadEnd={this.onWebViewLoaded}
-                            onMessage={this.handleMessage}
-                            startInLoadingState={true}
-                            renderLoading={this.showLoadingIndicator}
-                            renderError={this.renderError}
-                            javaScriptEnabled={true}
-                            onError={this.onError}
-                            scalesPageToFit={false}
-                            mixedContentMode={'always'}
-                            domStorageEnabled={true}
-                        />
-                    ) : (
-                            <View
-                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                            >
-                                <ActivityIndicator color="red" />
-                            </View>
-                        )}
-                </View>
-            );
-        }
         return (
-            <ActivityIndicator />
-        )
-    };
-}
+            <View style={{ flex: 1, overflow: 'hidden' }}>
+                {this.state.asset ? (
+                    <WebView
+                        style={{ ...StyleSheet.absoluteFillObject }}
+                        ref={this.createWebViewRef}
+                        source={{ uri: this.state.asset.uri }} onLoadEnd={this.onWebViewLoaded}
+                        onMessage={this.handleMessage}
+                        startInLoadingState={true}
+                        renderLoading={this.showLoadingIndicator}
+                        renderError={this.renderError}
+                        javaScriptEnabled={true}
+                        onError={this.onError}
+                        scalesPageToFit={false}
+                        mixedContentMode={'always'}
+                        domStorageEnabled={true}
+                    />
+                ) : (
+                        <View
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                        >
+                            <ActivityIndicator />
+                        </View>
+                    )}
+            </View>
+        );
+    }
+};
 
 WebViewQuillEditor.propTypes = {
     getDeltaCallback: PropTypes.func,
