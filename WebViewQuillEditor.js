@@ -9,16 +9,15 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
-  WebView,
-  Platform,
   Alert
 } from 'react-native';
+import { WebView } from 'react-native-webview'
 import PropTypes from 'prop-types';
 import AssetUtils from 'expo-asset-utils';
 
 // path to the file that the webview will load
 
-const EDITOR_INDEX_FILE_PATH = require(`./assets/dist/reactQuillEditor-index.html`);
+const requiredAsset = require(`./assets/dist/reactQuillEditor-index.html`);
 // const INDEX_FILE_ASSET_URI = Asset.fromModule(require(EDITOR_INDEX_FILE_PATH)).uri;
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
@@ -27,20 +26,18 @@ export default class WebViewQuillEditor extends React.Component {
     super();
     this.webview = null;
     this.state = {
-      webViewNotLoaded: true,
-      editorIndexFileAsset: undefined
+      webViewNotLoaded: true, // flag to show activity indicator,
+      asset: undefined
     };
   }
 
   componentDidMount = async () => {
     try {
-      let editorIndexFileAsset = await AssetUtils.resolveAsync(
-        EDITOR_INDEX_FILE_PATH
-      );
-      this.setState({ editorIndexFileAsset });
+      const asset = await AssetUtils.resolveAsync(requiredAsset)
+      console.log({ asset })
+      this.setState({ asset })
     } catch (error) {
-      console.log({ error });
-      debugger;
+      console.log({ error })
     }
   };
 
@@ -50,8 +47,9 @@ export default class WebViewQuillEditor extends React.Component {
 
   handleMessage = (event) => {
     let msgData;
+    const decoded = unescape(decodeURIComponent(event.nativeEvent.data))
     try {
-      msgData = JSON.parse(event.nativeEvent.data);
+      msgData = JSON.parse(decoded);
       if (
         msgData.hasOwnProperty('prefix') &&
         msgData.prefix === MESSAGE_PREFIX
@@ -91,7 +89,7 @@ export default class WebViewQuillEditor extends React.Component {
           default:
             console.warn(
               `WebViewQuillEditor Error: Unhandled message type received "${
-                msgData.type
+              msgData.type
               }"`
             );
         }
@@ -138,14 +136,8 @@ export default class WebViewQuillEditor extends React.Component {
     // only send message when webview is loaded
     if (this.webview) {
       console.log(`WebViewQuillEditor: sending message ${type}`);
-      this.webview.postMessage(
-        JSON.stringify({
-          prefix: MESSAGE_PREFIX,
-          type,
-          payload
-        }),
-        '*'
-      );
+      const data = JSON.stringify({ prefix: MESSAGE_PREFIX, type, payload })
+      this.webview.injectJavaScript(`document.dispatchEvent(new MessageEvent('message', { data: ${data} }))`)
     }
   };
 
@@ -178,12 +170,11 @@ export default class WebViewQuillEditor extends React.Component {
   render = () => {
     return (
       <View style={{ flex: 1, overflow: 'hidden' }}>
-        {this.state.editorIndexFileAsset ? (
+        {this.state.asset ? (
           <WebView
             style={{ ...StyleSheet.absoluteFillObject }}
             ref={this.createWebViewRef}
-            source={{ uri: this.state.editorIndexFileAsset.uri }}
-            onLoadEnd={this.onWebViewLoaded}
+            source={{ uri: this.state.asset.uri }} onLoadEnd={this.onWebViewLoaded}
             onMessage={this.handleMessage}
             startInLoadingState={true}
             renderLoading={this.showLoadingIndicator}
@@ -195,16 +186,16 @@ export default class WebViewQuillEditor extends React.Component {
             domStorageEnabled={true}
           />
         ) : (
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
-            <ActivityIndicator color="red" />
-          </View>
-        )}
+            <View
+              style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+            >
+              <ActivityIndicator />
+            </View>
+          )}
       </View>
     );
-  };
-}
+  }
+};
 
 WebViewQuillEditor.propTypes = {
   getDeltaCallback: PropTypes.func,

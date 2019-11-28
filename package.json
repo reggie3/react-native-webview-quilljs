@@ -1,8 +1,8 @@
 {
 	"name": "react-native-webview-quilljs",
-	"version": "0.8.40",
+	"version": "0.8.42",
 	"scripts": {
-		"prod": "npm run clean && SET NODE_ENV=PROD && webpack",
+		"prod": "npm run clean && NODE_ENV=PROD && webpack",
 		"dev": "npm run clean && SET NODE_ENV=DEV && webpack -p",
 		"clean": "rimraf ./dist",
 		"test": "jest"
@@ -13,15 +13,12 @@
 	"private": false,
 	"main": "node_modules/expo/AppEntry.js",
 	"dependencies": {
-		"prop-types": "^15.7.2",
 		"expo-asset-utils": "^1.0.0",
-		"render-if": "^0.1.1",
-		"util": "^0.10.3",
+		"prop-types": "^15.7.2",
 		"quilljs": "^0.18.1",
-		"expo": "^32.0.6",
-		"react": "16.5.0",
-		"react-dom": "^16.5.0",
-		"react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz"
+		"react-native-webview": "^7.0.5",
+		"render-if": "^0.1.1",
+		"util": "^0.10.3"
 	},
 	"peerDependencies": {
 		"react": "16.5.0",
@@ -63,13 +60,13 @@
 		"jsdom": "^11.7.0",
 		"mocha": "^4.1.0",
 		"neo-async": "^2.5.1",
-		"prop-types": "^15.6.0",
 		"react-native-scripts": "1.5.0",
 		"react-test-renderer": "16",
 		"react-testing-library": "^1.9.3",
 		"style-loader": "^0.19.0",
 		"uglifyjs-webpack-plugin": "^1.2.4",
-		"webpack": "^4.5.0"
+		"webpack": "^4.5.0",
+		"webpack-cli": "^3.3.10"
 	},
 	"repository": {
 		"type": "git",
@@ -79,7 +76,12 @@
 		"url": "https://github.com/reggie3/react-native-webview-quilljs/issues"
 	},
 	"homepage": "https://github.com/reggie3/react-native-webview-quilljs#readme",
-	"keywords": ["react-native", "quill-js", "react-native-webview-quilljs", "quilljs"],
+	"keywords": [
+		"react-native",
+		"quill-js",
+		"react-native-webview-quilljs",
+		"quilljs"
+	],
 	"jest": {
 		"preset": "jest-expo",
 		"setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
