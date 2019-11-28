@@ -4,7 +4,7 @@
     "description": "Development and test application for a react native webview component incorporating Quill JS",
     "slug": "react-native-webview-quilljs",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "34.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,9 +20,7 @@
     "packagerOpts": {
       "assetExts": ["html"]
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.reggie3.reactnativewebviewquilljs",
       "supportsTablet": true

@@ -13,9 +13,9 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      editorMessageDelta:[
+      editorMessageDelta: [
         { insert: 'Hello World' },
-        { insert: '!', attributes: { bold: true }}
+        { insert: '!', attributes: { bold: true } }
       ],
       viewerMessageDelta: [
         { insert: 'Gandalf', attributes: { bold: true } },
@@ -29,14 +29,20 @@ export default class App extends React.Component {
     this.webViewQuillEditor.getDelta();
   };
 
-  getDeltaCallback = response => {
+  getDeltaCallback = (response) => {
     console.log('getDeltaCallback');
     console.log(response.delta);
     this.webViewQuillViewer.sendContentToViewer(response.delta);
   };
 
   onDeltaChangeCallback = (delta, deltaChange, deltaOld, changeSource) => {
-    console.log('onDeltaChangeCallback: ',{delta}, {deltaChange}, {deltaOld}, changeSource);
+    console.log(
+      'onDeltaChangeCallback: ',
+      { delta },
+      { deltaChange },
+      { deltaOld },
+      changeSource
+    );
   };
 
   render() {
@@ -67,7 +73,7 @@ export default class App extends React.Component {
           }}
         >
           <WebViewQuillEditor
-            ref={component => (this.webViewQuillEditor = component)}
+            ref={(component) => (this.webViewQuillEditor = component)}
             getDeltaCallback={this.getDeltaCallback}
             onDeltaChangeCallback={this.onDeltaChangeCallback}
             backgroundColor={'#fffbea'}
@@ -94,10 +100,9 @@ export default class App extends React.Component {
           }}
         >
           <WebViewQuillViewer
-            ref={component => (this.webViewQuillViewer = component)}
+            ref={(component) => (this.webViewQuillViewer = component)}
             contentToDisplay={this.state.viewerMessageDelta}
             backgroundColor={'#fffbea'}
-
           />
         </View>
       </View>
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     display: 'flex'
   },
   statusBar: {
-    height: Constants.statusBarHeight,
+    height: 48,
     backgroundColor: '#9be1ff'
   }
 });
