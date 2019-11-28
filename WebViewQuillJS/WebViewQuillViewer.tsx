@@ -22,6 +22,7 @@ const requiredAsset = require(`./assets/dist/reactQuillViewer-index.html`);
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
 export default class WebViewQuillViewer extends React.Component {
+  webview: any;
   constructor() {
     super();
     this.webview = null;

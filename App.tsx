@@ -1,26 +1,37 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { Constants } from 'expo';
-import WebViewQuillEditor from './WebViewQuillEditor';
-import WebViewQuillViewer from './WebViewQuillViewer';
+import React from "react";
+import { StyleSheet, Text, View, Button } from "react-native";
+import { Constants } from "expo";
+import WebViewQuillEditor from "./WebviewQuillJS/WebViewQuillEditor";
+import WebViewQuillViewer from "./WebviewQuillJS/WebViewQuillViewer";
 
 // example content to display
 /* const contentToDisplay = {
   ops: [{ insert: 'Hello\n' }, { insert: 'This is another line' }]
 }; */
 
-export default class App extends React.Component {
-  constructor() {
-    super();
+interface Props{
+
+}
+
+interface State{
+  editorMessageDelta: any[],
+  viewerMessageDelta: any[]
+}
+
+export default class App extends React.Component<null, State> {
+  webViewQuillEditor: WebViewQuillEditor;
+  webViewQuillViewer: any;
+  constructor(props) {
+    super(props);
     this.state = {
       editorMessageDelta: [
-        { insert: 'Hello World' },
-        { insert: '!', attributes: { bold: true } }
+        { insert: "Hello World" },
+        { insert: "!", attributes: { bold: true } }
       ],
       viewerMessageDelta: [
-        { insert: 'Gandalf', attributes: { bold: true } },
-        { insert: ' the ' },
-        { insert: 'Grey', attributes: { color: '#ccc' } }
+        { insert: "Gandalf", attributes: { bold: true } },
+        { insert: " the " },
+        { insert: "Grey", attributes: { color: "#ccc" } }
       ]
     };
   }
@@ -29,15 +40,15 @@ export default class App extends React.Component {
     this.webViewQuillEditor.getDelta();
   };
 
-  getDeltaCallback = (response) => {
-    console.log('getDeltaCallback');
+  getDeltaCallback = response => {
+    console.log("getDeltaCallback");
     console.log(response.delta);
     this.webViewQuillViewer.sendContentToViewer(response.delta);
   };
 
   onDeltaChangeCallback = (delta, deltaChange, deltaOld, changeSource) => {
     console.log(
-      'onDeltaChangeCallback: ',
+      "onDeltaChangeCallback: ",
       { delta },
       { deltaChange },
       { deltaOld },
@@ -50,7 +61,7 @@ export default class App extends React.Component {
       <View
         style={{
           ...StyleSheet.absoluteFillObject,
-          backgroundColor: '#e2e2e2'
+          backgroundColor: "#e2e2e2"
         }}
       >
         <View style={styles.statusBar} />
@@ -59,8 +70,8 @@ export default class App extends React.Component {
             paddingHorizontal: 10,
             paddingVertical: 5,
             fontSize: 20,
-            backgroundColor: '#9be1ff',
-            color: 'black'
+            backgroundColor: "#9be1ff",
+            color: "black"
           }}
         >
           React Native Webview Quill-js Demo .02
@@ -69,15 +80,15 @@ export default class App extends React.Component {
           style={{
             flex: 1,
             padding: 5,
-            backgroundColor: 'rgba(100, 100, 255, 1)'
+            backgroundColor: "rgba(100, 100, 255, 1)"
           }}
         >
           <WebViewQuillEditor
-            ref={(component) => (this.webViewQuillEditor = component)}
+            backgroundColor={"#fffbea"}
+            contentToDisplay={this.state.editorMessageDelta}
             getDeltaCallback={this.getDeltaCallback}
             onDeltaChangeCallback={this.onDeltaChangeCallback}
-            backgroundColor={'#fffbea'}
-            contentToDisplay={this.state.editorMessageDelta}
+            ref={component => (this.webViewQuillEditor = component)}
           />
         </View>
         <View
@@ -96,14 +107,14 @@ export default class App extends React.Component {
           style={{
             flex: 1,
             padding: 5,
-            backgroundColor: 'rgba(255, 255, 100, 1)'
+            backgroundColor: "rgba(255, 255, 100, 1)"
           }}
         >
-          <WebViewQuillViewer
-            ref={(component) => (this.webViewQuillViewer = component)}
+         {/*  <WebViewQuillViewer
+            ref={component => (this.webViewQuillViewer = component)}
             contentToDisplay={this.state.viewerMessageDelta}
-            backgroundColor={'#fffbea'}
-          />
+            backgroundColor={"#fffbea"}
+          /> */}
         </View>
       </View>
     );
@@ -113,11 +124,11 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#ccccff',
-    display: 'flex'
+    backgroundColor: "#ccccff",
+    display: "flex"
   },
   statusBar: {
     height: 48,
-    backgroundColor: '#9be1ff'
+    backgroundColor: "#9be1ff"
   }
 });

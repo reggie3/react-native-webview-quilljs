@@ -5,3 +5,5 @@ npm-debug.*
 build/**/*
 dist/**/*
 
+/HTML/src/node_modules/**/*
+/WebViewQuillJS/node_modules
