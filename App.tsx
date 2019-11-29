@@ -1,8 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { Constants } from "expo";
-import WebViewQuillEditor from "./WebviewQuillJS/WebViewQuillEditor";
-import WebViewQuillViewer from "./WebviewQuillJS/WebViewQuillViewer";
+import WebViewQuill from "./WebviewQuillJS/WebViewQuill";
 
 // example content to display
 /* const contentToDisplay = {
@@ -19,8 +18,8 @@ interface State{
 }
 
 export default class App extends React.Component<null, State> {
-  webViewQuillEditor: WebViewQuillEditor;
-  webViewQuillViewer: any;
+  webViewQuillEditor: WebViewQuill;
+  webViewQuillViewer: WebViewQuill;
   constructor(props) {
     super(props);
     this.state = {
