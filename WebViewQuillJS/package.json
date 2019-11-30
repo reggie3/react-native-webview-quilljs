@@ -2,8 +2,9 @@
   "name": "react-native-webview-quilljs",
   "version": "1.0.0",
   "description": "quill js editor and view for react native",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
+    "prepublish": "tsc",
     "test": "jest"
   },
   "author": "",
@@ -30,5 +31,5 @@
     "parcel-plugin-inliner": "^1.0.10",
     "typescript": "^3.6.4"
   },
-  "types": "types.d.ts"
+  "types": "index.d.ts"
 }

@@ -1,1 +1,4 @@
-export { default as WebViewQuill } from "./WebViewQuill";
+import WebViewQuillEditor from "./WebViewQuillEditor";
+import WebViewQuillViewer from "./WebViewQuillViewer";
+
+export { WebViewQuillViewer, WebViewQuillEditor };
