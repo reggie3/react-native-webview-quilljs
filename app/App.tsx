@@ -18,6 +18,8 @@ import { DeltaOperation } from "quill";
 }; */
 
 interface State {
+  editorHeight: number;
+  viewerHeight: number;
   editorMessageDelta: any[];
   isLoadingComplete: boolean;
   hasLoadingStarted: boolean;
@@ -40,7 +42,9 @@ export default class App extends React.Component<null, State> {
         { insert: "Gandalf", attributes: { bold: true } },
         { insert: " the " },
         { insert: "Grey", attributes: { color: "#ccc" } }
-      ]
+      ],
+      editorHeight: 0,
+      viewerHeight: 0,
     };
   }
 
@@ -68,6 +72,17 @@ export default class App extends React.Component<null, State> {
     console.log("onContentChange: ", { html }, { delta });
   };
 
+  onLayoutEditor = (e) => {
+    this.setState({
+      editorHeight: e.nativeEvent.layout.height,
+    })
+  }
+  onLayoutViewer = (e) => {
+    this.setState({
+      viewerHeight: e.nativeEvent.layout.height,
+    })
+  }
+
   render() {
     if (!this.state.isLoadingComplete) {
       return <ActivityIndicator />;
@@ -91,6 +106,7 @@ export default class App extends React.Component<null, State> {
                 contentToDisplay={this.state.editorMessageDelta}
                 doShowDebugMessages
                 getDeltaCallback={this.getDeltaCallback}
+                height={this.state.editorHeight}
                 onContentChange={this.onContentChange}
                 ref={component => (this.webViewQuillEditor = component)}
               />
@@ -107,11 +123,12 @@ export default class App extends React.Component<null, State> {
                 accessibilityLabel="Click this button to copy text from the editor to the viewer"
               />
             </View>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 }} onLayout={this.onLayoutEditor}>
               <WebViewQuill
                 backgroundColor={"#fffbea"}
                 defaultValue={this.state.viewerMessageDelta}
                 getDeltaCallback={this.getDeltaCallback}
+                height={this.state.viewerHeight}
                 isReadOnly
                 onContentChange={this.onContentChange}
                 ref={component => (this.webViewQuillEditor = component)}

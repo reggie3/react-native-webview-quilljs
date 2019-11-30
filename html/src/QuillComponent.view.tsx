@@ -1,7 +1,7 @@
 import React from "react";
 import * as ReactQuill from "react-quill"; // Typescript
-import "react-quill/dist/quill.bubble.css"; // ES6
-import { DeltaOperation } from "quill";
+import "react-quill/dist/quill.snow.css"; // ES6
+import { DeltaOperation, Delta } from "quill";
 
 const SHOW_DEBUG_INFORMATION = true;
 
@@ -14,7 +14,6 @@ interface Props {
     source: any,
     editor: any
   ) => void;
-  height?: number;
   onQuillRef: (quillRef: any) => void;
   content?: string | DeltaOperation[];
 }
@@ -27,7 +26,6 @@ const getReactQuillComponent = (
     source: any,
     editor: any
   ) => void,
-  height: number,
   onQuillRef: (quillRef: any) => void,
   content: string | DeltaOperation[] | undefined
 ) => {
@@ -35,37 +33,25 @@ const getReactQuillComponent = (
     // @ts-ignore
     <ReactQuill
       defaultValue={defaultValue}
-      modules={{
-        toolbar: false
-      }}
       onChange={handleChange}
-      readOnly={true}
       ref={(component: any) => {
         onQuillRef(component);
       }}
-      style={{ height }}
       value={content}
     />
   );
 };
 
-const QuillViewerComponentView = ({
+const QuillEditorComponentView = ({
   debugMessages = [],
   defaultValue,
   handleChange,
-  height=100,
   onQuillRef,
   content
 }: Props) => {
   return (
     <>
-      {getReactQuillComponent(
-        defaultValue,
-        handleChange,
-        height,
-        onQuillRef,
-        content
-      )}
+      {getReactQuillComponent(defaultValue, handleChange, onQuillRef, content)}
       {SHOW_DEBUG_INFORMATION ? (
         <div
           style={{
@@ -92,4 +78,4 @@ const QuillViewerComponentView = ({
   );
 };
 
-export default QuillViewerComponentView;
+export default QuillEditorComponentView;

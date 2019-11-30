@@ -2,7 +2,7 @@ import React from "react";
 import * as ReactQuill from "react-quill"; // Typescript
 import "react-quill/dist/quill.snow.css"; // ES6
 import { DeltaOperation } from "quill";
-import QuillViewerComponentView from "./QuillViewerComponent.view";
+import QuillEditorComponentView from "./QuillEditorComponent.view";
 import { WebViewQuillJSMessage, MessageInstruction } from "./models";
 import { isEqual } from "lodash";
 
@@ -15,11 +15,10 @@ interface State {
   content: string | DeltaOperation[] | null;
   delta: DeltaOperation[];
   debugMessages: string[];
-  height: number;
   html: string;
 }
 
-class QuillViewerComponent extends React.Component<null, State> {
+class QuillEditorComponent extends React.Component<null, State> {
   private quillRef = null;
   constructor(props: any) {
     super(props);
@@ -28,12 +27,14 @@ class QuillViewerComponent extends React.Component<null, State> {
       debugMessages: ["test message"],
       content: null,
       delta: [],
-      height: 200,
       html: ""
     };
   }
 
   componentDidMount = () => {
+    this.sendMessage({
+      instruction: MessageInstruction.COMPONENT_MOUNTED
+    });
     console.log("componentDidMount");
     this.setState(
       { debugMessages: [...this.state.debugMessages, "componentDidMount"] },
@@ -158,18 +159,17 @@ class QuillViewerComponent extends React.Component<null, State> {
   };
 
   render() {
-    const { contentType, delta,height, html } = this.state;
+    const { contentType, delta, html } = this.state;
     return (
       // @ts-ignore
-      <QuillViewerComponentView
+      <QuillEditorComponentView
         content={contentType === ContentType.DELTA ? delta : html}
         debugMessages={this.state.debugMessages}
         handleChange={this.handleChange}
-        height={height}
         onQuillRef={this.onQuillRef}
       />
     );
   }
 }
 
-export default QuillViewerComponent;
+export default QuillEditorComponent;

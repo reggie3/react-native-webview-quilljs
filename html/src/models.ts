@@ -25,6 +25,7 @@ export interface ReactNativeWebViewQuillJSComponentProps {
   doShowDebugMessages?: boolean;
   getDeltaCallback?: any;
   getEditorCallback?: any;
+  height?: number;
   htmlContentToDisplay?: string;
   isReadOnly?: boolean;
   loadingIndicator?: () => React.ReactElement;
