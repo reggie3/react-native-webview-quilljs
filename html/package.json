@@ -65,6 +65,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "rmNodeModules": "rmdir /S /Q ../app/nodue_modules /s",
     "copyDist": "npx copyfiles -u 1 ./build/index.html ../WebViewQuillJS/assets",
     "dist": "yarn build && yarn copyDist"
   },

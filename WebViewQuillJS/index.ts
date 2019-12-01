@@ -1,4 +1,2 @@
-import WebViewQuillEditor from "./WebViewQuillEditor";
-import WebViewQuillViewer from "./WebViewQuillViewer";
-
-export { WebViewQuillViewer, WebViewQuillEditor };
+import  WebViewQuill  from "./WebViewQuill";
+export default WebViewQuill;

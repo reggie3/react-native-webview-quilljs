@@ -2,7 +2,7 @@ import React from "react";
 import * as ReactQuill from "react-quill"; // Typescript
 import "react-quill/dist/quill.snow.css"; // ES6
 import { DeltaOperation } from "quill";
-import QuillEditorComponentView from "./QuillEditorComponent.view";
+import QuillComponentView from "./QuillComponent.view";
 import { WebViewQuillJSMessage, MessageInstruction } from "./models";
 import { isEqual } from "lodash";
 
@@ -11,11 +11,15 @@ export enum ContentType {
   HTML = "HTML"
 }
 interface State {
-  contentType: ContentType;
-  content: string | DeltaOperation[] | null;
+  content: string | DeltaOperation[];
+  defaultValue: string | DeltaOperation[];
   delta: DeltaOperation[];
   debugMessages: string[];
+  doShowQuillComponentDebugMessages: boolean;
+  height: number;
   html: string;
+  isReadOnly: boolean | null;
+  modules: object;
 }
 
 class QuillEditorComponent extends React.Component<null, State> {
@@ -23,19 +27,19 @@ class QuillEditorComponent extends React.Component<null, State> {
   constructor(props: any) {
     super(props);
     this.state = {
-      contentType: ContentType.DELTA,
       debugMessages: ["test message"],
-      content: null,
+      doShowQuillComponentDebugMessages: false,
+      defaultValue: "",
+      content: "",
       delta: [],
-      html: ""
+      height: 100,
+      html: "",
+      isReadOnly: null,
+      modules: {}
     };
   }
 
   componentDidMount = () => {
-    this.sendMessage({
-      instruction: MessageInstruction.COMPONENT_MOUNTED
-    });
-    console.log("componentDidMount");
     this.setState(
       { debugMessages: [...this.state.debugMessages, "componentDidMount"] },
       () => {
@@ -76,21 +80,6 @@ class QuillEditorComponent extends React.Component<null, State> {
     if (debugMessages !== prevState.debugMessages) {
       console.log(debugMessages);
     }
-    if (content && !isEqual(content, prevState.content)) {
-      if (Array.isArray(content)) {
-        this.setState({
-          delta: content,
-          contentType: ContentType.DELTA
-        });
-      } else if (typeof content === "string") {
-        this.setState({
-          html: content,
-          contentType: ContentType.HTML
-        });
-      } else {
-        throw `Unexpected content type ${typeof content}`;
-      }
-    }
   };
 
   componentWillUnmount = () => {
@@ -125,7 +114,7 @@ class QuillEditorComponent extends React.Component<null, State> {
   private handleMessage = (event: any) => {
     this.addDebugMessage(event.data);
     try {
-      // this.setState({ ...this.state, ...event.data });
+      this.setState({ ...this.state, ...event.data });
     } catch (error) {
       this.addDebugMessage({ error: JSON.stringify(error) });
     }
@@ -140,15 +129,67 @@ class QuillEditorComponent extends React.Component<null, State> {
     }
   };
 
-  handleChange = (
+  private onChange = (
     html: string,
     delta: DeltaOperation[],
     source: any,
     editor: any
   ) => {
+    editor.getContent();
     this.sendMessage({
       instruction: MessageInstruction.CONTENT_CHANGED,
-      payload: { html, delta }
+      payload: {
+        html: editor.getHTML(),
+        delta: editor.getContents(),
+        text: editor.getText(),
+        source,
+        editor
+      }
+    });
+  };
+
+  private onChangeSelection = (range: any, source: any, editor: any) => {
+    this.sendMessage({
+      instruction: MessageInstruction.ON_CHANGE_SELECTION,
+      payload: {
+        range,
+        selection: editor.getSelection(),
+        html: editor.getHTML(),
+        delta: editor.getContents(),
+        text: editor.getText(),
+        source,
+        editor
+      }
+    });
+  };
+  private onFocus = (range: any, source: any, editor: any) => {
+    this.sendMessage({
+      instruction: MessageInstruction.ON_FOCUS,
+      payload: { range, source, editor }
+    });
+  };
+  private onBlur = (previousRange: any, source: any, editor: any) => {
+    this.sendMessage({
+      instruction: MessageInstruction.ON_BLUR,
+      payload: { previousRange, source, editor }
+    });
+  };
+  private onKeyPress = (event: any) => {
+    this.sendMessage({
+      instruction: MessageInstruction.ON_KEY_PRESS,
+      payload: { event }
+    });
+  };
+  private onKeyDown = (event: any) => {
+    this.sendMessage({
+      instruction: MessageInstruction.ON_KEY_DOWN,
+      payload: { event }
+    });
+  };
+  private onKeyUp = (event: any) => {
+    this.sendMessage({
+      instruction: MessageInstruction.ON_KEY_UP,
+      payload: { event }
     });
   };
 
@@ -158,16 +199,64 @@ class QuillEditorComponent extends React.Component<null, State> {
     }
   };
 
+  private shouldRenderQuillComponentView = () => {
+    const { isReadOnly } = this.state;
+    return isReadOnly === true || isReadOnly === false;
+  };
+
   render() {
-    const { contentType, delta, html } = this.state;
+    const {
+      content,
+      debugMessages,
+      defaultValue,
+      doShowQuillComponentDebugMessages,
+      height,
+      isReadOnly
+    } = this.state;
     return (
-      // @ts-ignore
-      <QuillEditorComponentView
-        content={contentType === ContentType.DELTA ? delta : html}
-        debugMessages={this.state.debugMessages}
-        handleChange={this.handleChange}
-        onQuillRef={this.onQuillRef}
-      />
+      <>
+        {this.shouldRenderQuillComponentView() && (
+          // @ts-ignore
+          <QuillComponentView
+            addDebugMessage={this.addDebugMessage}
+            content={content}
+            debugMessages={debugMessages}
+            defaultValue={defaultValue}
+            height={height}
+            onChange={this.onChange}
+            onChangeSelection={this.onChangeSelection}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
+            onKeyPress={this.onKeyPress}
+            onKeyDown={this.onKeyDown}
+            onKeyUp={this.onKeyUp}
+            isReadOnly={isReadOnly as boolean}
+            onQuillRef={this.onQuillRef}
+          />
+        )}
+        {doShowQuillComponentDebugMessages && (
+          <div
+            style={{
+              backgroundColor: "orange",
+              maxHeight: "200px",
+              overflow: "auto",
+              padding: 5,
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 15000
+            }}
+            id="messages"
+          >
+            <ul>
+              {debugMessages.map((message: string, index: number) => {
+                return <li key={index}>{message}</li>;
+              })}
+            </ul>
+          </div>
+        )}
+      </>
     );
   }
 }

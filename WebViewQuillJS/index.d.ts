@@ -15,25 +15,30 @@ export enum MessageInstruction {
   SET_CONTENT = "SET_CONTENT",
   CONTENT_CHANGED = "CONTENT_CHANGED",
   UNABLE_TO_ADD_EVENT_LISTENER = "UNABLE_TO_ADD_EVENT_LISTENER",
-  COMPONENT_MOUNTED = "COMPONENT_MOUNTED"
+  COMPONENT_MOUNTED = "COMPONENT_MOUNTED",
+  ON_CHANGE_SELECTION = "ON_CHANGE_SELECTION",
+  ON_FOCUS = "ON_FOCUS",
+  ON_BLUR = "ON_BLUR",
+  ON_KEY_PRESS = "ON_KEY_PRESS",
+  ON_KEY_DOWN = "ON_KEY_DOWN",
+  ON_KEY_UP = "ON_KEY_UP"
 }
 
 export interface ReactNativeWebViewQuillJSComponentProps {
   backgroundColor?: any; // this can be set by user
   containerStyle?: ViewStyle;
+  content?: string | DeltaOperation[];
   defaultValue?: string | DeltaOperation[];
   doShowDebugMessages?: boolean;
-  getDeltaCallback?: any;
-  getEditorCallback?: any;
+  doShowQuillComponentDebugMessages: boolean;
   height?: number;
-  htmlContentToDisplay?: string;
   isReadOnly?: boolean;
   loadingIndicator?: () => React.ReactElement;
   onContentChange?: (content: string, delta: DeltaOperation[]) => void;
   onError?: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => void;
   onLoadEnd?: () => void;
   onLoadStart?: () => void;
-  onMessageReceived?: (message: WebViewQuillJSMessage) => void;
+  onMessageReceived?: (message: object) => void;
   style?: ViewStyle;
 }
 
@@ -50,8 +55,9 @@ export interface SetContentPayload {
 
 export interface StartupMessage {
   defaultValue: string | DeltaOperation[];
+  doShowQuillComponentDebugMessages: boolean;
+  height: number;
   isReadOnly: boolean;
-  isReadyToRenderQuillComponent: boolean;
 }
 
 export { Quill } from "quill";

@@ -5,9 +5,7 @@
  *
  */
 import * as React from "react";
-import {
-  NativeSyntheticEvent
-} from "react-native";
+import { NativeSyntheticEvent } from "react-native";
 import { WebView } from "react-native-webview";
 import AssetUtils from "expo-asset-utils";
 import { Asset } from "expo-asset";
@@ -22,6 +20,7 @@ import { WebViewError } from "react-native-webview/lib/WebViewTypes";
 import WebViewQuillView from "./WebViewQuill.view";
 import { ActivityOverlay } from "./ActivityOverlay";
 import { DeltaOperation } from "quill";
+import { isEqual } from "lodash";
 
 // path to the file that the webview will load
 
@@ -30,6 +29,7 @@ const MESSAGE_PREFIX = "react-native-webview-quilljs";
 
 interface State {
   debugMessages: string[];
+  height: number;
   isLoading: boolean;
   webviewContent: string;
 }
@@ -37,13 +37,17 @@ interface State {
 const defaultProps: Partial<Props> = {
   backgroundColor: "#ccc",
   containerStyle: {},
+  defaultValue: "",
+  doShowDebugMessages: false,
+  doShowQuillComponentDebugMessages: false,
   isReadOnly: false,
   loadingIndicator: () => <ActivityOverlay />,
-  onContentChange: (html: string, delta: DeltaOperation[])=>{},
+  onContentChange: (html: string, delta: DeltaOperation[]) => {},
   onError: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => {},
   onLoadEnd: () => {},
   onLoadStart: () => {},
-  style:{}
+  onMessageReceived: (message: object) => {},
+  style: {}
 };
 
 class WebViewQuill extends React.Component<Props, State> {
@@ -56,8 +60,9 @@ class WebViewQuill extends React.Component<Props, State> {
 
     this.state = {
       debugMessages: [],
-      webviewContent: null,
-      isLoading: null // flag to show activity indicator,
+      height: 0,
+      isLoading: null,
+      webviewContent: null
     };
     this.webViewRef = null;
   }
@@ -82,36 +87,45 @@ class WebViewQuill extends React.Component<Props, State> {
 
   componentDidUpdate = (prevProps: Props, prevState: State) => {
     const { webviewContent } = this.state;
+    const { content } = this.props;
     if (!prevState.webviewContent && webviewContent) {
       this.updateDebugMessages("file loaded");
+    }
+    if (!isEqual(content, prevProps.content)) {
+      this.updateDebugMessages("sending startup message");
+
+      this.webViewRef.injectJavaScript(
+        `window.postMessage(${JSON.stringify({ content })}, '*');`
+      );
     }
   };
 
   // Handle messages received from webview contents
-  private handleMessage = (data: string) => {
-    let message: WebViewQuillJSMessage = JSON.parse(data);
-    this.updateDebugMessages(`received: ${JSON.stringify(message)}`);
-    console.log(message)
-    
-    if (message.instruction === 'QUILL_READY') {
-      this.sendStartupMessage();
-    }
-    else if(message.instruction === 'CONTENT_CHANGED'){
-      debugger;
-    }
-    else if(message.instruction === 'COMPONENT_MOUNTED'){
-      debugger;
-    }
+  private handleMessage = (message: string) => {
+    let parsedMessage: WebViewQuillJSMessage = JSON.parse(message);
+    this.updateDebugMessages(`received: ${JSON.stringify(parsedMessage)}`);
+    console.log(parsedMessage);
 
+    switch (parsedMessage.instruction) {
+      case "QUILL_READY":
+        this.sendStartupMessage();
+        break;
+      case "CONTENT_CHANGED":
+      case "ON_CHANGE_SELECTION":
+      case "ON_FOCUS":
+      case "ON_BLUR":
+      case "ON_KEY_PRESS":
+      case "ON_KEY_DOWN":
+      case "ON_KEY_UP":
+        this.props.onMessageReceived(parsedMessage);
+        break;
+    }
   };
 
   private sendMessage = (message: WebViewQuillJSMessage) => {
     const stringMessage = JSON.stringify(message);
 
     this.updateDebugMessages(`sending: ${stringMessage}`);
-    // this.webview.postMessage(stringMessage, '*');
-
-    // var event = new CustomEvent('payrookMessage', stringMessage);
 
     const js = `
     handleMessage(${JSON.stringify(message)});
@@ -124,14 +138,18 @@ class WebViewQuill extends React.Component<Props, State> {
 
   // Send a startup message with initalizing values to the map
   private sendStartupMessage = () => {
-    let startupMessage: StartupMessage = {} as StartupMessage;
-    const { defaultValue, isReadOnly } = this.props;
-    if (defaultValue) {
-      startupMessage.defaultValue = defaultValue;
-    }
-    if (isReadOnly) {
-      startupMessage.isReadOnly = isReadOnly;
-    }
+    const {
+      defaultValue,
+      doShowQuillComponentDebugMessages,
+      isReadOnly
+    } = this.props;
+
+    const startupMessage: StartupMessage = {
+      defaultValue,
+      doShowQuillComponentDebugMessages,
+      height: this.state.height,
+      isReadOnly
+    };
 
     this.setState({ isLoading: false });
     this.updateDebugMessages("sending startup message");
@@ -150,6 +168,11 @@ class WebViewQuill extends React.Component<Props, State> {
 
   private onError = (syntheticEvent: NativeSyntheticEvent<WebViewError>) => {
     this.props.onError(syntheticEvent);
+  };
+  private onLayout = e => {
+    this.setState({
+      height: e.nativeEvent.layout.height
+    });
   };
   private onLoadEnd = () => {
     this.setState({ isLoading: false });
@@ -181,6 +204,7 @@ class WebViewQuill extends React.Component<Props, State> {
           webviewContent={webviewContent}
           loadingIndicator={loadingIndicator}
           onError={this.onError}
+          onLayout={this.onLayout}
           onLoadEnd={this.onLoadEnd}
           onLoadStart={this.onLoadStart}
           setWebViewRef={(ref: WebView) => {

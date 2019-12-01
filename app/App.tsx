@@ -18,6 +18,7 @@ import { DeltaOperation } from "quill";
 }; */
 
 interface State {
+  content: DeltaOperation[];
   editorHeight: number;
   viewerHeight: number;
   editorMessageDelta: any[];
@@ -38,13 +39,13 @@ export default class App extends React.Component<null, State> {
       ],
       hasLoadingStarted: null,
       isLoadingComplete: null,
-      viewerMessageDelta: [
+      viewerMessageDelta:{ ops:[
         { insert: "Gandalf", attributes: { bold: true } },
         { insert: " the " },
         { insert: "Grey", attributes: { color: "#ccc" } }
-      ],
+      ]},
       editorHeight: 0,
-      viewerHeight: 0,
+      viewerHeight: 0
     };
   }
 
@@ -58,30 +59,12 @@ export default class App extends React.Component<null, State> {
     this.setState({ hasLoadingStarted: true });
   };
 
-  getEditorDelta = () => {
-    this.webViewQuillEditor.getDelta();
+  onMessageReceived = (message: WebViewQuillJSMessage) => {
+    const { instruction, payload } = message;
+    if (payload.delta) {
+      this.setState({ content: payload.delta });
+    }
   };
-
-  getDeltaCallback = response => {
-    console.log("getDeltaCallback");
-    console.log(response.delta);
-    this.webViewQuillViewer.sendContentToViewer(response.delta);
-  };
-
-  onContentChange = (html: string, delta: DeltaOperation[]) => {
-    console.log("onContentChange: ", { html }, { delta });
-  };
-
-  onLayoutEditor = (e) => {
-    this.setState({
-      editorHeight: e.nativeEvent.layout.height,
-    })
-  }
-  onLayoutViewer = (e) => {
-    this.setState({
-      viewerHeight: e.nativeEvent.layout.height,
-    })
-  }
 
   render() {
     if (!this.state.isLoadingComplete) {
@@ -104,10 +87,10 @@ export default class App extends React.Component<null, State> {
               <WebViewQuill
                 backgroundColor={"#ffbbea"}
                 contentToDisplay={this.state.editorMessageDelta}
-                doShowDebugMessages
-                getDeltaCallback={this.getDeltaCallback}
+                doShowDebugMessages={false}
+                doShowQuillComponentDebugMessages={true}
                 height={this.state.editorHeight}
-                onContentChange={this.onContentChange}
+                onMessageReceived={this.onMessageReceived}
                 ref={component => (this.webViewQuillEditor = component)}
               />
             </View>
@@ -127,10 +110,12 @@ export default class App extends React.Component<null, State> {
               <WebViewQuill
                 backgroundColor={"#fffbea"}
                 defaultValue={this.state.viewerMessageDelta}
-                getDeltaCallback={this.getDeltaCallback}
+                doShowDebugMessages={false}
+                doShowQuillComponentDebugMessages={true}
+                content={this.state.content}
                 height={this.state.viewerHeight}
                 isReadOnly
-                onContentChange={this.onContentChange}
+                onMessageReceived={this.onMessageReceived}
                 ref={component => (this.webViewQuillEditor = component)}
               />
             </View>

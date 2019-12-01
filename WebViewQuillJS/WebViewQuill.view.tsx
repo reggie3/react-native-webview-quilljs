@@ -1,5 +1,10 @@
 import React, { ReactElement } from "react";
-import { StyleSheet, View, NativeSyntheticEvent, ViewStyle } from "react-native";
+import {
+  StyleSheet,
+  View,
+  NativeSyntheticEvent,
+  ViewStyle
+} from "react-native";
 import { WebView } from "react-native-webview";
 import DebugMessageBox from "./DebugMessageBox";
 import { WebViewError } from "react-native-webview/lib/WebViewTypes";
@@ -13,6 +18,7 @@ export interface Props {
   webviewContent: string;
   loadingIndicator: () => ReactElement;
   onError: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => void;
+  onLayout: (event: any) => void;
   onLoadEnd: () => void;
   onLoadStart: () => void;
   setWebViewRef: (ref: WebView) => void;
@@ -28,6 +34,7 @@ const WebViewQuillView = ({
   webviewContent,
   loadingIndicator,
   onError,
+  onLayout,
   onLoadEnd,
   onLoadStart,
   setWebViewRef,
@@ -35,10 +42,11 @@ const WebViewQuillView = ({
 }: Props) => {
   return (
     <View
+      onLayout={onLayout}
       style={{
         ...StyleSheet.absoluteFillObject,
         flex: 1,
-        backgroundColor: backgroundColor
+        backgroundColor: 'orange'
       }}
     >
       {webviewContent && (

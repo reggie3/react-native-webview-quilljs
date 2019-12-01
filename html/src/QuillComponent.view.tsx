@@ -2,79 +2,79 @@ import React from "react";
 import * as ReactQuill from "react-quill"; // Typescript
 import "react-quill/dist/quill.snow.css"; // ES6
 import { DeltaOperation, Delta } from "quill";
-
-const SHOW_DEBUG_INFORMATION = true;
+import { isEqual } from "lodash";
 
 interface Props {
+  addDebugMessage: (message: string) => void;
+  content?: string | DeltaOperation[];
   debugMessages: string[];
   defaultValue: string | DeltaOperation[];
-  handleChange: (
-    htmlContent: string,
+  height?: number,
+  isReadOnly: boolean;
+  modules: object;
+  onChange: (
+    content: string,
     delta: DeltaOperation[],
     source: any,
     editor: any
   ) => void;
+  onChangeSelection: (range: any, source: any, editor: any) => void;
+  onFocus: (range: any, source: any, editor: any) => void;
+  onBlur: (previousRange: any, source: any, editor: any) => void;
+  onKeyPress: (event: any) => void;
+  onKeyDown: (event: any) => void;
+  onKeyUp: (event: any) => void;
   onQuillRef: (quillRef: any) => void;
-  content?: string | DeltaOperation[];
 }
 
-const getReactQuillComponent = (
-  defaultValue: string | DeltaOperation[],
-  handleChange: (
-    htmlContent: string,
-    delta: DeltaOperation[],
-    source: any,
-    editor: any
-  ) => void,
-  onQuillRef: (quillRef: any) => void,
-  content: string | DeltaOperation[] | undefined
-) => {
+const QuillEditorComponentView = ({
+  addDebugMessage,
+  debugMessages,
+  content,
+  defaultValue,
+  height,
+  isReadOnly = false,
+  modules = {},
+  onChange,
+  onChangeSelection,
+  onFocus,
+  onBlur,
+  onKeyPress,
+  onKeyDown,
+  onKeyUp,
+  onQuillRef,
+}: Props) => {
+  const getModules = (): object => {
+    if (isReadOnly) {
+      return {
+        ...modules,
+        toolbar: false
+      };
+    }
+    return modules;
+  };
+
   return (
     // @ts-ignore
     <ReactQuill
       defaultValue={defaultValue}
-      onChange={handleChange}
+      modules={getModules()}
+      onChange={onChange}
+      onChangeSelection={onChangeSelection}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onKeyPress={onKeyPress}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+      readOnly={isReadOnly}
       ref={(component: any) => {
         onQuillRef(component);
       }}
+      style={{
+        height
+      }}
       value={content}
     />
-  );
-};
-
-const QuillEditorComponentView = ({
-  debugMessages = [],
-  defaultValue,
-  handleChange,
-  onQuillRef,
-  content
-}: Props) => {
-  return (
-    <>
-      {getReactQuillComponent(defaultValue, handleChange, onQuillRef, content)}
-      {SHOW_DEBUG_INFORMATION ? (
-        <div
-          style={{
-            backgroundColor: "orange",
-            maxHeight: "200px",
-            overflow: "auto",
-            padding: 5,
-            position: "fixed",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 15000
-          }}
-          id="messages"
-        >
-          <ul>
-            {debugMessages.map((message: string, index: number) => {
-              return <li key={index}>{message}</li>;
-            })}
-          </ul>
-        </div>
-      ) : null}
-    </>
   );
 };
 
