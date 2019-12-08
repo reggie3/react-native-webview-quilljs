@@ -8,3 +8,6 @@ dist/**/*
 /app/node_modules
 /app/.expo
 /html/node_modules
+/HTML/src/node_modules/**/*
+/WebViewQuillJS/node_modules
+/.vscode

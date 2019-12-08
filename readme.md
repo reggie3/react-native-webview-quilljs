@@ -52,7 +52,7 @@ This component accepts the following props:
 | getDeltaCallback  |    no        | Function called in response to a call to this.webViewQuillEditor.getDelta().  It will receive a Delta object containing the contents of editor |
 | contentToDisplay     |    no        | A Quill delta that will be displayed by the editor when it loads. A deltas is an array describing the content and formatting of the message.  See delta details [here](https://quilljs.com/guides/designing-the-delta-format/)|
 | onLoad | no| A function called when the Editor finishes loading |
-| onDeltaChangeCallback | no | Function called when the contents of Quill editor have changed.  The function receives a delta containing the following arguments:
+| onContentChange | no | Function called when the contents of Quill editor have changed.  The function receives a delta containing the following arguments:
 ~~~
 deltaChange   // changes to the delta
 delta         // delta contents as received by getContents() mothod
@@ -130,7 +130,7 @@ This component accepts the following props:
 
 ### 0.2.5
 
-* Added onDeltaChangeCallback property to Editor
+* Added onContentChange property to Editor
 
 ## LICENSE
 
