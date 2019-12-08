@@ -1,25 +1,31 @@
 import React from "react";
-import * as ReactQuill from "react-quill"; // Typescript
-import "react-quill/dist/quill.snow.css"; // ES6
-import { DeltaOperation } from "quill";
+import "react-quill/dist/quill.snow.css";
+import { Delta, DeltaOperation } from "quill";
 import QuillComponentView from "./QuillComponent.view";
 import { WebViewQuillJSMessage, MessageInstruction } from "./models";
-import { isEqual } from "lodash";
+import Sizzle from "sizzle";
+// @ts-ignore
+import isEqual from "lodash.isequal";
+const { detect } = require("detect-browser");
 
 export enum ContentType {
   DELTA = "DELTA",
   HTML = "HTML"
 }
 interface State {
-  content: string | DeltaOperation[];
-  defaultValue: string | DeltaOperation[];
+  backgroundColor: string;
+  browser: { name: string; os: string; version: string } | null;
+  content: string | Delta;
+  defaultValue: string | Delta;
   delta: DeltaOperation[];
   debugMessages: string[];
   doShowQuillComponentDebugMessages: boolean;
   height: number;
   html: string;
+  isDesktopBrowser: boolean;
   isReadOnly: boolean | null;
   modules: object;
+  toolbarHeight: number;
 }
 
 class QuillEditorComponent extends React.Component<null, State> {
@@ -27,21 +33,28 @@ class QuillEditorComponent extends React.Component<null, State> {
   constructor(props: any) {
     super(props);
     this.state = {
+      backgroundColor: 'aliceblue',
+      browser: null,
       debugMessages: ["test message"],
       doShowQuillComponentDebugMessages: false,
       defaultValue: "",
       content: "",
       delta: [],
-      height: 100,
+      height: 300,
       html: "",
+      isDesktopBrowser: false,
       isReadOnly: null,
-      modules: {}
+      modules: {},
+      toolbarHeight: 0
     };
   }
 
   componentDidMount = () => {
     this.setState(
-      { debugMessages: [...this.state.debugMessages, "componentDidMount"] },
+      {
+        browser: detect(),
+        debugMessages: [...this.state.debugMessages, "componentDidMount"]
+      },
       () => {
         try {
           this.sendMessage({
@@ -76,9 +89,48 @@ class QuillEditorComponent extends React.Component<null, State> {
   };
 
   componentDidUpdate = (prevProps: any, prevState: State) => {
-    const { content, debugMessages } = this.state;
+    const { browser, debugMessages, isDesktopBrowser } = this.state;
     if (debugMessages !== prevState.debugMessages) {
       console.log(debugMessages);
+    }
+    if (!isEqual(browser, prevState.browser)) {
+      this.setState({ isDesktopBrowser: this.isDesktopBrowser() }, () => {
+        console.log(this.state);
+      });
+    }
+    if (isDesktopBrowser && !prevState.isDesktopBrowser) {
+      this.setState({
+        doShowQuillComponentDebugMessages: true,
+        height: 300
+      });
+    }
+  };
+
+  onQuillRef = (ref: any) => {
+    const { isReadOnly } = this.state;
+    if (this.quillRef === null) {
+      this.quillRef = ref;
+      if (!isReadOnly) {
+        this.setQuillContainerHeight(this.quillRef);
+      }
+    }
+  };
+
+  // adjust the height of the editor container if there is a toolbar added
+  private setQuillContainerHeight = (quillRef: any) => {
+    try {
+      // want to switch this to optional chaining at some point
+      const toolbarHeight =
+        quillRef.editor.theme.modules.toolbar.container.clientHeight;
+      let res: Element[] = Sizzle(".ql-container");
+      const htmlElement: HTMLElement = res[0] as HTMLElement;
+      if (htmlElement.style) {
+        // the extra subtracted pixel is to make the editor component cleaner looking
+        htmlElement.style.height = `${Math.floor(this.state.height - toolbarHeight-1)}px`;
+      }
+       
+    } catch (error) {
+     this.addDebugMessage(error);
     }
   };
 
@@ -129,13 +181,8 @@ class QuillEditorComponent extends React.Component<null, State> {
     }
   };
 
-  private onChange = (
-    html: string,
-    delta: DeltaOperation[],
-    source: any,
-    editor: any
-  ) => {
-    editor.getContent();
+  private onChange = (html: string, delta: Delta, source: any, editor: any) => {
+    editor.getContents();
     this.sendMessage({
       instruction: MessageInstruction.CONTENT_CHANGED,
       payload: {
@@ -193,25 +240,31 @@ class QuillEditorComponent extends React.Component<null, State> {
     });
   };
 
-  onQuillRef = (ref: any) => {
-    if (this.quillRef === null) {
-      this.quillRef = ref;
-    }
+  private shouldRenderQuillComponentView = (): boolean => {
+    const { isReadOnly } = this.state;
+    const isDesktopBrowser = this.isDesktopBrowser();
+    return isReadOnly !== null || isDesktopBrowser;
   };
 
-  private shouldRenderQuillComponentView = () => {
-    const { isReadOnly } = this.state;
-    return isReadOnly === true || isReadOnly === false;
+  private isDesktopBrowser = (): boolean => {
+    const desktopOSNames = ["windows"];
+
+    return !!desktopOSNames.find((OS: string) => {
+      let isBrowser = this.state.browser?.os?.toLowerCase().includes(OS);
+      return isBrowser;
+    });
   };
 
   render() {
     const {
+      backgroundColor,
       content,
       debugMessages,
       defaultValue,
       doShowQuillComponentDebugMessages,
       height,
-      isReadOnly
+      isReadOnly,
+      toolbarHeight
     } = this.state;
     return (
       <>
@@ -232,6 +285,7 @@ class QuillEditorComponent extends React.Component<null, State> {
             onKeyUp={this.onKeyUp}
             isReadOnly={isReadOnly as boolean}
             onQuillRef={this.onQuillRef}
+            style={{backgroundColor, height: `${height}px`}}
           />
         )}
         {doShowQuillComponentDebugMessages && (

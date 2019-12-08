@@ -24,6 +24,9 @@ export enum MessageInstruction {
   ON_KEY_UP = "ON_KEY_UP"
 }
 
+export interface DeltaObject {
+  ops: DeltaOperation[];
+}
 export interface ReactNativeWebViewQuillJSComponentProps {
   backgroundColor?: any; // this can be set by user
   containerStyle?: ViewStyle;
@@ -54,6 +57,7 @@ export interface SetContentPayload {
 }
 
 export interface StartupMessage {
+  backgroundColor: string;
   defaultValue: string | DeltaOperation[];
   doShowQuillComponentDebugMessages: boolean;
   height: number;

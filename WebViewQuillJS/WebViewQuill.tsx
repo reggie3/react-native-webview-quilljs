@@ -14,7 +14,6 @@ import {
   ReactNativeWebViewQuillJSComponentProps as Props,
   WebViewQuillJSMessage,
   StartupMessage,
-  MessageInstruction
 } from ".";
 import { WebViewError } from "react-native-webview/lib/WebViewTypes";
 import WebViewQuillView from "./WebViewQuill.view";
@@ -25,7 +24,6 @@ import { isEqual } from "lodash";
 // path to the file that the webview will load
 
 const INDEX_FILE_PATH = require(`./assets/index.html`);
-const MESSAGE_PREFIX = "react-native-webview-quilljs";
 
 interface State {
   debugMessages: string[];
@@ -139,12 +137,14 @@ class WebViewQuill extends React.Component<Props, State> {
   // Send a startup message with initalizing values to the map
   private sendStartupMessage = () => {
     const {
+      backgroundColor,
       defaultValue,
       doShowQuillComponentDebugMessages,
       isReadOnly
     } = this.props;
 
     const startupMessage: StartupMessage = {
+      backgroundColor,
       defaultValue,
       doShowQuillComponentDebugMessages,
       height: this.state.height,

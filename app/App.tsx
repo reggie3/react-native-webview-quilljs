@@ -12,11 +12,6 @@ import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import { DeltaOperation } from "quill";
 
-// example content to display
-/* const contentToDisplay = {
-  ops: [{ insert: 'Hello\n' }, { insert: 'This is another line' }]
-}; */
-
 interface State {
   content: DeltaOperation[];
   editorHeight: number;
@@ -39,11 +34,13 @@ export default class App extends React.Component<null, State> {
       ],
       hasLoadingStarted: null,
       isLoadingComplete: null,
-      viewerMessageDelta:{ ops:[
-        { insert: "Gandalf", attributes: { bold: true } },
-        { insert: " the " },
-        { insert: "Grey", attributes: { color: "#ccc" } }
-      ]},
+      viewerMessageDelta: {
+        ops: [
+          { insert: "Gandalf", attributes: { bold: true } },
+          { insert: " the " },
+          { insert: "Grey", attributes: { color: "#ccc" } }
+        ]
+      },
       editorHeight: 0,
       viewerHeight: 0
     };
@@ -82,28 +79,16 @@ export default class App extends React.Component<null, State> {
               <Title>React Native Webview QuillJS V2 Demo</Title>
             </Body>
           </Header>
-          <View style={{ flex: 1, backgroundColor: "#bbffbb", padding: 5 }}>
-            <View style={{ flex: 1, padding: 10 }}>
+          <View style={{ flex: 1, backgroundColor: "aliceblue", padding: 5 }}>
+            <View style={{ flex: 1, padding: 10, marginBottom: 15 }}>
               <WebViewQuill
-                backgroundColor={"#ffbbea"}
+                backgroundColor={"#FAEBD7"}
                 contentToDisplay={this.state.editorMessageDelta}
                 doShowDebugMessages={false}
-                doShowQuillComponentDebugMessages={true}
+                doShowQuillComponentDebugMessages={false}
                 height={this.state.editorHeight}
                 onMessageReceived={this.onMessageReceived}
                 ref={component => (this.webViewQuillEditor = component)}
-              />
-            </View>
-            <View
-              style={{
-                margin: 5
-              }}
-            >
-              <Button
-                onPress={this.getEditorDelta}
-                title="Get Text"
-                color="#4286f4"
-                accessibilityLabel="Click this button to copy text from the editor to the viewer"
               />
             </View>
             <View style={{ flex: 1 }} onLayout={this.onLayoutEditor}>
@@ -111,11 +96,10 @@ export default class App extends React.Component<null, State> {
                 backgroundColor={"#fffbea"}
                 defaultValue={this.state.viewerMessageDelta}
                 doShowDebugMessages={false}
-                doShowQuillComponentDebugMessages={true}
+                doShowQuillComponentDebugMessages={false}
                 content={this.state.content}
                 height={this.state.viewerHeight}
                 isReadOnly
-                onMessageReceived={this.onMessageReceived}
                 ref={component => (this.webViewQuillEditor = component)}
               />
             </View>

@@ -8,11 +8,13 @@ import {
 import { WebView } from "react-native-webview";
 import DebugMessageBox from "./DebugMessageBox";
 import { WebViewError } from "react-native-webview/lib/WebViewTypes";
+import { DeltaOperation } from "quill";
 
 export interface Props {
   backgroundColor: string;
   containerStyle?: ViewStyle;
   debugMessages: string[];
+  defaultValue: string | DeltaOperation[];
   doShowDebugMessages: boolean;
   handleMessage: (data: string) => void;
   webviewContent: string;

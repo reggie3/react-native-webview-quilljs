@@ -29,7 +29,7 @@
     "gulp-run": "^1.7.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-inliner": "^1.0.10",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.3"
   },
   "types": "index.d.ts"
 }
