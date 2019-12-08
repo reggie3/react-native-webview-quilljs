@@ -2,7 +2,7 @@ import React from "react";
 import "react-quill/dist/quill.snow.css";
 import { Delta, DeltaOperation } from "quill";
 import QuillComponentView from "./QuillComponent.view";
-import { WebViewQuillJSMessage, MessageInstruction } from "./models";
+import { DeltaObject, WebViewQuillJSMessage, MessageInstruction } from "./models";
 import Sizzle from "sizzle";
 // @ts-ignore
 import isEqual from "lodash.isequal";
@@ -16,7 +16,7 @@ interface State {
   backgroundColor: string;
   browser: { name: string; os: string; version: string } | null;
   content: string | Delta;
-  defaultValue: string | Delta;
+  defaultValue: string | DeltaObject;
   delta: DeltaOperation[];
   debugMessages: string[];
   doShowQuillComponentDebugMessages: boolean;
@@ -37,7 +37,13 @@ class QuillEditorComponent extends React.Component<null, State> {
       browser: null,
       debugMessages: ["test message"],
       doShowQuillComponentDebugMessages: false,
-      defaultValue: "",
+      defaultValue:{
+        ops: [
+          { insert: "Gandalf", attributes: { bold: true } },
+          { insert: " the " },
+          { insert: "Grey", attributes: { color: "#ccc" } }
+        ]
+      },
       content: "",
       delta: [],
       height: 300,
@@ -106,7 +112,7 @@ class QuillEditorComponent extends React.Component<null, State> {
     }
   };
 
-  onQuillRef = (ref: any) => {
+  private onQuillRef = (ref: any) => {
     const { isReadOnly } = this.state;
     if (this.quillRef === null) {
       this.quillRef = ref;

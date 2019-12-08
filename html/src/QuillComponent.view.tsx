@@ -69,7 +69,7 @@ export const QuillComponentView = ({
           onQuillRef(component);
         }}
         style={style}
-        value={content}
+        /* value={content} */
       />
     </>
   );

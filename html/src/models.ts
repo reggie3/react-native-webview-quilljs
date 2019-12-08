@@ -2,8 +2,7 @@ import * as React from "react";
 import * as Quill from "quill";
 import * as ReactQuill from "react-quill";
 import { DeltaOperation } from "quill";
-import { NativeSyntheticEvent, ViewStyle } from "react-native";
-import { WebViewError } from "react-native-webview/lib/WebViewTypes";
+import CSS from 'csstype';
 
 export enum MessageInstruction {
   DOCUMENT_EVENT_LISTENER_ADDED = "DOCUMENT_EVENT_LISTENER_ADDED",
@@ -29,7 +28,6 @@ export interface DeltaObject {
 }
 export interface ReactNativeWebViewQuillJSComponentProps {
   backgroundColor?: any; // this can be set by user
-  containerStyle?: ViewStyle;
   content?: string | DeltaOperation[];
   defaultValue?: string | DeltaOperation[];
   doShowDebugMessages?: boolean;
@@ -38,11 +36,11 @@ export interface ReactNativeWebViewQuillJSComponentProps {
   isReadOnly?: boolean;
   loadingIndicator?: () => React.ReactElement;
   onContentChange?: (content: string, delta: DeltaOperation[]) => void;
-  onError?: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => void;
+  onError?: (syntheticEvent:any) => void;
   onLoadEnd?: () => void;
   onLoadStart?: () => void;
   onMessageReceived?: (message: object) => void;
-  style?: ViewStyle;
+  style?: CSS.Properties;
 }
 
 export interface WebViewQuillJSMessage {

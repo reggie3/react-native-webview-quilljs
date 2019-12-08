@@ -96,8 +96,8 @@ export default class App extends React.Component<null, State> {
                 backgroundColor={"#fffbea"}
                 defaultValue={this.state.viewerMessageDelta}
                 doShowDebugMessages={false}
-                doShowQuillComponentDebugMessages={false}
-                content={this.state.content}
+                doShowQuillComponentDebugMessages={true}
+             /*    content={this.state.content} */
                 height={this.state.viewerHeight}
                 isReadOnly
                 ref={component => (this.webViewQuillEditor = component)}
