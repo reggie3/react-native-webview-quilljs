@@ -1,10 +1,6 @@
 {
 	"name": "react-native-webview-quilljs",
-<<<<<<< HEAD
-	"version": "0.8.41",
-=======
 	"version": "0.8.40",
->>>>>>> aec8c16ef68740ff22be9a726e8c284bcda99297
 	"scripts": {
 		"prod": "npm run clean && SET NODE_ENV=PROD && webpack",
 		"dev": "npm run clean && SET NODE_ENV=DEV && webpack -p",
