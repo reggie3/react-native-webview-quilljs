@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/extend-expect";
 import React from "react";
-import { getByTestId, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { QuillComponentView } from "./QuillComponent.view";
 import { DeltaObject } from "./models";
 import renderer from 'react-test-renderer';

@@ -42,7 +42,7 @@ const WebViewQuillView = ({
   setWebViewRef,
   style
 }: Props) => {
-  return (
+  /* return (
     <View
       onLayout={onLayout}
       style={{
@@ -69,7 +69,7 @@ const WebViewQuillView = ({
           }}
           onError={onError}
           originWhitelist={["*"]}
-          /*  renderLoading={loadingIndicator || null} */
+          /*  renderLoading={loadingIndicator || null} 
           domStorageEnabled={true}
           startInLoadingState={true}
           source={{
@@ -83,7 +83,11 @@ const WebViewQuillView = ({
         doShowDebugMessages={doShowDebugMessages}
       />
     </View>
-  );
+  ); */
+  return(
+    <>
+    </>
+  )
 };
 
 export default WebViewQuillView;
