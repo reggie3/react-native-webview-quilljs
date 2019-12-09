@@ -11,19 +11,19 @@ import { WebViewError } from "react-native-webview/lib/WebViewTypes";
 import { DeltaOperation } from "quill";
 
 export interface Props {
-  backgroundColor: string;
+  backgroundColor?: string;
   containerStyle?: ViewStyle;
   debugMessages: string[];
-  defaultValue: string | DeltaOperation[];
-  doShowDebugMessages: boolean;
+  defaultValue?: string | DeltaOperation[];
+  doShowDebugMessages?: boolean;
   handleMessage: (data: string) => void;
-  webviewContent: string;
-  loadingIndicator: () => ReactElement;
-  onError: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => void;
-  onLayout: (event: any) => void;
-  onLoadEnd: () => void;
-  onLoadStart: () => void;
-  setWebViewRef: (ref: WebView) => void;
+  webviewContent?: string;
+  loadingIndicator?: () => ReactElement;
+  onError?: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => void;
+  onLayout?: (event: any) => void;
+  onLoadEnd?: () => void;
+  onLoadStart?: () => void;
+  setWebViewRef?: (ref: WebView) => void;
   style?: ViewStyle;
 }
 
@@ -71,7 +71,6 @@ const WebViewQuillView = ({
           originWhitelist={["*"]}
           /*  renderLoading={loadingIndicator || null} */
           domStorageEnabled={true}
-          useWebKit={true}
           startInLoadingState={true}
           source={{
             html: webviewContent

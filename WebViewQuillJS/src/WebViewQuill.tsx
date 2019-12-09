@@ -11,10 +11,8 @@ import AssetUtils from "expo-asset-utils";
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system";
 import {
-  ReactNativeWebViewQuillJSComponentProps as Props,
-  WebViewQuillJSMessage,
-  StartupMessage,
-} from ".";
+  ReactNativeWebViewQuillJSComponentProps as Props, WebViewQuillJSMessage, StartupMessage
+} from "..";
 import { WebViewError } from "react-native-webview/lib/WebViewTypes";
 import WebViewQuillView from "./WebViewQuill.view";
 import { ActivityOverlay } from "./ActivityOverlay";
@@ -22,7 +20,7 @@ import { DeltaOperation } from "quill";
 import { isEqual } from "lodash";
 
 // path to the file that the webview will load
-
+// @ts-ignore typescript doesn't like the require
 const INDEX_FILE_PATH = require(`./assets/index.html`);
 
 interface State {

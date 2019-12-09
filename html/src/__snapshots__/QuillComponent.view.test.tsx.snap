@@ -36,12 +36,20 @@ exports[`QuillComponent.view.tsx should render a read only component with a defa
       class="ql-container ql-snow ql-disabled"
     >
       <div
-        class="ql-editor ql-blank"
+        class="ql-editor"
         contenteditable="false"
         data-gramm="false"
       >
         <p>
-          <br />
+          <strong>
+            Gandalf 1
+          </strong>
+           the 
+          <span
+            style="color: rgb(204, 204, 204);"
+          >
+            Grey
+          </span>
         </p>
       </div>
       <div

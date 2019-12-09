@@ -2,43 +2,34 @@ import React from "react";
 import {
   StyleSheet,
   View,
-  Button,
   Platform,
   ActivityIndicator
 } from "react-native";
 import { Container, Header, Body, Title } from "native-base";
-import WebViewQuill from "react-native-webview-quilljs";
-import { AppLoading } from "expo";
+import WebViewQuill, { DeltaObject, WebViewQuillJSMessage } from "react-native-webview-quilljs";
 import * as Font from "expo-font";
-import { DeltaOperation } from "quill";
 
 interface State {
-  content: DeltaOperation[];
+  content: DeltaObject;
   editorHeight: number;
   viewerHeight: number;
-  editorMessageDelta: any[];
   isLoadingComplete: boolean;
   hasLoadingStarted: boolean;
-  viewerMessageDelta: any[];
+  viewerMessageDelta: DeltaObject;
 }
 
 export default class App extends React.Component<null, State> {
-  webViewQuillEditor: any;
-  webViewQuillViewer: any;
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
-      editorMessageDelta: [
-        { insert: "Hello World" },
-        { insert: "!", attributes: { bold: true } }
-      ],
+      content: null,
       hasLoadingStarted: null,
       isLoadingComplete: null,
       viewerMessageDelta: {
         ops: [
-          { insert: "Gandalf", attributes: { bold: true } },
-          { insert: " the " },
-          { insert: "Grey", attributes: { color: "#ccc" } }
+          { insert: "This", attributes: { bold: true } },
+          { insert: " is " },
+          { insert: "react-native-webview-quill-js", attributes: { color: "#fcc" } }
         ]
       },
       editorHeight: 0,
@@ -79,19 +70,17 @@ export default class App extends React.Component<null, State> {
               <Title>React Native Webview QuillJS V2 Demo</Title>
             </Body>
           </Header>
-          <View style={{ flex: 1, backgroundColor: "aliceblue", padding: 5 }}>
+          <View style={{ flex: 1}}>
             <View style={{ flex: 1, padding: 10, marginBottom: 15 }}>
               <WebViewQuill
                 backgroundColor={"#FAEBD7"}
-                contentToDisplay={this.state.editorMessageDelta}
                 doShowDebugMessages={false}
                 doShowQuillComponentDebugMessages={false}
                 height={this.state.editorHeight}
                 onMessageReceived={this.onMessageReceived}
-                ref={component => (this.webViewQuillEditor = component)}
               />
             </View>
-            <View style={{ flex: 1 }} onLayout={this.onLayoutEditor}>
+            <View style={{ flex: 1 }}>
               <WebViewQuill
                 backgroundColor={"#fffbea"}
                 defaultValue={this.state.viewerMessageDelta}
@@ -100,7 +89,6 @@ export default class App extends React.Component<null, State> {
              /*    content={this.state.content} */
                 height={this.state.viewerHeight}
                 isReadOnly
-                ref={component => (this.webViewQuillEditor = component)}
               />
             </View>
           </View>

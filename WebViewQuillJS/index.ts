@@ -1,2 +1,1 @@
-import  WebViewQuill  from "./src/WebViewQuill";
-export default WebViewQuill;
+export  { default as WebViewQuill} from "./src/WebViewQuill";
