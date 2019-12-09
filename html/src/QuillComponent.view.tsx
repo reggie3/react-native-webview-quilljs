@@ -39,7 +39,7 @@ export const QuillComponentView = ({
   onKeyDown,
   onKeyUp,
   onQuillRef,
-  style,
+  style
 }: Props) => {
   const getModules = (): object => {
     if (isReadOnly) {
@@ -51,11 +51,18 @@ export const QuillComponentView = ({
     return modules;
   };
 
+  const getContentProps=()=>{
+    if(defaultValue){
+      return {defaultValue}
+    }
+    if(content){
+      return {value: content}  
+    }
+    return {}
+  }
 
   return (
-    <>
       <ReactQuill
-        defaultValue={defaultValue}
         modules={getModules()}
         onChange={onChange}
         onChangeSelection={onChangeSelection}
@@ -69,9 +76,8 @@ export const QuillComponentView = ({
           onQuillRef(component);
         }}
         style={style}
-        /* value={content} */
+        {...getContentProps()}
       />
-    </>
   );
 };
 

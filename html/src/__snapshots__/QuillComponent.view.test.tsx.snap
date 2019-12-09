@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`QuillComponent.view.tsx a readOnly viewer with no default value should differ from one where a default value is provided 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -58,16 +58,18 @@
+      >
+        <div
+          class=\\"ql-container ql-snow ql-disabled\\"
+        >
+          <div
+-           class=\\"ql-editor ql-blank\\"
++           class=\\"ql-editor\\"
+            contenteditable=\\"false\\"
+            data-gramm=\\"false\\"
+          >
+            <p>
+-             <br />
++             <strong>
++               This is default content
++             </strong>
+            </p>
+          </div>
+          <div
+            class=\\"ql-clipboard\\"
+            contenteditable=\\"true\\""
+`;
+
 exports[`QuillComponent.view.tsx should render a read only component 1`] = `
 <div>
   <div
@@ -15,41 +43,6 @@ exports[`QuillComponent.view.tsx should render a read only component 1`] = `
       >
         <p>
           <br />
-        </p>
-      </div>
-      <div
-        class="ql-clipboard"
-        contenteditable="true"
-        tabindex="-1"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`QuillComponent.view.tsx should render a read only component with a default value 1`] = `
-<div>
-  <div
-    class="quill "
-  >
-    <div
-      class="ql-container ql-snow ql-disabled"
-    >
-      <div
-        class="ql-editor"
-        contenteditable="false"
-        data-gramm="false"
-      >
-        <p>
-          <strong>
-            Gandalf 1
-          </strong>
-           the 
-          <span
-            style="color: rgb(204, 204, 204);"
-          >
-            Grey
-          </span>
         </p>
       </div>
       <div

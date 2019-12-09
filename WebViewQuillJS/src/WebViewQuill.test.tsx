@@ -1,5 +1,5 @@
-import WebViewQuillView from './WebViewQuill.view';
-import {render} from '@testing-library/react-native'
+import WebViewQuill from './WebViewQuill';
+import {render} from 'react-native-testing-library'
 import * as React from 'react'
 
 const props ={
@@ -13,7 +13,7 @@ describe('WebViewQuill.view.test.tsx', () => {
     });
    
  it('should render', () => {
-         const {toJSON} = render(<WebViewQuillView {...props} />)
+         const {toJSON} = render(<WebViewQuill {...props} />)
          console.log(toJSON)
     }); 
 
