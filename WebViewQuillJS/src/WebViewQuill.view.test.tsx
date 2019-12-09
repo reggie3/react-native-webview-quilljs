@@ -14,14 +14,8 @@ const props = {
 beforeEach(() => {});
 
 describe("WebViewQuill.view.test.tsx", () => {
-  it("should run a test", () => {
-    expect(1 + 1).toBe(2);
-  });
-
   it("should render", () => {
     const { container  } = render(<WebViewQuillView {...props} />);
-
-    console.log(container);
-    console.log("-------------");
+    expect(container).toMatchSnapshot()
   });
 });
