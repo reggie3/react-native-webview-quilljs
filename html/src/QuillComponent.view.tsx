@@ -51,33 +51,33 @@ export const QuillComponentView = ({
     return modules;
   };
 
-  const getContentProps=()=>{
-    if(defaultValue){
-      return {defaultValue}
+  const getContentProps = () => {
+    if (content) {
+      return { value: content };
     }
-    if(content){
-      return {value: content}  
+    if (defaultValue) {
+      return { defaultValue };
     }
-    return {}
-  }
+    return "";
+  };
 
   return (
-      <ReactQuill
-        modules={getModules()}
-        onChange={onChange}
-        onChangeSelection={onChangeSelection}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onKeyPress={onKeyPress}
-        onKeyDown={onKeyDown}
-        onKeyUp={onKeyUp}
-        readOnly={isReadOnly}
-        ref={(component: any) => {
-          onQuillRef(component);
-        }}
-        style={style}
-        {...getContentProps()}
-      />
+    <ReactQuill
+      modules={getModules()}
+      onChange={onChange}
+      onChangeSelection={onChangeSelection}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onKeyPress={onKeyPress}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+      readOnly={isReadOnly}
+      ref={(component: any) => {
+        onQuillRef(component);
+      }}
+      style={style}
+      {...getContentProps()}
+    />
   );
 };
 
