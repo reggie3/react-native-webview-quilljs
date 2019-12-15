@@ -42,13 +42,13 @@ const WebViewQuillView = ({
   setWebViewRef,
   style
 }: Props) => {
-  /* return (
+  return (
     <View
       onLayout={onLayout}
       style={{
         ...StyleSheet.absoluteFillObject,
         flex: 1,
-        backgroundColor: 'orange'
+        backgroundColor
       }}
     >
       {webviewContent && (
@@ -69,7 +69,7 @@ const WebViewQuillView = ({
           }}
           onError={onError}
           originWhitelist={["*"]}
-          /*  renderLoading={loadingIndicator || null} 
+          renderLoading={loadingIndicator || null} 
           domStorageEnabled={true}
           startInLoadingState={true}
           source={{
@@ -83,11 +83,8 @@ const WebViewQuillView = ({
         doShowDebugMessages={doShowDebugMessages}
       />
     </View>
-  ); */
-  return(
-    <>
-    </>
-  )
+  );
+
 };
 
 export default WebViewQuillView;

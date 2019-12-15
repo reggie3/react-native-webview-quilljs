@@ -5,19 +5,21 @@
  *
  */
 import * as React from "react";
-import { NativeSyntheticEvent } from "react-native";
+import { NativeSyntheticEvent, LayoutChangeEvent } from "react-native";
 import { WebView } from "react-native-webview";
 import AssetUtils from "expo-asset-utils";
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system";
 import {
-  ReactNativeWebViewQuillJSComponentProps as Props, WebViewQuillJSMessage, StartupMessage
-} from "..";
+  ReactNativeWebViewQuillJSComponentProps as Props,
+  WebViewQuillJSMessage,
+  StartupMessage
+} from "./models";
 import { WebViewError } from "react-native-webview/lib/WebViewTypes";
 import WebViewQuillView from "./WebViewQuill.view";
 import { ActivityOverlay } from "./ActivityOverlay";
 import { DeltaOperation } from "quill";
-import { isEqual } from "lodash";
+import isEqual from "lodash.isequal";
 
 // path to the file that the webview will load
 // @ts-ignore typescript doesn't like the require
@@ -38,10 +40,13 @@ const defaultProps: Partial<Props> = {
   doShowQuillComponentDebugMessages: false,
   isReadOnly: false,
   loadingIndicator: () => <ActivityOverlay />,
+  // @ts-ignore arguments are declared but its value is never read
   onContentChange: (html: string, delta: DeltaOperation[]) => {},
+  // @ts-ignore arguments are declared but its value is never read
   onError: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => {},
   onLoadEnd: () => {},
   onLoadStart: () => {},
+  // @ts-ignore arguments are declared but its value is never read
   onMessageReceived: (message: object) => {},
   style: {}
 };
@@ -51,7 +56,7 @@ class WebViewQuill extends React.Component<Props, State> {
 
   private webViewRef: any;
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
 
     this.state = {
@@ -118,19 +123,14 @@ class WebViewQuill extends React.Component<Props, State> {
     }
   };
 
-  private sendMessage = (message: WebViewQuillJSMessage) => {
+  /* private sendMessage = (message: WebViewQuillJSMessage) => {
     const stringMessage = JSON.stringify(message);
 
     this.updateDebugMessages(`sending: ${stringMessage}`);
-
-    const js = `
-    handleMessage(${JSON.stringify(message)});
-    `;
-    /* var event = new Event('message'); */
     this.webViewRef.injectJavaScript(
       `handleMessage(${stringMessage}, '*'); true;`
     );
-  };
+  }; */
 
   // Send a startup message with initalizing values to the map
   private sendStartupMessage = () => {
@@ -167,7 +167,7 @@ class WebViewQuill extends React.Component<Props, State> {
   private onError = (syntheticEvent: NativeSyntheticEvent<WebViewError>) => {
     this.props.onError(syntheticEvent);
   };
-  private onLayout = e => {
+  private onLayout = (e: LayoutChangeEvent) => {
     this.setState({
       height: e.nativeEvent.layout.height
     });

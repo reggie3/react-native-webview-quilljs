@@ -5,6 +5,7 @@ import { DeltaOperation } from "quill";
 import { NativeSyntheticEvent, ViewStyle } from "react-native";
 import { WebViewError } from "react-native-webview/lib/WebViewTypes";
 
+
 export enum MessageInstruction {
   DOCUMENT_EVENT_LISTENER_ADDED = "DOCUMENT_EVENT_LISTENER_ADDED",
   DOCUMENT_EVENT_LISTENER_REMOVED = "DOCUMENT_EVENT_LISTENER_REMOVED",

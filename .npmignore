@@ -1,0 +1,7 @@
+.jest
+/assets
+old-index.d.ts
+old-jest.config.js
+rn-cli.config.js
+yarn-error.log
+

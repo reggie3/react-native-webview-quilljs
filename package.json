@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "expo-asset-utils": "^1.2.0"
+  },
+  "devDependencies": {}
+}

@@ -1,4 +1,4 @@
-import WebViewQuillView from "./WebViewQuill.view";
+import WebViewQuillView from "../WebViewQuill.view";
 import { render } from "@testing-library/react-native";
 import * as React from "react";
 
@@ -6,10 +6,10 @@ import * as React from "react";
 // @ts-ignore
 global.React = React;
 
-const props = {
-  debugMessages: [],
-  handleMessage: (message: string) => {}
-};
+const props={
+  debugMessages:[], 
+  handleMessage:()=>{}
+}
 
 beforeEach(() => {});
 

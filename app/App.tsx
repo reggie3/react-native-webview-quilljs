@@ -86,7 +86,6 @@ export default class App extends React.Component<null, State> {
                 defaultValue={this.state.viewerMessageDelta}
                 doShowDebugMessages={false}
                 doShowQuillComponentDebugMessages={true}
-             /*    content={this.state.content} */
                 height={this.state.viewerHeight}
                 isReadOnly
               />
