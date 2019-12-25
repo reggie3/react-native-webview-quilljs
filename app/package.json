@@ -22,7 +22,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.1.tar.gz",
     "react-native-modal": "^11.5.3",
     "react-native-webview": "7.4.3",
-    "react-native-webview-quilljs": "^2.0.0-beta.1",
+    "react-native-webview-quilljs": "file:../WebViewQuillJS",
     "react-quill": "^1.3.3",
     "render-if": "^0.1.1",
     "basic-react-native-package": "file:../BasicReactNativePackage",

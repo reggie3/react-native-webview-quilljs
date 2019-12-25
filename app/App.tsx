@@ -106,6 +106,7 @@ export default class App extends React.Component<null, State> {
              <View>
               <BasicReactNativeComponent />
               <BasicReactNativeTypescriptComponent/>
+              <WebViewQuill/>
             </View>  
 
           </View>

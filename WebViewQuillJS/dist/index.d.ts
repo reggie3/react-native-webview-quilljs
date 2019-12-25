@@ -1,3 +1,2 @@
-export { default as WebViewQuill } from "./WebViewQuill";
-export { DeltaOperation } from "quill";
-export { DeltaObject, ReactNativeWebViewQuillJSComponentProps, WebViewQuillJSMessage } from "./models";
+import WebViewQuill from './WebViewQuillJS';
+export default WebViewQuill;

@@ -13,3 +13,4 @@ dist/**/*
 /WebViewQuillJS/.jest/
 /.vscode
 node_modules
+Deprecated*

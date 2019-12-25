@@ -1,23 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
     "lib": ["dom", "esnext"],
     "moduleResolution": "node",
-    "noEmit": false,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "outDir": "dist",
+    "declaration": true,
     "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "declaration": true
+    "sourceMap": true
   },
-  "include": ["./src/*", "src/__tests__/WebViewQuill.view.test.tsx", "src/__tests__/WebViewQuill.test.tsx"],
-  "exclude": ["node_modules", "dist", "src/__tests__"]
+  "include": ["src"],
+  "exclude": ["node_modules", "build", "dist"]
 }

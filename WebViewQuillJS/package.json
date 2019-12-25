@@ -1,66 +1,32 @@
 {
   "name": "react-native-webview-quilljs",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.1",
   "description": "quill js editor and view for react native",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist/"
-  ],
   "scripts": {
-    "dist": "tsc && copyfiles assets/* dist ",
+    "build": "tsc",
     "tsc": "tsc --noemit",
-    "test": "jest"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "react-native",
-    "react",
-    "native",
-    "quill",
-    "editor",
-    "html"
-  ],
   "author": "Reginald Johnson",
   "license": "MIT",
-  "dependencies": {
-    "expo-asset": "^7.0.0",
-    "expo-asset-utils": "^1.2.0",
-    "expo-file-system": "^7.0.0",
-    "lodash.isequal": "^4.5.0",
-    "react": "16.9.0",
-    "react-dom": "^16.12.0",
-    "react-native": "^0.61.5",
-    "react-native-webview": "^7.6.0",
-    "react-quill": "^1.3.3"
-  },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": ">= 16.9.x",
+    "react-native": ">= 0.60.x"
   },
+  "presets": [
+    "module:metro-react-native-babel-preset"
+  ],
   "devDependencies": {
-    "@babel/core": "^7.7.5",
-    "@babel/plugin-external-helpers": "^7.7.4",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/preset-env": "^7.7.6",
-    "@babel/preset-react": "^7.6.3",
-    "@testing-library/react-native": "^5.0.2",
-    "@types/expo": "^33.0.1",
-    "@types/jest": "^24.0.23",
-    "@types/lodash.isequal": "^4.5.5",
-    "@types/node": "^12.12.14",
-    "@types/react": "^16.9.15",
-    "@types/react-native": "^0.60.24",
-    "@types/react-test-renderer": "^16.9.1",
-    "babel-jest": "^24.9.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-react-app": "^9.1.0",
-    "babel-preset-react-native": "^4.0.1",
-    "jest": "^24.9.0",
+    "@types/react-native": "^0.60.26",
     "metro-react-native-babel-preset": "^0.57.0",
-    "react-native-testing-library": "^1.11.1",
-    "react-native-typescript-transformer": "^1.2.13",
-    "react-test-renderer": "^16.12.0",
-    "ts-jest": "^24.2.0",
-    "typescript": "^3.7.3"
-  }
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "react-native": "^0.61.5",
+    "typescript": "^3.7.4"
+  },
+  "files": [
+    "dist"
+  ]
 }
