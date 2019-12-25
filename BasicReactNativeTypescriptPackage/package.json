@@ -1,6 +1,6 @@
 {
   "name": "basic-react-native-typescript-package",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "build/index.js",
   "scripts": {
