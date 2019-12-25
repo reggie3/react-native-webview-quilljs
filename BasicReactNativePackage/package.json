@@ -1,0 +1,21 @@
+{
+  "name": "basic-react-native-package",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": ">= 16.x",
+    "react-native": ">= 0.60.x"
+  },
+  "presets": [
+    "module:metro-react-native-babel-preset"
+  ],
+  "devDependencies": {
+    "metro-react-native-babel-preset": "^0.57.0"
+  }
+}

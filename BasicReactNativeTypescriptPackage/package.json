@@ -1,0 +1,29 @@
+{
+  "name": "basic-react-native-typescript-package",
+  "version": "1.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": ">= 16.x",
+    "react-native": ">= 0.60.x"
+  },
+  "presets": [
+    "module:metro-react-native-babel-preset"
+  ],
+  "devDependencies": {
+    "@types/react-native": "^0.60.26",
+    "metro-react-native-babel-preset": "^0.57.0",
+    "react": "^16.12.0",
+    "react-native": "^0.61.5",
+    "typescript": "^3.7.4"
+  },
+  "files": [
+    "build"
+  ]
+}

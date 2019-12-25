@@ -3,11 +3,17 @@ import {
   StyleSheet,
   View,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
+  Text
 } from "react-native";
-import { Container, Header, Body, Title } from "native-base";
-import WebViewQuill, { DeltaObject, WebViewQuillJSMessage } from "react-native-webview-quilljs";
+import { Container, Content, Header, Body, Title } from "native-base";
+import WebViewQuill, {
+  DeltaObject,
+  WebViewQuillJSMessage
+} from "react-native-webview-quilljs";
 import * as Font from "expo-font";
+import {default as BasicReactNativeComponent} from "basic-react-native-package";
+import {default as BasicReactNativeTypescriptComponent} from "basic-react-native-typescript-package";
 
 interface State {
   content: DeltaObject;
@@ -29,7 +35,10 @@ export default class App extends React.Component<null, State> {
         ops: [
           { insert: "This", attributes: { bold: true } },
           { insert: " is " },
-          { insert: "react-native-webview-quill-js", attributes: { color: "#fcc" } }
+          {
+            insert: "react-native-webview-quill-js",
+            attributes: { color: "#fcc" }
+          }
         ]
       },
       editorHeight: 0,
@@ -70,9 +79,12 @@ export default class App extends React.Component<null, State> {
               <Title>React Native Webview QuillJS V2 Demo</Title>
             </Body>
           </Header>
-          <View style={{ flex: 1}}>
-            <View style={{ flex: 1, padding: 10, marginBottom: 15 }}>
-              <WebViewQuill
+          <Content>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            {/*  <View style={{ flex: 1, padding: 10, marginBottom: 15 }}>
+               <WebViewQuill
                 backgroundColor={"#FAEBD7"}
                 doShowDebugMessages={false}
                 doShowQuillComponentDebugMessages={false}
@@ -88,9 +100,16 @@ export default class App extends React.Component<null, State> {
                 doShowQuillComponentDebugMessages={true}
                 height={this.state.viewerHeight}
                 isReadOnly
-              />
-            </View>
+              /> 
+            </View> */}
+            <Text>In App</Text>
+             <View>
+              <BasicReactNativeComponent />
+              <BasicReactNativeTypescriptComponent/>
+            </View>  
+
           </View>
+          </Content>
         </Container>
       );
     }
