@@ -28,5 +28,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "react-native-webview": "7.4.3"
+  }
 }

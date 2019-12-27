@@ -12,8 +12,9 @@ import WebViewQuill, {
   WebViewQuillJSMessage
 } from "react-native-webview-quilljs";
 import * as Font from "expo-font";
-import {default as BasicReactNativeComponent} from "basic-react-native-package";
-import {default as BasicReactNativeTypescriptComponent} from "basic-react-native-typescript-package";
+import { default as BasicReactNativeComponent } from "basic-react-native-package";
+import BasicReactNativeTypescriptComponent from "basic-react-native-typescript-package";
+import { WebView } from "react-native-webview";
 
 interface State {
   content: DeltaObject;
@@ -79,11 +80,15 @@ export default class App extends React.Component<null, State> {
               <Title>React Native Webview QuillJS V2 Demo</Title>
             </Body>
           </Header>
-          <Content>
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            {/*  <View style={{ flex: 1, padding: 10, marginBottom: 15 }}>
+         
+            {/* <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            > */}
+              {/*  <View style={{ flex: 1, padding: 10, marginBottom: 15 }}>
                <WebViewQuill
                 backgroundColor={"#FAEBD7"}
                 doShowDebugMessages={false}
@@ -102,15 +107,20 @@ export default class App extends React.Component<null, State> {
                 isReadOnly
               /> 
             </View> */}
-            <Text>In App</Text>
-             <View>
-              <BasicReactNativeComponent />
-              <BasicReactNativeTypescriptComponent/>
-              <WebViewQuill/>
-            </View>  
+              {/* <Text>In App</Text>
+              <View style={{ backgroundColor: "gray" }}>
+                <BasicReactNativeComponent />
+                <BasicReactNativeTypescriptComponent />
+              </View>
+              <View style={{ flex: 1,backgroundColor: "green" }}> */}
+                {/* <WebView
+                  source={{ uri: "https://facebook.github.io/react-native/" }}
+                /> */}
 
-          </View>
-          </Content>
+               <WebViewQuill />
+            {/*   </View>
+            </View> */}
+    
         </Container>
       );
     }

@@ -4728,6 +4728,8 @@ react-native-view-shot@3.0.2:
 
 "react-native-webview-quilljs@file:../WebViewQuillJS":
   version "2.0.0-beta.1"
+  dependencies:
+    react-native-webview "7.4.3"
 
 react-native-webview@7.4.3:
   version "7.4.3"
