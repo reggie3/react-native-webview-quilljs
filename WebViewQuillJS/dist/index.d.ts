@@ -1,2 +1,2 @@
-import WebViewQuill from './WebViewQuillJS';
-export default WebViewQuill;
+import WebViewQuillJS from './WebViewQuillJS';
+export default WebViewQuillJS;

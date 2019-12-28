@@ -2,9 +2,12 @@
   "name": "basic-react-native-typescript-package",
   "version": "1.0.3",
   "description": "",
-  "main": "build/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "cleanbuild": "gulp clean && tsc",
+    "tsc": "tsc --noemit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -18,12 +21,17 @@
   ],
   "devDependencies": {
     "@types/react-native": "^0.60.26",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
     "metro-react-native-babel-preset": "^0.57.0",
     "react": "^16.12.0",
     "react-native": "^0.61.5",
     "typescript": "^3.7.4"
   },
   "files": [
-    "build"
-  ]
+    "dist"
+  ],
+  "dependencies": {
+    "react-native-indicators": "^0.17.0"
+  }
 }

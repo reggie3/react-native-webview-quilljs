@@ -1,12 +1,14 @@
-"use strict";
-exports.__esModule = true;
-var React = require("react");
-var react_native_webview_1 = require("react-native-webview");
-var WebViewQuill = function (props) {
+import { Text } from "react-native";
+import * as React from "react";
+class WebViewQuillJS extends React.Component {
     /* return (
       <Text style={{color: 'orange'}} >Webview quill js in separate file now</Text>
     ) */
-    return (<react_native_webview_1.WebView source={{ uri: 'https://facebook.github.io/react-native/' }}/>);
-};
-exports["default"] = WebViewQuill;
+    render() {
+        return (React.createElement(Text, { style: { color: 'orange' } }, "Webview quill js in separate file now")
+        /*  <WebView source={{ uri: "https://facebook.github.io/react-native/" }} /> */
+        );
+    }
+}
+export default WebViewQuillJS;
 //# sourceMappingURL=WebViewQuillJS.js.map

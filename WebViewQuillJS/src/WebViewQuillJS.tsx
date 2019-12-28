@@ -1,15 +1,17 @@
-import { Text } from 'react-native'
-import * as React from "react"
-import { WebView } from 'react-native-webview';
+import { Text } from "react-native";
+import * as React from "react";
+import { WebView } from "react-native-webview";
 
-const WebViewQuill= (props: any) => {
+class WebViewQuillJS extends React.Component {
   /* return (
     <Text style={{color: 'orange'}} >Webview quill js in separate file now</Text>
   ) */
-
-  return (
-    <WebView source={{ uri: 'https://facebook.github.io/react-native/' }} />
-  );
+  render() {
+    return (
+      <Text style={{color: 'orange'}} >Webview quill js in separate file now</Text>
+     /*  <WebView source={{ uri: "https://facebook.github.io/react-native/" }} /> */
+    );
+  }
 }
 
-export default WebViewQuill;
+export default WebViewQuillJS;

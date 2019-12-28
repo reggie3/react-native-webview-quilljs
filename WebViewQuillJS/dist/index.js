@@ -1,5 +1,3 @@
-"use strict";
-exports.__esModule = true;
-var WebViewQuillJS_1 = require("./WebViewQuillJS");
-exports["default"] = WebViewQuillJS_1["default"];
+import WebViewQuillJS from './WebViewQuillJS';
+export default WebViewQuillJS;
 //# sourceMappingURL=index.js.map

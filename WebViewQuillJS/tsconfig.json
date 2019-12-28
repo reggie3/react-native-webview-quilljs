@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react-native",
     "lib": ["dom", "esnext"],
     "moduleResolution": "node",
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
     "outDir": "dist",
-    "declaration": true,
-    "forceConsistentCasingInFileNames": true,
-    "sourceMap": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
   },
   "include": ["src"],
-  "exclude": ["node_modules", "build", "dist"]
+  "exclude": ["node_modules", "dist", "gulpfile.js"]
 }

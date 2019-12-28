@@ -6,9 +6,11 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "update": "yarn remove react-native-webview-quilljs && react-native-webview-quilljs@file:../WebViewQuillJS"
+    "update": "yarn remove react-native-webview-quilljs && react-native-webview-quilljs@file:../WebViewQuillJS",
+    "clean": "gulp clean && yarn"
   },
   "dependencies": {
+    "basic-javascript-webview-package": "file:../BasicJavascriptWebviewPackage",
     "basic-react-native-package": "file:../BasicReactNativePackage",
     "basic-react-native-typescript-package": "file:../BasicReactNativeTypescriptPackage",
     "expo": "^36.0.0",
@@ -17,6 +19,7 @@
     "expo-file-system": "~8.0.0",
     "expo-font": "~8.0.0",
     "native-base": "^2.13.8",
+    "picache": "^1.0.13",
     "prop-types": "^15.7.2",
     "quilljs": "^0.18.1",
     "react": "16.9.0",
@@ -24,7 +27,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.1.tar.gz",
     "react-native-modal": "^11.5.3",
     "react-native-webview": "7.4.3",
-    "basic-javascript-webview-package": "file:../BasicJavascriptWebviewPackage",
+    "react-native-webview-quilljs": "file:../WebViewQuillJS",
     "react-quill": "^1.3.3",
     "render-if": "^0.1.1",
     "typescript": "^3.7.3",
@@ -34,7 +37,9 @@
     "@types/expo": "^33.0.1",
     "@types/react": "^16.8.23",
     "@types/react-native": "^0.57.65",
-    "babel-preset-expo": "^7.1.0"
+    "babel-preset-expo": "^7.1.0",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0"
   },
   "private": true
 }

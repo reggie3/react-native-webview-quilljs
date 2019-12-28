@@ -4,37 +4,34 @@ import {
   View,
   Platform,
   ActivityIndicator,
-  Text
+  Text,
 } from "react-native";
 import { Container, Content, Header, Body, Title } from "native-base";
-import WebViewQuill, {
-  DeltaObject,
-  WebViewQuillJSMessage
-} from "react-native-webview-quilljs";
-import * as Font from "expo-font";
-/* import { default as BasicReactNativeComponent } from "basic-react-native-package";
+import WebViewQuillJS from "react-native-webview-quilljs";
 import BasicReactNativeTypescriptComponent from "basic-react-native-typescript-package";
-import { WebView } from "react-native-webview"; */
+import * as Font from "expo-font";
+import { default as BasicReactNativeComponent } from "basic-react-native-package";
+import { WebView } from "react-native-webview";
 import { default as BasicJavascriptWebView } from "basic-javascript-webview-package";
 
 
 interface State {
-  content: DeltaObject;
+  //content: DeltaObject;
   editorHeight: number;
   viewerHeight: number;
   isLoadingComplete: boolean;
   hasLoadingStarted: boolean;
-  viewerMessageDelta: DeltaObject;
+  //viewerMessageDelta: DeltaObject;
 }
 
 export default class App extends React.Component<null, State> {
   constructor(props: any) {
     super(props);
     this.state = {
-      content: null,
+      //  content: null,
       hasLoadingStarted: null,
       isLoadingComplete: null,
-      viewerMessageDelta: {
+      /*  viewerMessageDelta: {
         ops: [
           { insert: "This", attributes: { bold: true } },
           { insert: " is " },
@@ -43,7 +40,7 @@ export default class App extends React.Component<null, State> {
             attributes: { color: "#fcc" }
           }
         ]
-      },
+      }, */
       editorHeight: 0,
       viewerHeight: 0
     };
@@ -59,11 +56,11 @@ export default class App extends React.Component<null, State> {
     this.setState({ hasLoadingStarted: true });
   };
 
-  onMessageReceived = (message: WebViewQuillJSMessage) => {
-    const { instruction, payload } = message;
+  onMessageReceived = (/* message: WebViewQuillJSMessage */) => {
+    /*  const { instruction, payload } = message;
     if (payload.delta) {
       this.setState({ content: payload.delta });
-    }
+    } */
   };
 
   render() {
@@ -82,15 +79,15 @@ export default class App extends React.Component<null, State> {
               <Title>React Native Webview QuillJS V2 Demo</Title>
             </Body>
           </Header>
-         
-            {/* <View
+
+          {/* <View
               style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center"
               }}
             > */}
-              {/*  <View style={{ flex: 1, padding: 10, marginBottom: 15 }}>
+          {/*  <View style={{ flex: 1, padding: 10, marginBottom: 15 }}>
                <WebViewQuill
                 backgroundColor={"#FAEBD7"}
                 doShowDebugMessages={false}
@@ -109,20 +106,18 @@ export default class App extends React.Component<null, State> {
                 isReadOnly
               /> 
             </View> */}
-              {/* <Text>In App</Text>
+          {/* <Text>In App</Text>
               <View style={{ backgroundColor: "gray" }}>
                 <BasicReactNativeComponent />
-                <BasicReactNativeTypescriptComponent />
+                
               </View>
               <View style={{ flex: 1,backgroundColor: "green" }}> */}
-                {/* <WebView
+          {/* <WebView
                   source={{ uri: "https://facebook.github.io/react-native/" }}
                 /> */}
-
-               <BasicJavascriptWebView />
-            {/*   </View>
-            </View> */}
-    
+           {/* <BasicReactNativeTypescriptComponent />  */}
+          {/* <WebViewQuillJS /> */}
+          {/* <BasicJavascriptWebView /> */}
         </Container>
       );
     }
