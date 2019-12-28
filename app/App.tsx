@@ -12,9 +12,11 @@ import WebViewQuill, {
   WebViewQuillJSMessage
 } from "react-native-webview-quilljs";
 import * as Font from "expo-font";
-import { default as BasicReactNativeComponent } from "basic-react-native-package";
+/* import { default as BasicReactNativeComponent } from "basic-react-native-package";
 import BasicReactNativeTypescriptComponent from "basic-react-native-typescript-package";
-import { WebView } from "react-native-webview";
+import { WebView } from "react-native-webview"; */
+import { default as BasicJavascriptWebView } from "basic-javascript-webview-package";
+
 
 interface State {
   content: DeltaObject;
@@ -117,7 +119,7 @@ export default class App extends React.Component<null, State> {
                   source={{ uri: "https://facebook.github.io/react-native/" }}
                 /> */}
 
-               <WebViewQuill />
+               <BasicJavascriptWebView />
             {/*   </View>
             </View> */}
     

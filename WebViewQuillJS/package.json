@@ -12,8 +12,8 @@
   "author": "Reginald Johnson",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">= 16.9.x",
-    "react-native": ">= 0.60.x"
+    "react": "^16.12.0",
+    "react-native": "^0.61.5"
   },
   "presets": [
     "module:metro-react-native-babel-preset"
@@ -30,6 +30,6 @@
     "dist"
   ],
   "dependencies": {
-    "react-native-webview": "7.4.3"
+    "react-native-webview": "7.0.5"
   }
 }
