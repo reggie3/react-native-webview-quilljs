@@ -2,7 +2,11 @@ import React from "react";
 import "react-quill/dist/quill.snow.css";
 import { Delta, DeltaOperation } from "quill";
 import QuillComponentView from "./QuillComponent.view";
-import { DeltaObject, WebViewQuillJSMessage, MessageInstruction } from "./models";
+import {
+  DeltaObject,
+  WebViewQuillJSMessage,
+  MessageInstruction
+} from "./models";
 import Sizzle from "sizzle";
 // @ts-ignore
 import isEqual from "lodash.isequal";
@@ -28,16 +32,16 @@ interface State {
   toolbarHeight: number;
 }
 
-class QuillEditorComponent extends React.Component<null, State> {
+class QuillComponent extends React.Component<null, State> {
   private quillRef = null;
   constructor(props: any) {
     super(props);
     this.state = {
-      backgroundColor: 'aliceblue',
+      backgroundColor: "aliceblue",
       browser: null,
       debugMessages: ["test message"],
       doShowQuillComponentDebugMessages: false,
-      defaultValue:{
+      defaultValue: {
         ops: [
           { insert: "Gandalf", attributes: { bold: true } },
           { insert: " the " },
@@ -132,11 +136,12 @@ class QuillEditorComponent extends React.Component<null, State> {
       const htmlElement: HTMLElement = res[0] as HTMLElement;
       if (htmlElement.style) {
         // the extra subtracted pixel is to make the editor component cleaner looking
-        htmlElement.style.height = `${Math.floor(this.state.height - toolbarHeight-1)}px`;
+        htmlElement.style.height = `${Math.floor(
+          this.state.height - toolbarHeight - 1
+        )}px`;
       }
-       
     } catch (error) {
-     this.addDebugMessage(error);
+      this.addDebugMessage(error);
     }
   };
 
@@ -291,7 +296,7 @@ class QuillEditorComponent extends React.Component<null, State> {
             onKeyUp={this.onKeyUp}
             isReadOnly={isReadOnly as boolean}
             onQuillRef={this.onQuillRef}
-            style={{backgroundColor, height: `${height}px`}}
+            style={{ backgroundColor, height: `${height}px` }}
           />
         )}
         {doShowQuillComponentDebugMessages && (
@@ -320,5 +325,3 @@ class QuillEditorComponent extends React.Component<null, State> {
     );
   }
 }
-
-export default QuillEditorComponent;

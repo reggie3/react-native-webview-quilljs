@@ -1,0 +1,718 @@
+<html>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      var _jsxFileName =
+        "C:\\Users\\regin\\Dropbox\\react-native-webview-quilljs\\htmlString\\src\\index.js";
+      import ReactDOM from "react-dom";
+      import React from "react";
+      import "./index.css";
+      import QuillComponent from "./QuillComponent";
+      ReactDOM.render(
+        React.createElement(QuillComponent, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 6
+          },
+          __self: this
+        }),
+        document.getElementById("root")
+      );
+      // This optional code is used to register a service worker.
+      // register() is not called by default.
+      // This lets the app load faster on subsequent visits in production, and gives
+      // it offline capabilities. However, it also means that developers (and users)
+      // will only see deployed updates on subsequent visits to a page, after all the
+      // existing tabs open on the page have been closed, since previously cached
+      // resources are updated in the background.
+      // To learn more about the benefits of this model and instructions on how to
+      // opt-in, read https://bit.ly/CRA-PWA
+      const isLocalhost = Boolean(
+        window.location.hostname === "localhost" || // [::1] is the IPv6 localhost address.
+        window.location.hostname === "[::1]" || // 127.0.0.1/8 is considered localhost for IPv4.
+          window.location.hostname.match(
+            /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+          )
+      );
+      export function register(config) {
+        if (
+          process.env.NODE_ENV === "production" &&
+          "serviceWorker" in navigator
+        ) {
+          // The URL constructor is available in all browsers that support SW.
+          const publicUrl = new URL(
+            process.env.PUBLIC_URL,
+            window.location.href
+          );
+
+          if (publicUrl.origin !== window.location.origin) {
+            // Our service worker won't work if PUBLIC_URL is on a different origin
+            // from what our page is served on. This might happen if a CDN is used to
+            // serve assets; see https://github.com/facebook/create-react-app/issues/2374
+            return;
+          }
+
+          window.addEventListener("load", () => {
+            const swUrl = "".concat(
+              process.env.PUBLIC_URL,
+              "/service-worker.js"
+            );
+
+            if (isLocalhost) {
+              // This is running on localhost. Let's check if a service worker still exists or not.
+              checkValidServiceWorker(swUrl, config); // Add some additional logging to localhost, pointing developers to the
+              // service worker/PWA documentation.
+
+              navigator.serviceWorker.ready.then(() => {
+                console.log(
+                  "This web app is being served cache-first by a service " +
+                    "worker. To learn more, visit https://bit.ly/CRA-PWA"
+                );
+              });
+            } else {
+              // Is not localhost. Just register service worker
+              registerValidSW(swUrl, config);
+            }
+          });
+        }
+      }
+
+      function registerValidSW(swUrl, config) {
+        navigator.serviceWorker
+          .register(swUrl)
+          .then(registration => {
+            registration.onupdatefound = () => {
+              const installingWorker = registration.installing;
+
+              if (installingWorker == null) {
+                return;
+              }
+
+              installingWorker.onstatechange = () => {
+                if (installingWorker.state === "installed") {
+                  if (navigator.serviceWorker.controller) {
+                    // At this point, the updated precached content has been fetched,
+                    // but the previous service worker will still serve the older
+                    // content until all client tabs are closed.
+                    console.log(
+                      "New content is available and will be used when all " +
+                        "tabs for this page are closed. See https://bit.ly/CRA-PWA."
+                    ); // Execute callback
+
+                    if (config && config.onUpdate) {
+                      config.onUpdate(registration);
+                    }
+                  } else {
+                    // At this point, everything has been precached.
+                    // It's the perfect time to display a
+                    // "Content is cached for offline use." message.
+                    console.log("Content is cached for offline use."); // Execute callback
+
+                    if (config && config.onSuccess) {
+                      config.onSuccess(registration);
+                    }
+                  }
+                }
+              };
+            };
+          })
+          .catch(error => {
+            console.error("Error during service worker registration:", error);
+          });
+      }
+
+      function checkValidServiceWorker(swUrl, config) {
+        // Check if the service worker can be found. If it can't reload the page.
+        fetch(swUrl)
+          .then(response => {
+            // Ensure service worker exists, and that we really are getting a JS file.
+            const contentType = response.headers.get("content-type");
+
+            if (
+              response.status === 404 ||
+              (contentType != null && contentType.indexOf("javascript") === -1)
+            ) {
+              // No service worker found. Probably a different app. Reload the page.
+              navigator.serviceWorker.ready.then(registration => {
+                registration.unregister().then(() => {
+                  window.location.reload();
+                });
+              });
+            } else {
+              // Service worker found. Proceed as normal.
+              registerValidSW(swUrl, config);
+            }
+          })
+          .catch(() => {
+            console.log(
+              "No internet connection found. App is running in offline mode."
+            );
+          });
+      }
+
+      export function unregister() {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.ready.then(registration => {
+            registration.unregister();
+          });
+        }
+      }
+      import * as Quill from "quill";
+      export let MessageInstruction;
+
+      (function(MessageInstruction) {
+        MessageInstruction["DOCUMENT_EVENT_LISTENER_ADDED"] =
+          "DOCUMENT_EVENT_LISTENER_ADDED";
+        MessageInstruction["DOCUMENT_EVENT_LISTENER_REMOVED"] =
+          "DOCUMENT_EVENT_LISTENER_REMOVED";
+        MessageInstruction["WINDOW_EVENT_LISTENER_ADDED"] =
+          "WINDOW_EVENT_LISTENER_ADDED";
+        MessageInstruction["WINDOW_EVENT_LISTENER_REMOVED"] =
+          "WINDOW_EVENT_LISTENER_REMOVED";
+        MessageInstruction["QUILL_READY"] = "QUILL_READY";
+        MessageInstruction["GET_CONTENT"] = "GET_CONTENT";
+        MessageInstruction["SET_CONTENT"] = "SET_CONTENT";
+        MessageInstruction["CONTENT_CHANGED"] = "CONTENT_CHANGED";
+        MessageInstruction["UNABLE_TO_ADD_EVENT_LISTENER"] =
+          "UNABLE_TO_ADD_EVENT_LISTENER";
+        MessageInstruction["COMPONENT_MOUNTED"] = "COMPONENT_MOUNTED";
+        MessageInstruction["ON_CHANGE_SELECTION"] = "ON_CHANGE_SELECTION";
+        MessageInstruction["ON_FOCUS"] = "ON_FOCUS";
+        MessageInstruction["ON_BLUR"] = "ON_BLUR";
+        MessageInstruction["ON_KEY_PRESS"] = "ON_KEY_PRESS";
+        MessageInstruction["ON_KEY_DOWN"] = "ON_KEY_DOWN";
+        MessageInstruction["ON_KEY_UP"] = "ON_KEY_UP";
+      })(MessageInstruction || (MessageInstruction = {}));
+
+      export { Quill } from "quill";
+
+      import _defineProperty from "C:\\Users\\regin\\Dropbox\\react-native-webview-quilljs\\htmlString\\node_modules\\babel-preset-react-app\\node_modules\\@babel\\runtime/helpers/esm/defineProperty";
+      var _jsxFileName =
+        "C:\\Users\\regin\\Dropbox\\react-native-webview-quilljs\\htmlString\\src\\QuillComponent.tsx";
+
+      function ownKeys(object, enumerableOnly) {
+        var keys = Object.keys(object);
+        if (Object.getOwnPropertySymbols) {
+          var symbols = Object.getOwnPropertySymbols(object);
+          if (enumerableOnly)
+            symbols = symbols.filter(function(sym) {
+              return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+            });
+          keys.push.apply(keys, symbols);
+        }
+        return keys;
+      }
+
+      function _objectSpread(target) {
+        for (var i = 1; i < arguments.length; i++) {
+          var source = arguments[i] != null ? arguments[i] : {};
+          if (i % 2) {
+            ownKeys(Object(source), true).forEach(function(key) {
+              _defineProperty(target, key, source[key]);
+            });
+          } else if (Object.getOwnPropertyDescriptors) {
+            Object.defineProperties(
+              target,
+              Object.getOwnPropertyDescriptors(source)
+            );
+          } else {
+            ownKeys(Object(source)).forEach(function(key) {
+              Object.defineProperty(
+                target,
+                key,
+                Object.getOwnPropertyDescriptor(source, key)
+              );
+            });
+          }
+        }
+        return target;
+      }
+
+      import "react-quill/dist/quill.snow.css";
+      import Sizzle from "sizzle"; // @ts-ignore
+
+      import isEqual from "lodash.isequal";
+
+      const _require = require("detect-browser"),
+        detect = _require.detect;
+
+      export let ContentType;
+
+      (function(ContentType) {
+        ContentType["DELTA"] = "DELTA";
+        ContentType["HTML"] = "HTML";
+      })(ContentType || (ContentType = {}));
+
+      class QuillEditorComponent extends React.Component {
+        constructor(props) {
+          super(props);
+          this.quillRef = null;
+
+          this.componentDidMount = () => {
+            this.setState(
+              {
+                browser: detect(),
+                debugMessages: [
+                  ...this.state.debugMessages,
+                  "componentDidMount"
+                ]
+              },
+              () => {
+                try {
+                  this.sendMessage({
+                    instruction: MessageInstruction.QUILL_READY
+                  });
+                } catch (error) {
+                  this.addDebugMessage(error);
+                }
+
+                if (document) {
+                  document.addEventListener("message", this.handleMessage);
+                  this.addDebugMessage("set document listeners");
+                  this.sendMessage({
+                    instruction:
+                      MessageInstruction.DOCUMENT_EVENT_LISTENER_ADDED
+                  });
+                }
+
+                if (window) {
+                  window.addEventListener("message", this.handleMessage);
+                  this.addDebugMessage("setting Window");
+                  this.sendMessage({
+                    instruction: MessageInstruction.WINDOW_EVENT_LISTENER_ADDED
+                  });
+                }
+
+                if (!document && !window) {
+                  this.sendMessage({
+                    error: "UNABLE_TO_ADD_EVENT_LISTENER"
+                  });
+                  return;
+                }
+              }
+            );
+          };
+
+          this.componentDidUpdate = (prevProps, prevState) => {
+            const _this$state = this.state,
+              browser = _this$state.browser,
+              debugMessages = _this$state.debugMessages,
+              isDesktopBrowser = _this$state.isDesktopBrowser;
+
+            if (debugMessages !== prevState.debugMessages) {
+              console.log(debugMessages);
+            }
+
+            if (!isEqual(browser, prevState.browser)) {
+              this.setState(
+                {
+                  isDesktopBrowser: this.isDesktopBrowser()
+                },
+                () => {
+                  console.log(this.state);
+                }
+              );
+            }
+
+            if (isDesktopBrowser && !prevState.isDesktopBrowser) {
+              this.setState({
+                doShowQuillComponentDebugMessages: true,
+                height: 300
+              });
+            }
+          };
+
+          this.onQuillRef = ref => {
+            const isReadOnly = this.state.isReadOnly;
+
+            if (this.quillRef === null) {
+              this.quillRef = ref;
+
+              if (!isReadOnly) {
+                this.setQuillContainerHeight(this.quillRef);
+              }
+            }
+          };
+
+          this.setQuillContainerHeight = quillRef => {
+            try {
+              // want to switch this to optional chaining at some point
+              const toolbarHeight =
+                quillRef.editor.theme.modules.toolbar.container.clientHeight;
+              let res = Sizzle(".ql-container");
+              const htmlElement = res[0];
+
+              if (htmlElement.style) {
+                // the extra subtracted pixel is to make the editor component cleaner looking
+                htmlElement.style.height = "".concat(
+                  Math.floor(this.state.height - toolbarHeight - 1),
+                  "px"
+                );
+              }
+            } catch (error) {
+              this.addDebugMessage(error);
+            }
+          };
+
+          this.componentWillUnmount = () => {
+            if (document) {
+              document.removeEventListener("message", this.handleMessage);
+              this.sendMessage({
+                instruction: MessageInstruction.DOCUMENT_EVENT_LISTENER_REMOVED
+              });
+            }
+
+            if (window) {
+              window.removeEventListener("message", this.handleMessage);
+              this.sendMessage({
+                instruction: MessageInstruction.WINDOW_EVENT_LISTENER_REMOVED
+              });
+            }
+          };
+
+          this.addDebugMessage = msg => {
+            if (typeof msg === "object") {
+              this.addDebugMessage("STRINGIFIED");
+              this.setState({
+                debugMessages: [
+                  ...this.state.debugMessages,
+                  JSON.stringify(msg, null, 4)
+                ]
+              });
+            } else {
+              this.setState({
+                debugMessages: [...this.state.debugMessages, msg]
+              });
+            }
+          };
+
+          this.handleMessage = event => {
+            this.addDebugMessage(event.data);
+
+            try {
+              this.setState(_objectSpread({}, this.state, {}, event.data));
+            } catch (error) {
+              this.addDebugMessage({
+                error: JSON.stringify(error)
+              });
+            }
+          };
+
+          this.sendMessage = message => {
+            // @ts-ignore
+            if (window.ReactNativeWebView) {
+              // @ts-ignore
+              window.ReactNativeWebView.postMessage(JSON.stringify(message));
+              console.log("sendMessage  ", JSON.stringify(message));
+            }
+          };
+
+          this.onChange = (html, delta, source, editor) => {
+            editor.getContents();
+            this.sendMessage({
+              instruction: MessageInstruction.CONTENT_CHANGED,
+              payload: {
+                html: editor.getHTML(),
+                delta: editor.getContents(),
+                text: editor.getText(),
+                source,
+                editor
+              }
+            });
+          };
+
+          this.onChangeSelection = (range, source, editor) => {
+            this.sendMessage({
+              instruction: MessageInstruction.ON_CHANGE_SELECTION,
+              payload: {
+                range,
+                selection: editor.getSelection(),
+                html: editor.getHTML(),
+                delta: editor.getContents(),
+                text: editor.getText(),
+                source,
+                editor
+              }
+            });
+          };
+
+          this.onFocus = (range, source, editor) => {
+            this.sendMessage({
+              instruction: MessageInstruction.ON_FOCUS,
+              payload: {
+                range,
+                source,
+                editor
+              }
+            });
+          };
+
+          this.onBlur = (previousRange, source, editor) => {
+            this.sendMessage({
+              instruction: MessageInstruction.ON_BLUR,
+              payload: {
+                previousRange,
+                source,
+                editor
+              }
+            });
+          };
+
+          this.onKeyPress = event => {
+            this.sendMessage({
+              instruction: MessageInstruction.ON_KEY_PRESS,
+              payload: {
+                event
+              }
+            });
+          };
+
+          this.onKeyDown = event => {
+            this.sendMessage({
+              instruction: MessageInstruction.ON_KEY_DOWN,
+              payload: {
+                event
+              }
+            });
+          };
+
+          this.onKeyUp = event => {
+            this.sendMessage({
+              instruction: MessageInstruction.ON_KEY_UP,
+              payload: {
+                event
+              }
+            });
+          };
+
+          this.shouldRenderQuillComponentView = () => {
+            const isReadOnly = this.state.isReadOnly;
+            const isDesktopBrowser = this.isDesktopBrowser();
+            return isReadOnly !== null || isDesktopBrowser;
+          };
+
+          this.isDesktopBrowser = () => {
+            const desktopOSNames = ["windows"];
+            return !!desktopOSNames.find(OS => {
+              var _this$state$browser, _this$state$browser$o;
+
+              let isBrowser =
+                (_this$state$browser = this.state.browser) === null ||
+                _this$state$browser === void 0
+                  ? void 0
+                  : (_this$state$browser$o = _this$state$browser.os) === null ||
+                    _this$state$browser$o === void 0
+                  ? void 0
+                  : _this$state$browser$o.toLowerCase().includes(OS);
+              return isBrowser;
+            });
+          };
+
+          this.state = {
+            backgroundColor: "aliceblue",
+            browser: null,
+            debugMessages: ["test message"],
+            doShowQuillComponentDebugMessages: false,
+            defaultValue: {
+              ops: [
+                {
+                  insert: "Gandalf",
+                  attributes: {
+                    bold: true
+                  }
+                },
+                {
+                  insert: " the "
+                },
+                {
+                  insert: "Grey",
+                  attributes: {
+                    color: "#ccc"
+                  }
+                }
+              ]
+            },
+            content: "",
+            delta: [],
+            height: 300,
+            html: "",
+            isDesktopBrowser: false,
+            isReadOnly: null,
+            modules: {},
+            toolbarHeight: 0
+          };
+        }
+
+        render() {
+          const _this$state2 = this.state,
+            backgroundColor = _this$state2.backgroundColor,
+            content = _this$state2.content,
+            debugMessages = _this$state2.debugMessages,
+            defaultValue = _this$state2.defaultValue,
+            doShowQuillComponentDebugMessages =
+              _this$state2.doShowQuillComponentDebugMessages,
+            height = _this$state2.height,
+            isReadOnly = _this$state2.isReadOnly,
+            toolbarHeight = _this$state2.toolbarHeight;
+          return React.createElement(
+            React.Fragment,
+            null,
+            this.shouldRenderQuillComponentView() && // @ts-ignore
+              React.createElement(QuillComponentView, {
+                addDebugMessage: this.addDebugMessage,
+                content: content,
+                debugMessages: debugMessages,
+                defaultValue: defaultValue,
+                height: height,
+                onChange: this.onChange,
+                onChangeSelection: this.onChangeSelection,
+                onFocus: this.onFocus,
+                onBlur: this.onBlur,
+                onKeyPress: this.onKeyPress,
+                onKeyDown: this.onKeyDown,
+                onKeyUp: this.onKeyUp,
+                isReadOnly: isReadOnly,
+                onQuillRef: this.onQuillRef,
+                style: {
+                  backgroundColor,
+                  height: "".concat(height, "px")
+                },
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 279
+                },
+                __self: this
+              }),
+            doShowQuillComponentDebugMessages &&
+              React.createElement(
+                "div",
+                {
+                  style: {
+                    backgroundColor: "orange",
+                    maxHeight: "200px",
+                    overflow: "auto",
+                    padding: 5,
+                    position: "fixed",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 15000
+                  },
+                  id: "messages",
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 298
+                  },
+                  __self: this
+                },
+                React.createElement(
+                  "ul",
+                  {
+                    __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 312
+                    },
+                    __self: this
+                  },
+                  debugMessages.map((message, index) => {
+                    return React.createElement(
+                      "li",
+                      {
+                        key: index,
+                        __source: {
+                          fileName: _jsxFileName,
+                          lineNumber: 314
+                        },
+                        __self: this
+                      },
+                      message
+                    );
+                  })
+                )
+              )
+          );
+        }
+      }
+
+      var _jsxFileName =
+        "C:\\Users\\regin\\Dropbox\\react-native-webview-quilljs\\htmlString\\src\\QuillComponent.view.tsx";
+
+      import ReactQuill from "react-quill";
+      import "react-quill/dist/quill.snow.css"; // ES6
+
+      export const QuillComponentView = ({
+        addDebugMessage = () => {},
+        debugMessages = [],
+        content,
+        defaultValue,
+        isReadOnly = false,
+        modules = {},
+        onChange,
+        onChangeSelection,
+        onFocus,
+        onBlur,
+        onKeyPress,
+        onKeyDown,
+        onKeyUp,
+        onQuillRef,
+        style
+      }) => {
+        const getModules = () => {
+          if (isReadOnly) {
+            return _objectSpread({}, modules, {
+              toolbar: false
+            });
+          }
+
+          return modules;
+        };
+
+        const getContentProps = () => {
+          if (content) {
+            return {
+              value: content
+            };
+          }
+
+          if (defaultValue) {
+            return {
+              defaultValue
+            };
+          }
+
+          return "";
+        };
+
+        return React.createElement(
+          ReactQuill,
+          Object.assign(
+            {
+              modules: getModules(),
+              onChange: onChange,
+              onChangeSelection: onChangeSelection,
+              onFocus: onFocus,
+              onBlur: onBlur,
+              onKeyPress: onKeyPress,
+              onKeyDown: onKeyDown,
+              onKeyUp: onKeyUp,
+              readOnly: isReadOnly,
+              ref: component => {
+                onQuillRef(component);
+              },
+              style: style
+            },
+            getContentProps(),
+            {
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 65
+              },
+              __self: this
+            }
+          )
+        );
+      };
+      export default QuillComponentView;
+    </script>
+  </body>
+</html>

@@ -81,6 +81,8 @@ gulp.task("concatFiles", () => {
     ])
     .pipe(debug({ title: "concatJS:" }))
     .pipe(concat(`${COMBINE_SOURCE_FILE}`))
+    .pipe(rename(`${BROWSER_TEST_FILE}`))
+    .pipe(gulp.dest(`./${BROWSER_TEST_DIRECTORY}/`))
     .pipe(gulp.dest(`./${STRING_WORKING_DIRECTORY}`));
 });
 
@@ -118,7 +120,7 @@ gulp.task("replaceStuffInParcelBundel", function() {
 gulp.task("createIndexFileFromTemplate", () => {
   const combinedHTMLCSSJS = fs.readFileSync(
     `./${STRING_WORKING_DIRECTORY}/${COMBINE_SOURCE_FILE}`,
-    "utf8"
+    "ascii"
   );
 
   return (
@@ -145,8 +147,7 @@ exports.postParcelBuild = gulp.series(
   "copyHTMLToDestinationProject"
 );
 
-exports.build = gulp.series(
-  "clean",
+exports.buildWebpack = gulp.series(
   "replaceBackTicksInJS",
   "replaceBackTicksInCSS",
   "removeLinksFromHTML",
@@ -169,8 +170,8 @@ gulp.task("babel", function() {
     ])
     .pipe(envs)
     .pipe(babel())
-    .pipe(rename(`${BROWSER_TEST_FILE}`))
-    .pipe(gulp.dest(`./${BROWSER_TEST_DIRECTORY}/`));
+    .pipe(concat(`${COMBINE_SOURCE_FILE}`))
+    .pipe(gulp.dest(`./${BABEL_DISTRIBUTION_DIRECTORY}/`));
 });
 
 exports.babelBuild = gulp.series("clean", "babel");
