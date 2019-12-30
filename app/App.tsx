@@ -12,7 +12,7 @@ import * as Font from "expo-font";
 import { default as BasicReactNativeComponent } from "basic-react-native-package";
 import { WebView } from "react-native-webview";
 import { default as BasicJavascriptWebView } from "basic-javascript-webview-package";
-
+import html from "./html";
 interface State {
   //content: DeltaObject;
   editorHeight: number;
@@ -102,8 +102,17 @@ export default class App extends React.Component<null, State> {
               <View style={{ flex: 1,backgroundColor: "green" }}> */}
 
         {/*  <BasicReactNativeTypescriptComponent /> */}
-        <WebViewQuill />
+        {/*  <WebViewQuill /> */}
         {/* <BasicJavascriptWebView /> */}
+        <WebView
+          originWhitelist={["*"]}
+          source={{ html: "<html>hello world</html>" }}
+          javascriptEnabled={true}
+          onError={syntheticEvent => {
+            const { nativeEvent } = syntheticEvent;
+            console.warn("WebView error: ", nativeEvent);
+          }}
+        />
       </View>
     );
   }
