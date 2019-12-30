@@ -104,17 +104,19 @@ gulp.task("createIndexFileFromBabel", () => {
 });
 
 gulp.task("replaceStuffInParcelBundel", function() {
-  return gulp
-    .src(`./${PARCEL_DIRECTORY}/index.html`)
-    .pipe(debug({ title: "replaceStuffInParcelBundel:" }))
-    .pipe(replace("`", ""))
-    .pipe(replace(/\/\/#\s(.*).map/gi, ""))
-    .pipe(replace(/\/\!*((.|\n)*)\*\/\./gi, "")) // comments including multiline
-    .pipe(cleanhtml())
-    .pipe(rename(`${BROWSER_TEST_FILE}`))
-    .pipe(gulp.dest(`./${BROWSER_TEST_DIRECTORY}/`))
-    .pipe(rename(`${COMBINE_SOURCE_FILE}`))
-    .pipe(gulp.dest(`./${STRING_WORKING_DIRECTORY}/`));
+  return (
+    gulp
+      .src(`./${PARCEL_DIRECTORY}/index.html`)
+      .pipe(debug({ title: "replaceStuffInParcelBundel:" }))
+      .pipe(replace("`", ""))
+      .pipe(replace(/\/\/#\s(.*).map/gi, ""))
+      .pipe(replace(/\/\!*((.|\n)*)\*\/\./gi, "")) // comments including multiline
+      //.pipe(cleanhtml())
+      .pipe(rename(`${BROWSER_TEST_FILE}`))
+      .pipe(gulp.dest(`./${BROWSER_TEST_DIRECTORY}/`))
+      .pipe(rename(`${COMBINE_SOURCE_FILE}`))
+      .pipe(gulp.dest(`./${STRING_WORKING_DIRECTORY}/`))
+  );
 });
 
 gulp.task("createIndexFileFromTemplate", () => {

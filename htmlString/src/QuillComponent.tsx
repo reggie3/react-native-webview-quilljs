@@ -325,3 +325,5 @@ class QuillComponent extends React.Component<null, State> {
     );
   }
 }
+
+export default QuillComponent;
