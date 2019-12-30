@@ -21,8 +21,10 @@
   ],
   "devDependencies": {
     "@types/react-native": "^0.60.26",
+    "fs": "^0.0.1-security",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
+    "gulp-html-to-js": "^0.0.7",
     "metro-react-native-babel-preset": "^0.57.0",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
@@ -33,6 +35,8 @@
     "dist"
   ],
   "dependencies": {
+    "expo-asset-utils": "^1.2.0",
+    "expo-file-system": "^8.0.0",
     "react-native-webview": "7.0.5"
   }
 }

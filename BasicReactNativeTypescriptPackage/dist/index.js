@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var react_native_1 = require("react-native");
-var React = require("react");
+var react_1 = require("react");
 var react_native_indicators_1 = require("react-native-indicators");
 exports["default"] = (function (props) {
     return (<react_native_1.View style={{ backgroundColor: "lightyellow" }}>
