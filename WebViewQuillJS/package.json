@@ -1,6 +1,6 @@
 {
   "name": "react-native-webview-quilljs",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "quill js editor and view for react native",
   "main": "index.ts",
   "scripts": {
@@ -10,9 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "expo-asset": "^7.0.0",
+    "expo-asset": "^8.0.0",
     "expo-asset-utils": "^1.2.0",
-    "expo-file-system": "^7.0.0",
+    "expo-file-system": "^8.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-native": "^0.61.5",
@@ -45,5 +45,4 @@
     "typescript": "^3.7.3"
   },
   "types": "index.d.ts"
-  
 }
