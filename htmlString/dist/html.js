@@ -1,5 +1,4 @@
-const html = `<html>
-  <style>body {
+const html = `<html><style>body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -968,9 +967,7 @@ code {
 }
 
 
-/*# sourceMappingURL=src.f7c4468d.css.map */</style><body>
-    <div id="root"></div>
-    <script>// modules are defined as an array
+/*# sourceMappingURL=src.f7c4468d.css.map */</style><body><div id="root"></div><script>// modules are defined as an array
 // [ module function, map of requires ]
 //
 // map of requires is short require name -> numeric require
@@ -26475,9 +26472,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _reactDom.default.render(_react.default.createElement(_QuillComponent.default, null), document.getElementById("root"));
 },{"react-dom":"NKHc","react":"n8MK","./index.css":"vKFU","./QuillComponent":"HMCB"}]},{},["Focm"], null)
-</script>
-  </body>
-</html>
-`;
+</script></body></html>`;
 
 export default html;
