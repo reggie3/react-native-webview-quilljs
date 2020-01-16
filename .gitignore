@@ -12,3 +12,11 @@ dist/**/*
 /WebViewQuillJS/node_modules
 /WebViewQuillJS/.jest/
 /.vscode
+/ejected-html
+/BasicJavascriptWebviewPackage
+/BasicReactNativePackage
+/BasicReactNativeTypescriptPackage
+/Deprecated-SampleReactNativePackage
+/Deprecated-WebViewQuillJS
+/WebViewQuillJSNoTypescript
+/htmlUnpkg/node_modules
