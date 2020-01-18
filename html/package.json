@@ -8,13 +8,17 @@
     "@testing-library/user-event": "^7.1.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0"
+    "react-quill": "^1.3.3",
+    "react-scripts": "3.3.0",
+    "typescript": "^3.7.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "del-cli": "^3.0.0",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-inline-source": "^4.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.0.0"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -30,5 +34,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "cleanAssets": "del-cli --force ../WebViewQuillJS/assets/**/*",
+    "copyDist": "npx copyfiles -u 1 ./dist/index.html ../WebViewQuillJS/assets",
+    "dist": "gulp disableBrowserTestFlag && yarn build && gulp build && yarn cleanAssets && yarn copyDist && gulp enableBrowserTestFlag",
+    "cpx": "cpx '../WebViewQuillJS/models.ts' ./src --watch"
   }
 }

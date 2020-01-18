@@ -1,62 +1,45 @@
-/********************************************
- * WebViewQuillEditor.js
- * A Quill.js editor component for use in react-native
- * applications that need to avoid using native code
- *
- */
 import * as React from "react";
-import { NativeSyntheticEvent } from "react-native";
 import { WebView } from "react-native-webview";
 import AssetUtils from "expo-asset-utils";
 import { Asset } from "expo-asset";
+import WebViewQuillJSView from "./WebViewQuillJS.view";
+
+import { ActivityOverlay } from "./ActivityOverlay";
 import * as FileSystem from "expo-file-system";
 import {
-  ReactNativeWebViewQuillJSComponentProps as Props, WebViewQuillJSMessage, StartupMessage
-} from "..";
-import { WebViewError } from "react-native-webview/lib/WebViewTypes";
-import WebViewQuillView from "./WebViewQuill.view";
-import { ActivityOverlay } from "./ActivityOverlay";
-import { DeltaOperation } from "quill";
-import { isEqual } from "lodash";
+  WebviewQuillJSMessage,
+  WebviewQuillJSEvents,
+  StartupMessage,
+  WebViewQuillJSProps
+} from "./models";
 
-// path to the file that the webview will load
-// @ts-ignore typescript doesn't like the require
+// @ts-ignore node types
 const INDEX_FILE_PATH = require(`./assets/index.html`);
 
 interface State {
   debugMessages: string[];
-  height: number;
   isLoading: boolean;
   webviewContent: string;
 }
 
-const defaultProps: Partial<Props> = {
-  backgroundColor: "#ccc",
-  containerStyle: {},
-  defaultValue: "",
-  doShowDebugMessages: false,
-  doShowQuillComponentDebugMessages: false,
-  isReadOnly: false,
-  loadingIndicator: () => <ActivityOverlay />,
-  onContentChange: (html: string, delta: DeltaOperation[]) => {},
-  onError: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => {},
-  onLoadEnd: () => {},
-  onLoadStart: () => {},
-  onMessageReceived: (message: object) => {},
-  style: {}
-};
-
-class WebViewQuill extends React.Component<Props, State> {
-  static defaultProps = defaultProps;
-
+class WebViewQuillJS extends React.Component<WebViewQuillJSProps, State> {
   private webViewRef: any;
+  static defaultProps = {
+    backgroundColor: "#FAEBD7",
+    doShowDebugMessages: false,
+    loadingIndicator: () => {
+      return <ActivityOverlay />;
+    },
+    onError: (syntheticEvent: any) => {},
+    onMessageReceived: (message: WebviewQuillJSMessage) => {},
+    onLoadEnd: () => {},
+    onLoadStart: () => {}
+  };
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
-
     this.state = {
       debugMessages: [],
-      height: 0,
       isLoading: null,
       webviewContent: null
     };
@@ -81,54 +64,38 @@ class WebViewQuill extends React.Component<Props, State> {
     }
   };
 
-  componentDidUpdate = (prevProps: Props, prevState: State) => {
+  componentDidUpdate = (prevProps: WebViewQuillJSProps, prevState: State) => {
     const { webviewContent } = this.state;
     const { content } = this.props;
     if (!prevState.webviewContent && webviewContent) {
       this.updateDebugMessages("file loaded");
     }
-    if (!isEqual(content, prevProps.content)) {
-      this.updateDebugMessages("sending startup message");
-
-      this.webViewRef.injectJavaScript(
-        `window.postMessage(${JSON.stringify({ content })}, '*');`
-      );
+    if (content !== prevProps.content) {
+      this.sendMessage({ content });
     }
   };
 
   // Handle messages received from webview contents
-  private handleMessage = (message: string) => {
-    let parsedMessage: WebViewQuillJSMessage = JSON.parse(message);
-    this.updateDebugMessages(`received: ${JSON.stringify(parsedMessage)}`);
-    console.log(parsedMessage);
+  private handleMessage = (data: string) => {
+    const { onMessageReceived } = this.props;
 
-    switch (parsedMessage.instruction) {
-      case "QUILL_READY":
+    if (onMessageReceived) {
+      let message: WebviewQuillJSMessage = JSON.parse(data);
+      this.updateDebugMessages(`received: ${JSON.stringify(message)}`);
+      if (message.msg === WebviewQuillJSEvents.QUILLJS_COMPONENT_MOUNTED) {
         this.sendStartupMessage();
-        break;
-      case "CONTENT_CHANGED":
-      case "ON_CHANGE_SELECTION":
-      case "ON_FOCUS":
-      case "ON_BLUR":
-      case "ON_KEY_PRESS":
-      case "ON_KEY_DOWN":
-      case "ON_KEY_UP":
-        this.props.onMessageReceived(parsedMessage);
-        break;
+      }
+
+      onMessageReceived(message);
     }
   };
 
-  private sendMessage = (message: WebViewQuillJSMessage) => {
-    const stringMessage = JSON.stringify(message);
+  // Send message to webview
+  private sendMessage = (payload: object) => {
+    this.updateDebugMessages(`sending: ${payload}`);
 
-    this.updateDebugMessages(`sending: ${stringMessage}`);
-
-    const js = `
-    handleMessage(${JSON.stringify(message)});
-    `;
-    /* var event = new Event('message'); */
-    this.webViewRef.injectJavaScript(
-      `handleMessage(${stringMessage}, '*'); true;`
+    this.webViewRef?.injectJavaScript(
+      `window.postMessage(${JSON.stringify(payload)}, '*');`
     );
   };
 
@@ -136,16 +103,15 @@ class WebViewQuill extends React.Component<Props, State> {
   private sendStartupMessage = () => {
     const {
       backgroundColor,
-      defaultValue,
+      content,
       doShowQuillComponentDebugMessages,
       isReadOnly
     } = this.props;
 
     const startupMessage: StartupMessage = {
       backgroundColor,
-      defaultValue,
+      content,
       doShowQuillComponentDebugMessages,
-      height: this.state.height,
       isReadOnly
     };
 
@@ -164,13 +130,8 @@ class WebViewQuill extends React.Component<Props, State> {
     });
   };
 
-  private onError = (syntheticEvent: NativeSyntheticEvent<WebViewError>) => {
+  private onError = (syntheticEvent: any) => {
     this.props.onError(syntheticEvent);
-  };
-  private onLayout = e => {
-    this.setState({
-      height: e.nativeEvent.layout.height
-    });
   };
   private onLoadEnd = () => {
     this.setState({ isLoading: false });
@@ -181,6 +142,7 @@ class WebViewQuill extends React.Component<Props, State> {
     this.props.onLoadStart();
   };
 
+  // Output rendered item to screen
   render() {
     const { debugMessages, webviewContent } = this.state;
     const {
@@ -192,17 +154,14 @@ class WebViewQuill extends React.Component<Props, State> {
 
     if (webviewContent) {
       return (
-        // @ts-ignore
-        <WebViewQuillView
+        <WebViewQuillJSView
           backgroundColor={backgroundColor}
           debugMessages={debugMessages}
-          defaultValue={defaultValue}
           doShowDebugMessages={doShowDebugMessages}
           handleMessage={this.handleMessage}
           webviewContent={webviewContent}
           loadingIndicator={loadingIndicator}
           onError={this.onError}
-          onLayout={this.onLayout}
           onLoadEnd={this.onLoadEnd}
           onLoadStart={this.onLoadStart}
           setWebViewRef={(ref: WebView) => {
@@ -216,4 +175,4 @@ class WebViewQuill extends React.Component<Props, State> {
   }
 }
 
-export default WebViewQuill;
+export default WebViewQuillJS;

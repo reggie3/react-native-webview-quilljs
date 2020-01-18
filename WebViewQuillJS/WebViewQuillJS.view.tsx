@@ -1,61 +1,50 @@
 import React, { ReactElement } from "react";
-import {
-  StyleSheet,
-  View,
-  NativeSyntheticEvent,
-  ViewStyle
-} from "react-native";
+import { StyleSheet, View, NativeSyntheticEvent } from "react-native";
 import { WebView } from "react-native-webview";
 import DebugMessageBox from "./DebugMessageBox";
 import { WebViewError } from "react-native-webview/lib/WebViewTypes";
-import { DeltaOperation } from "quill";
 
 export interface Props {
-  backgroundColor?: string;
-  containerStyle?: ViewStyle;
+  backgroundColor: string;
   debugMessages: string[];
-  defaultValue?: string | DeltaOperation[];
-  doShowDebugMessages?: boolean;
+  doShowDebugMessages: boolean;
   handleMessage: (data: string) => void;
-  webviewContent?: string;
-  loadingIndicator?: () => ReactElement;
-  onError?: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => void;
-  onLayout?: (event: any) => void;
-  onLoadEnd?: () => void;
-  onLoadStart?: () => void;
-  setWebViewRef?: (ref: WebView) => void;
-  style?: ViewStyle;
+  webviewContent: string;
+  loadingIndicator: () => ReactElement;
+  onError: (syntheticEvent: NativeSyntheticEvent<WebViewError>) => void;
+  onLoadEnd: () => void;
+  onLoadStart: () => void;
+  setWebViewRef: (ref: WebView) => void;
 }
 
-const WebViewQuillView = ({
+const WebViewQuillJSView = ({
   backgroundColor,
-  containerStyle,
   debugMessages,
   doShowDebugMessages,
   handleMessage,
   webviewContent,
   loadingIndicator,
   onError,
-  onLayout,
   onLoadEnd,
   onLoadStart,
-  setWebViewRef,
-  style
+  setWebViewRef
 }: Props) => {
   return (
     <View
-      onLayout={onLayout}
       style={{
         ...StyleSheet.absoluteFillObject,
         flex: 1,
-        backgroundColor: 'orange'
+        backgroundColor: backgroundColor
       }}
     >
       {webviewContent && (
-        // @ts-ignore
         <WebView
-          allowFileAccess={true}
-          containerStyle={containerStyle}
+          containerStyle={{
+            flex: 0,
+            height: "100%",
+            width: "100%"
+          }}
+          /*  style={{ flex: 0, height: '100%', width: '100%' }} */
           ref={component => {
             setWebViewRef(component);
           }}
@@ -67,15 +56,18 @@ const WebViewQuillView = ({
               handleMessage(event.nativeEvent.data);
             }
           }}
+          domStorageEnabled={true}
+          useWebKit={true}
+          startInLoadingState={true}
           onError={onError}
           originWhitelist={["*"]}
           /*  renderLoading={loadingIndicator || null} */
-          domStorageEnabled={true}
-          startInLoadingState={true}
           source={{
             html: webviewContent
           }}
-          style={style}
+          allowFileAccess={true}
+          allowUniversalAccessFromFileURLs={true}
+          allowFileAccessFromFileURLs={true}
         />
       )}
       <DebugMessageBox
@@ -86,4 +78,4 @@ const WebViewQuillView = ({
   );
 };
 
-export default WebViewQuillView;
+export default WebViewQuillJSView;
