@@ -5,7 +5,6 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   SafeAreaView
 } from "react-native";
 import WebViewQuillJS from "react-native-webview-quilljs";
@@ -62,9 +61,11 @@ export default class App extends React.Component<null, State> {
           </View>
           <View style={{ flex: 1 }}>
             <WebViewQuillJS
-              backgroundColor={"#fffbef"}
+              backgroundColor={"#a0fbef"}
               content={this.state.content}
               isReadOnly
+              doShowDebugMessages={false}
+              doShowQuillComponentDebugMessages={true}
             />
           </View>
         </KeyboardAvoidingView>
@@ -76,7 +77,7 @@ export default class App extends React.Component<null, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "coral"
+    backgroundColor: "aliceblue"
   },
   header: {
     height: 60,

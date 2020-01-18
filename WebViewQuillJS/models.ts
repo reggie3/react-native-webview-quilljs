@@ -2,8 +2,8 @@ export interface WebViewQuillJSProps {
   backgroundColor?: string;
   content?: "";
   doShowDebugMessages?: boolean;
-  doShowQuillComponentDebugMessages: false;
-  isReadOnly: false;
+  doShowQuillComponentDebugMessages?: boolean;
+  isReadOnly?: boolean;
   loadingIndicator?: () => React.ReactElement;
   onError?: (syntheticEvent: any) => void;
   onLoadEnd?: () => void;
@@ -11,7 +11,7 @@ export interface WebViewQuillJSProps {
   onMessageReceived?: (message: any) => void;
 }
 export enum WebviewQuillJSEvents {
-  QUILLJS_COMPONENT_MOUNTED = "MAP_COMPONENT_MOUNTED",
+  QUILLJS_COMPONENT_MOUNTED = "QUILLJS_COMPONENT_MOUNTED",
   DOCUMENT_EVENT_LISTENER_ADDED = "DOCUMENT_EVENT_LISTENER_ADDED",
   WINDOW_EVENT_LISTENER_ADDED = "WINDOW_EVENT_LISTENER_ADDED",
   UNABLE_TO_ADD_EVENT_LISTENER = "UNABLE_TO_ADD_EVENT_LISTENER",
@@ -27,7 +27,7 @@ export enum WebviewQuillJSEvents {
 }
 
 export type WebviewQuillJSMessage = {
-  event?: any;
+  event?: WebviewQuillJSEvents;
   msg?: string;
   error?: string;
   payload?: any;
