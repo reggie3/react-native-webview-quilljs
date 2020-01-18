@@ -1,14 +1,11 @@
 {
   "expo": {
+    "description": "Demonstration of the react-native-webview-quilljs component.",
     "name": "react-native-webview-quilljs-demo",
-    "slug": "app",
+    "slug": "react-native-webview-quilljs-demo",
     "privacy": "public",
     "sdkVersion": "36.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,9 +17,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     }

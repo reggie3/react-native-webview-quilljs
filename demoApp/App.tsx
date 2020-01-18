@@ -44,7 +44,7 @@ export default class App extends React.Component<null, State> {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>
-            React Native Webview Leaflet Demo
+            React Native Webview Quill JS Demo
           </Text>
         </View>
         <KeyboardAvoidingView
