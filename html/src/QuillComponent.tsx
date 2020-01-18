@@ -2,7 +2,7 @@ import * as React from "react";
 import "react-quill/dist/quill.snow.css";
 import QuillComponentView from "./QuillComponent.view";
 import { WebviewQuillJSMessage, WebviewQuillJSEvents } from "./models";
-import { DeltaOperation } from "quill";
+import * as Quill from "quill";
 
 interface State {
   backgroundColor: string;
@@ -33,7 +33,12 @@ class QuillComponent extends React.Component<{}, State> {
     };
   }
 
-  onChange = (content: string, delta: any, source: any, editor: any) => {
+  onChange = (
+    content: string,
+    delta: Quill.Delta,
+    source: Quill.Sources,
+    editor: any
+  ) => {
     this.sendMessage({
       msg: WebviewQuillJSEvents.ON_CHANGE,
       payload: {
@@ -46,7 +51,11 @@ class QuillComponent extends React.Component<{}, State> {
     });
   };
 
-  onChangeSelection = (range: any, source: any, editor: any) => {
+  onChangeSelection = (
+    range: Quill.RangeStatic,
+    source: Quill.RangeStatic,
+    editor: any
+  ) => {
     this.sendMessage({
       msg: WebviewQuillJSEvents.ON_CHANGE_SELECTION,
       payload: {
@@ -60,7 +69,7 @@ class QuillComponent extends React.Component<{}, State> {
       }
     });
   };
-  onFocus = (range: any, source: any, editor: any) => {
+  onFocus = (range: Quill.RangeStatic, source: Quill.Sources, editor: any) => {
     this.sendMessage({
       msg: WebviewQuillJSEvents.ON_FOCUS,
       payload: {
@@ -71,7 +80,7 @@ class QuillComponent extends React.Component<{}, State> {
       }
     });
   };
-  onBlur = (previousRange: any, source: any, editor: any) => {
+  onBlur = (previousRange: any, source: Quill.Sources, editor: any) => {
     this.sendMessage({
       msg: WebviewQuillJSEvents.ON_BLUR,
       payload: {

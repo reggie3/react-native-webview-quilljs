@@ -1,10 +1,14 @@
+import * as React from "react";
+
+import * as Quill from "quill";
+
 export interface WebViewQuillJSProps {
   backgroundColor?: string;
-  content?: "";
-  defaultContent?: any;
+  content?: Quill.Delta | string | object;
+  defaultContent?: Quill.Delta | string | object;
   doShowDebugMessages?: boolean;
-  doShowQuillComponentDebugMessages: false;
-  isReadOnly: false;
+  doShowQuillComponentDebugMessages?: boolean;
+  isReadOnly?: boolean;
   loadingIndicator?: () => React.ReactElement;
   onError?: (syntheticEvent: any) => void;
   onLoadEnd?: () => void;
@@ -28,7 +32,7 @@ export enum WebviewQuillJSEvents {
 }
 
 export type WebviewQuillJSMessage = {
-  event?: any;
+  event?: WebviewQuillJSEvents;
   msg?: string;
   error?: string;
   payload?: any;
@@ -36,8 +40,7 @@ export type WebviewQuillJSMessage = {
 
 export type StartupMessage = {
   backgroundColor?: string;
-  content?: string;
-  defaultContent?: any;
+  content?: string | object | Quill.Delta;
   doShowQuillComponentDebugMessages?: boolean;
   isReadOnly?: boolean;
 };

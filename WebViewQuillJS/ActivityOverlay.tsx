@@ -7,7 +7,7 @@ export const ActivityOverlay: React.FC<Props> = () => {
   return (
     <View style={styles.activityOverlayStyle}>
       <View style={styles.activityIndicatorContainer}>
-        <ActivityIndicator size="large" animating={this.state.isLoading} />
+        <ActivityIndicator size="large" />
       </View>
     </View>
   );

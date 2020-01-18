@@ -28,7 +28,7 @@ class WebViewQuillJS extends React.Component<WebViewQuillJSProps, State> {
     backgroundColor: "#FAEBD7",
     doShowDebugMessages: false,
     loadingIndicator: () => {
-      return <ActivityOverlay />;
+      return null;
     },
     onError: (syntheticEvent: any) => {},
     onMessageReceived: (message: WebviewQuillJSMessage) => {},
@@ -147,7 +147,6 @@ class WebViewQuillJS extends React.Component<WebViewQuillJSProps, State> {
     const { debugMessages, webviewContent } = this.state;
     const {
       backgroundColor,
-      defaultValue,
       doShowDebugMessages,
       loadingIndicator
     } = this.props;

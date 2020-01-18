@@ -64,8 +64,6 @@ export default class App extends React.Component<null, State> {
               backgroundColor={"#a0fbef"}
               content={this.state.content}
               isReadOnly
-              doShowDebugMessages={false}
-              doShowQuillComponentDebugMessages={true}
             />
           </View>
         </KeyboardAvoidingView>

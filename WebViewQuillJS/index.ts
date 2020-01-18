@@ -1,8 +1,9 @@
+export { default as WebViewQuillJS } from "./WebViewQuillJS";
 export {
-  default as WebViewQuillJS,
+  WebviewQuillJSEvents,
+  WebviewQuillJSMessage,
   WebViewQuillJSProps
-} from "./WebViewQuillJS";
-export {} from "./models";
+} from "./models";
 
 import WebViewQuillJS from "./WebViewQuillJS";
 export default WebViewQuillJS;

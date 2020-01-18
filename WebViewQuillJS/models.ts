@@ -1,6 +1,10 @@
+import * as React from "react";
+import * as Quill from "quill";
+
 export interface WebViewQuillJSProps {
   backgroundColor?: string;
-  content?: "";
+  content?: Quill.Delta | string | object;
+  defaultContent?: Quill.Delta | string | object;
   doShowDebugMessages?: boolean;
   doShowQuillComponentDebugMessages?: boolean;
   isReadOnly?: boolean;
@@ -35,7 +39,7 @@ export type WebviewQuillJSMessage = {
 
 export type StartupMessage = {
   backgroundColor?: string;
-  content?: string;
+  content?: Quill.Delta | string | object;
   doShowQuillComponentDebugMessages?: boolean;
   isReadOnly?: boolean;
 };
