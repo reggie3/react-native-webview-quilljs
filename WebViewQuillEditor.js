@@ -174,6 +174,10 @@ export default class WebViewQuillEditor extends React.Component {
     };
 
     render = () => {
+        const INJECTEDJAVASCRIPT = `const meta = document.createElement('meta'); 
+            meta.setAttribute('content', 'initial-scale=1, maximum-scale=1, user-scalable=0'); 
+            meta.setAttribute('name', 'viewport'); 
+            document.getElementsByTagName('head')[0].appendChild(meta);`
         if (this.state.asset) {
             return (
                 <View style={{flex: 1, overflow: 'hidden'}}>
@@ -192,6 +196,7 @@ export default class WebViewQuillEditor extends React.Component {
                         mixedContentMode={'always'}
                         domStorageEnabled={true}
                         originWhitelist={["*"]}
+                        injectedJavaScript={ INJECTEDJAVASCRIPT }
                     />
                 </View>
             );
