@@ -5,9 +5,10 @@
  *
  */
 import React from 'react';
-import { ActivityIndicator, Alert, Platform, StyleSheet, View, } from 'react-native';
+import { ActivityIndicator, Alert, Linking, Platform, StyleSheet, View, } from 'react-native';
 import PropTypes from 'prop-types';
 import WebView from 'react-native-webview';
+import Toast from "react-native-root-toast";
 
 // path to the file that the webview will load
 
@@ -79,6 +80,9 @@ export default class WebViewQuillEditor extends React.Component {
                     case 'RECEIVE_DELTA':
                         if (this.props.getDeltaCallback)
                             this.props.getDeltaCallback(msgData.payload);
+                        break;
+                    case 'OPEN_LINK':
+                        this._openLink(msgData.payload);
                         break;
                     default:
                         console.warn(
@@ -208,6 +212,11 @@ export default class WebViewQuillEditor extends React.Component {
                 <ActivityIndicator color="red" />
             </View>
         )
+    };
+
+
+    _openLink = (url) => {
+        Linking.openURL(url).catch((err) => Toast.show(err.message));
     };
 }
 
