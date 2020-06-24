@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="referrer" content="no-referrer">
 </head>
 <body style="
 margin: 0 !important;
@@ -11050,6 +11051,18 @@ padding: 0 !important;
                         };
                         window.ReactNativeWebView.postMessage(JSON.stringify(msg));
                         break;
+                    case 'TO_CHOOSE_PIC':
+                        var msg = {
+                            prefix: MESSAGE_PREFIX,
+                            type: 'TO_CHOOSE_PIC',
+                            payload: null
+                        };
+                        window.ReactNativeWebView.postMessage(JSON.stringify(msg));
+                        break;
+                    case 'CHOOSE_PIC_ONFINISH':
+                        var url = msgData.payload && msgData.payload.url;
+                        url &&  addPic(url);
+                        break;
                     default:
 
                 }
@@ -11072,6 +11085,32 @@ padding: 0 !important;
 
     window.document.addEventListener('resize', resize);
     window.addEventListener('resize', resize);
+
+    //【自定义上传图片1】通过addHander来监听image事件
+    let toolbar = quill.getModule('toolbar');
+    toolbar.addHandler('image', () => {
+        var MESSAGE_PREFIX = 'react-native-webview-quilljs';
+        var eventData = {
+            'type': 'TO_CHOOSE_PIC',
+            'prefix': 'react-native-webview-quilljs',
+        }
+        try {
+            var message = JSON.stringify(eventData);
+        } catch (e) {
+        }
+        window.postMessage( message, '*');
+    });
+
+    function addPic(url) {
+        if(!quill){
+            return;
+        }
+        let selection = quill.getSelection(true);
+        if(selection){
+            quill.insertEmbed(selection.index, "image", url);
+            quill.setSelection(selection.index + 1);
+        }
+    }
 </script>
 </body>
 </html>

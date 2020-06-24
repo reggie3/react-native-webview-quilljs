@@ -84,6 +84,10 @@ export default class WebViewQuillEditor extends React.Component {
                     case 'OPEN_LINK':
                         this._openLink(msgData.payload);
                         break;
+                    case 'TO_CHOOSE_PIC':
+                        const {toChoosePic} = this.props;
+                        toChoosePic && toChoosePic();
+                        break;
                     default:
                         console.warn(
                             `WebViewQuillEditor Error: Unhandled message type received "${
@@ -152,6 +156,10 @@ export default class WebViewQuillEditor extends React.Component {
     // defined here: https://quilljs.com/docs/delta/
     getDelta = () => {
         this.sendMessage('GET_DELTA');
+    };
+
+    choosePicOnFinish = (url) => {
+        this.sendMessage('CHOOSE_PIC_ONFINISH', {url: url});
     };
 
     contentToDisplay = (content) => {
@@ -225,7 +233,8 @@ WebViewQuillEditor.propTypes = {
     onDeltaChangeCallback: PropTypes.func,
     backgroundColor: PropTypes.string,
     onLoad: PropTypes.func,
-    contentToDisplay: PropTypes.func
+    contentToDisplay: PropTypes.func,
+    toChoosePic: PropTypes.func
 };
 
 // Specifies the default values for props:
