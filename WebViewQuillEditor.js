@@ -88,6 +88,9 @@ export default class WebViewQuillEditor extends React.Component {
                         const {toChoosePic} = this.props;
                         toChoosePic && toChoosePic();
                         break;
+                    case 'ADD_LINK':
+                        this._showAddLink();
+                        break;
                     default:
                         console.warn(
                             `WebViewQuillEditor Error: Unhandled message type received "${
@@ -226,6 +229,15 @@ export default class WebViewQuillEditor extends React.Component {
     _openLink = (url) => {
         Linking.openURL(url).catch((err) => Toast.show(err.message));
     };
+
+    _showAddLink = () => {
+        const {showAddLinkDialog} = this.props;
+        showAddLinkDialog && showAddLinkDialog();
+    }
+
+    _insertLink = (data) => {
+        this.sendMessage('INSERT_LINK', {data: data});
+    };
 }
 
 WebViewQuillEditor.propTypes = {
@@ -234,7 +246,8 @@ WebViewQuillEditor.propTypes = {
     backgroundColor: PropTypes.string,
     onLoad: PropTypes.func,
     contentToDisplay: PropTypes.func,
-    toChoosePic: PropTypes.func
+    toChoosePic: PropTypes.func,
+    showAddLinkDialog: PropTypes.func,
 };
 
 // Specifies the default values for props:

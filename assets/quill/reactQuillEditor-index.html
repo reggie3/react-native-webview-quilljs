@@ -11065,6 +11065,18 @@ padding: 0 !important;
                         var url = msgData.payload && msgData.payload.url;
                         url &&  addPic(url);
                         break;
+                    case 'ADD_LINK': //点击超链接的动作
+                        var msg = {
+                            prefix: MESSAGE_PREFIX,
+                            type: 'ADD_LINK',
+                            payload: null
+                        };
+                        window.ReactNativeWebView.postMessage(JSON.stringify(msg));
+                        break;
+                    case 'INSERT_LINK':
+                        var html = msgData.payload && msgData.payload.data;
+                        insertLink(html);
+                        break;
                     default:
 
                 }
@@ -11087,9 +11099,9 @@ padding: 0 !important;
 
     window.document.addEventListener('resize', resize);
     window.addEventListener('resize', resize);
+    let toolbar = quill.getModule('toolbar');
 
     //【自定义上传图片1】通过addHander来监听image事件
-    let toolbar = quill.getModule('toolbar');
     toolbar.addHandler('image', () => {
         var MESSAGE_PREFIX = 'react-native-webview-quilljs';
         var eventData = {
@@ -11113,6 +11125,36 @@ padding: 0 !important;
             quill.setSelection(selection.index + 1);
         }
     }
+
+    //【自定义插入链接】通过addHander来监听link事件
+    toolbar.addHandler('link', () => {
+        var MESSAGE_PREFIX = 'react-native-webview-quilljs';
+        var eventData = {
+            'type': 'ADD_LINK',
+            'prefix': 'react-native-webview-quilljs',
+        }
+        try {
+            var message = JSON.stringify(eventData);
+        } catch (e) {
+        }
+        window.postMessage( message, '*');
+    });
+
+    function insertLink(data) {
+        if(!quill){
+            return;
+        }
+        let selection = quill.getSelection(true);
+        try {
+            if (selection) {
+                quill.clipboard.dangerouslyPasteHTML( selection.index, data);
+
+            }
+        } catch (e) {
+
+        }
+    }
+
 </script>
 </body>
 </html>
