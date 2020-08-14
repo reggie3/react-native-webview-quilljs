@@ -11014,6 +11014,8 @@ padding: 0 !important;
         }
     });
 
+    var currentSelection = {index: 0};
+
     function handleMessage(event) {
         var MESSAGE_PREFIX = 'react-native-webview-quilljs';
         var msgData = JSON.parse(event.data);
@@ -11071,6 +11073,7 @@ padding: 0 !important;
                             type: 'ADD_LINK',
                             payload: null
                         };
+                        setCurrentSelection();
                         window.ReactNativeWebView.postMessage(JSON.stringify(msg));
                         break;
                     case 'INSERT_LINK':
@@ -11144,15 +11147,18 @@ padding: 0 !important;
         if(!quill){
             return;
         }
-        let selection = quill.getSelection(true);
         try {
-            if (selection) {
-                quill.clipboard.dangerouslyPasteHTML( selection.index, data);
+            if (currentSelection) {
+                quill.clipboard.dangerouslyPasteHTML( currentSelection.index, data);
 
             }
         } catch (e) {
 
         }
+    }
+
+    function setCurrentSelection() {
+        currentSelection = quill.getSelection(true);
     }
 
 </script>
