@@ -26,6 +26,7 @@ padding: 0 !important;
 <!-- Create the editor container -->
 <div id="editor">
 </div>
+<script type="text/javascript" src="http://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script>
 <!-- Include the Quill library -->
 <script>
     (function webpackUniversalModuleDefinition(root, factory) {
@@ -4572,7 +4573,7 @@ padding: 0 !important;
                                     line = _quill$getLine6[0],
                                     offset = _quill$getLine6[1];
 
-                               // var delta = new _quillDelta2.default().retain(range.index).insert('\n', context.format).retain(line.length() - offset - 1).retain(1, { header: null });
+                                // var delta = new _quillDelta2.default().retain(range.index).insert('\n', context.format).retain(line.length() - offset - 1).retain(1, { header: null });
                                 var delta = new _quillDelta2.default().retain(range.index).insert('\n', context.format).retain(line.length() - offset - 1);
                                 this.quill.updateContents(delta, _quill2.default.sources.USER);
                                 this.quill.setSelection(range.index + 1, _quill2.default.sources.SILENT);
@@ -10996,6 +10997,18 @@ padding: 0 !important;
 </script>
 <!-- Initialize Quill editor -->
 <script>
+    let imgURLArr = [];
+    function addObj(originURL, signatureURL) {
+        const item = {originURL: originURL, signatureURL: signatureURL};
+        imgURLArr.push(item);
+    }
+    function getOriginURL(signatureURL) {
+        const result = imgURLArr.filter(i => i.signatureURL == signatureURL);
+        if(result){
+            return result[0].originURL;
+        }
+        return '';
+    }
     var toolbarOptions = [
         [{'header': [1, 2, false, 5]}],
         ['bold', 'italic', 'underline', 'strike'],
@@ -11030,6 +11043,17 @@ padding: 0 !important;
 
                         break;
                     case 'GET_DELTA':
+                        //去除img标签上的签名的信息
+                        var imgArrs = document.getElementsByTagName('img');
+                        var splitFlag = '?OSSAccessKeyId';
+                        for(var i = 0; i < imgArrs.length; i++) {
+                            const url = imgArrs[i].src;
+                            var signatureStrFlag = '?OSSAccessKeyId';
+                            if(url.indexOf('private') > -1
+                                && url.indexOf(signatureStrFlag) > -1){
+                                imgArrs[i].src = getOriginURL(imgArrs[i].src);
+                            }
+                        }
                         var html = document.querySelector('#editor').children[0].innerHTML;
                         var msg = {
                             prefix: MESSAGE_PREFIX,
@@ -11040,6 +11064,7 @@ padding: 0 !important;
                         break;
                     case 'SET_CONTENTS':
                         document.querySelector('#editor').children[0].innerHTML = msgData.payload;
+                        toSignatureURL();
                         break;
                     case 'SET_HTML_CONTENTS':
 
@@ -11080,6 +11105,17 @@ padding: 0 !important;
                     case 'INSERT_LINK':
                         var html = msgData.payload && msgData.payload.data;
                         insertLink(html);
+                        break;
+                    case 'SINGURE_URL':
+                        var data = msgData.payload && msgData.payload.data;
+                        if(!data){
+                            return;
+                        }
+                        signatureURL(data);
+                        break;
+                    case 'START_SIGNATURE_URL_ACTION': //初始化签名URL
+                        var data = msgData.payload && msgData.payload.data;
+                        initSignatureURL(data);
                         break;
                     default:
 
@@ -11160,6 +11196,65 @@ padding: 0 !important;
 
     function setCurrentSelection() {
         currentSelection = quill.getSelection(true);
+    }
+
+    function signatureURL(data) {
+        var client = new OSS({
+            region: data.region,
+            accessKeyId: data.accessKeyId,
+            accessKeySecret: data.accessKeySecret,
+            stsToken: data.stsToken,
+            bucket: data.bucket
+        });
+
+        let fileName = data.fileName;
+        let signatureUrl = client.signatureUrl( fileName, {
+            'content-disposition': `attachment; filename=${encodeURIComponent(fileName)}`
+        });
+        addObj(data.url, signatureUrl);
+        addPic(signatureUrl);
+    }
+
+
+    var toSignatureURL = function () {
+        var MESSAGE_PREFIX = 'react-native-webview-quilljs';
+        var msg = {
+            'type': 'START_SIGNATURE_URL_NOTICE',
+            'prefix': MESSAGE_PREFIX,
+            payload: null
+        }
+        var data = JSON.stringify(msg);
+        window.ReactNativeWebView.postMessage(data);
+    }
+
+    var initSignatureURL = function (data) {
+        try {
+            var imgArrs = document.getElementsByTagName('img');
+            if(!imgArrs) return;
+            for (var i = 0; i < imgArrs.length; i++) {
+                var url = imgArrs[i].src;
+                var signatureStrFlag = '?OSSAccessKeyId';
+                var bucket = url.replace(/(http(s)?:\/\/)/g, '').split('.')[0];
+                var fileName = url.replace(/(.hecom.cn\/)/g, '~').split('~')[1];
+                if (url.indexOf(signatureStrFlag) == -1
+                    && bucket.indexOf('private') > -1) {
+                    var client = new OSS({
+                        region: data.region,
+                        accessKeyId: data.accessKeyId,
+                        accessKeySecret: data.accessKeySecret,
+                        stsToken: data.stsToken,
+                        bucket: bucket
+                    });
+                    let haveSignaturedURL = client.signatureUrl(fileName, {
+                        'content-disposition': `attachment; filename=${encodeURIComponent(fileName)}`
+                    });
+                    addObj(url, haveSignaturedURL);
+                    imgArrs[i].src = haveSignaturedURL;
+                }
+            }
+        } catch (e) {
+
+        }
     }
 
 </script>

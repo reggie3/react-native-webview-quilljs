@@ -91,6 +91,10 @@ export default class WebViewQuillEditor extends React.Component {
                     case 'ADD_LINK':
                         this._showAddLink();
                         break;
+                    case 'START_SIGNATURE_URL_NOTICE':
+                        const { toStartSignatureUrl } = this.props;
+                        toStartSignatureUrl && toStartSignatureUrl();
+                        break;
                     default:
                         console.warn(
                             `WebViewQuillEditor Error: Unhandled message type received "${
@@ -238,6 +242,15 @@ export default class WebViewQuillEditor extends React.Component {
     _insertLink = (data) => {
         this.sendMessage('INSERT_LINK', {data: data});
     };
+
+
+    _singatureURL = (data) => {
+        this.sendMessage('SINGURE_URL', {data: data});
+    };
+
+    _toStartSingatureURL = (data) => {
+        this.sendMessage('START_SIGNATURE_URL_ACTION', {data: data});
+    }
 }
 
 WebViewQuillEditor.propTypes = {
@@ -248,6 +261,7 @@ WebViewQuillEditor.propTypes = {
     contentToDisplay: PropTypes.func,
     toChoosePic: PropTypes.func,
     showAddLinkDialog: PropTypes.func,
+    toStartSignatureUrl: PropTypes.func,
 };
 
 // Specifies the default values for props:
