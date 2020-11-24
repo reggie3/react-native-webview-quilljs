@@ -26,7 +26,7 @@ padding: 0 !important;
 <!-- Create the editor container -->
 <div id="editor">
 </div>
-<script type="text/javascript" src="http://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script>
+<script type="text/javascript" src="https://gosspublic.alicdn.com/aliyun-oss-sdk.min.js"></script>
 <!-- Include the Quill library -->
 <script>
     (function webpackUniversalModuleDefinition(root, factory) {
@@ -11045,7 +11045,6 @@ padding: 0 !important;
                     case 'GET_DELTA':
                         //去除img标签上的签名的信息
                         var imgArrs = document.getElementsByTagName('img');
-                        var splitFlag = '?OSSAccessKeyId';
                         for(var i = 0; i < imgArrs.length; i++) {
                             const url = imgArrs[i].src;
                             var signatureStrFlag = '?OSSAccessKeyId';
@@ -11198,6 +11197,18 @@ padding: 0 !important;
         currentSelection = quill.getSelection(true);
     }
 
+    var fromHttpToHttps = function (url) {
+        if(url === undefined){
+            return '';
+        }
+        const startStr = url.substring(0, 5);
+        const endStr = url.substring(5, url.length);
+        if(startStr === 'http:'){
+            url = 'https:' + endStr;
+        }
+        return url;
+    }
+
     function signatureURL(data) {
         var client = new OSS({
             region: data.region,
@@ -11211,10 +11222,10 @@ padding: 0 !important;
         let signatureUrl = client.signatureUrl( fileName, {
             'content-disposition': `attachment; filename=${encodeURIComponent(fileName)}`
         });
+        signatureUrl = fromHttpToHttps(signatureUrl);
         addObj(data.url, signatureUrl);
         addPic(signatureUrl);
     }
-
 
     var toSignatureURL = function () {
         var MESSAGE_PREFIX = 'react-native-webview-quilljs';
@@ -11248,6 +11259,7 @@ padding: 0 !important;
                     let haveSignaturedURL = client.signatureUrl(fileName, {
                         'content-disposition': `attachment; filename=${encodeURIComponent(fileName)}`
                     });
+                    haveSignaturedURL = fromHttpToHttps(haveSignaturedURL);
                     addObj(url, haveSignaturedURL);
                     imgArrs[i].src = haveSignaturedURL;
                 }
@@ -11256,7 +11268,6 @@ padding: 0 !important;
 
         }
     }
-
 </script>
 </body>
 </html>
