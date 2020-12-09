@@ -11009,18 +11009,22 @@ padding: 0 !important;
     });
 </script>
 <!-- Initialize Quill editor -->
+
 <script>
-    let imgURLArr = [];
+    var imgURLArr = [];
     function addObj(originURL, signatureURL) {
-        const item = {originURL: originURL, signatureURL: signatureURL};
+        var item = {originURL: originURL, signatureURL: signatureURL};
         imgURLArr.push(item);
     }
     function getOriginURL(signatureURL) {
-        const result = imgURLArr.filter(i => i.signatureURL == signatureURL);
-        if(result){
-            return result[0].originURL;
+        var result = '';
+        for (var i = 0; i < imgURLArr.length; i++) {
+            if(signatureURL === imgURLArr[i].signatureURL){
+                result =  imgURLArr[i].originURL;
+                break;
+            }
         }
-        return '';
+        return result;
     }
     var toolbarOptions = [
         [{'header': [1, 2, false, 5]}],
@@ -11059,7 +11063,7 @@ padding: 0 !important;
                         //去除img标签上的签名的信息
                         var imgArrs = document.getElementsByTagName('img');
                         for(var i = 0; i < imgArrs.length; i++) {
-                            const url = imgArrs[i].src;
+                            var url = imgArrs[i].src;
                             var signatureStrFlag = '?OSSAccessKeyId';
                             if(url.indexOf('private') > -1
                                 && url.indexOf(signatureStrFlag) > -1){
@@ -11151,10 +11155,10 @@ padding: 0 !important;
 
     window.document.addEventListener('resize', resize);
     window.addEventListener('resize', resize);
-    let toolbar = quill.getModule('toolbar');
+    var toolbar = quill.getModule('toolbar');
 
     //【自定义上传图片1】通过addHander来监听image事件
-    toolbar.addHandler('image', () => {
+    toolbar.addHandler('image', function(){
         var MESSAGE_PREFIX = 'react-native-webview-quilljs';
         var eventData = {
             'type': 'TO_CHOOSE_PIC',
@@ -11171,7 +11175,7 @@ padding: 0 !important;
         if(!quill){
             return;
         }
-        let selection = quill.getSelection(true);
+        var selection = quill.getSelection(true);
         if(selection){
             quill.insertEmbed(selection.index, "image", url);
             quill.setSelection(selection.index + 1);
@@ -11179,7 +11183,7 @@ padding: 0 !important;
     }
 
     //【自定义插入链接】通过addHander来监听link事件
-    toolbar.addHandler('link', () => {
+    toolbar.addHandler('link', function() {
         var MESSAGE_PREFIX = 'react-native-webview-quilljs';
         var eventData = {
             'type': 'ADD_LINK',
@@ -11210,17 +11214,17 @@ padding: 0 !important;
         currentSelection = quill.getSelection(true);
     }
 
-    var fromHttpToHttps = function (url) {
+    function fromHttpToHttps(url) {
         if(url === undefined){
             return '';
         }
-        const startStr = url.substring(0, 5);
-        const endStr = url.substring(5, url.length);
+        var startStr = url.substring(0, 5);
+        var endStr = url.substring(5, url.length);
         if(startStr === 'http:'){
             url = 'https:' + endStr;
         }
         return url;
-    }
+    };
 
     function signatureURL(data) {
         var client = new OSS({
@@ -11231,10 +11235,8 @@ padding: 0 !important;
             bucket: data.bucket
         });
 
-        let fileName = data.fileName;
-        let signatureUrl = client.signatureUrl( fileName, {
-            'content-disposition': `attachment; filename=${encodeURIComponent(fileName)}`
-        });
+        var fileName = data.fileName;
+        var signatureUrl = client.signatureUrl( fileName, {});
         signatureUrl = fromHttpToHttps(signatureUrl);
         addObj(data.url, signatureUrl);
         addPic(signatureUrl);
@@ -11246,10 +11248,10 @@ padding: 0 !important;
             'type': 'START_SIGNATURE_URL_NOTICE',
             'prefix': MESSAGE_PREFIX,
             payload: null
-        }
+        };
         var data = JSON.stringify(msg);
         window.ReactNativeWebView.postMessage(data);
-    }
+    };
 
     var initSignatureURL = function (data) {
         try {
@@ -11269,9 +11271,7 @@ padding: 0 !important;
                         stsToken: data.stsToken,
                         bucket: bucket
                     });
-                    let haveSignaturedURL = client.signatureUrl(fileName, {
-                        'content-disposition': `attachment; filename=${encodeURIComponent(fileName)}`
-                    });
+                    var haveSignaturedURL = client.signatureUrl(fileName, {} );
                     haveSignaturedURL = fromHttpToHttps(haveSignaturedURL);
                     addObj(url, haveSignaturedURL);
                     imgArrs[i].src = haveSignaturedURL;
@@ -11282,5 +11282,6 @@ padding: 0 !important;
         }
     }
 </script>
+
 </body>
 </html>
