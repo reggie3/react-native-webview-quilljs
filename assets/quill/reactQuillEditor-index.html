@@ -11068,6 +11068,11 @@ padding: 0 !important;
                             if(url.indexOf('private') > -1
                                 && url.indexOf(signatureStrFlag) > -1){
                                 imgArrs[i].src = getOriginURL(imgArrs[i].src);
+                            }else{
+                                if(url.indexOf('public') > -1
+                                    && url.indexOf('?x-oss-process=image/auto-orient,1') > -1){
+                                    imgArrs[i].src = url.replace('?x-oss-process=image/auto-orient,1', '');
+                                }
                             }
                         }
                         var html = document.querySelector('#editor').children[0].innerHTML;
@@ -11236,7 +11241,7 @@ padding: 0 !important;
         });
 
         var fileName = data.fileName;
-        var signatureUrl = client.signatureUrl( fileName, {});
+        var signatureUrl = client.signatureUrl( fileName, { process: 'image/auto-orient,1'});
         signatureUrl = fromHttpToHttps(signatureUrl);
         addObj(data.url, signatureUrl);
         addPic(signatureUrl);
@@ -11271,10 +11276,14 @@ padding: 0 !important;
                         stsToken: data.stsToken,
                         bucket: bucket
                     });
-                    var haveSignaturedURL = client.signatureUrl(fileName, {} );
+                    var haveSignaturedURL = client.signatureUrl(fileName, { process: 'image/auto-orient,1'} );
                     haveSignaturedURL = fromHttpToHttps(haveSignaturedURL);
                     addObj(url, haveSignaturedURL);
                     imgArrs[i].src = haveSignaturedURL;
+                }else{
+                    if(url.indexOf('public') > -1 && url.indexOf('?') === -1){
+                        imgArrs[i].src = url + '?x-oss-process=image/auto-orient,1';
+                    }
                 }
             }
         } catch (e) {
