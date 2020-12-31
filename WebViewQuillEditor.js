@@ -18,13 +18,14 @@ const requiredAsset = Platform.OS === 'ios' ? require(`./assets/quill/reactQuill
 const MESSAGE_PREFIX = 'react-native-webview-quilljs';
 
 export default class WebViewQuillEditor extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.webview = null;
         this.state = {
             webViewNotLoaded: true, // flag to show activity indicator,
             asset: undefined
         };
+        this.isSignatureURL = props.isSignatureURL === undefined ? true : props.isSignatureURL;
     }
 
     componentDidMount() {
@@ -245,11 +246,13 @@ export default class WebViewQuillEditor extends React.Component {
 
 
     _singatureURL = (data) => {
-        this.sendMessage('SINGURE_URL', {data: data});
+        const type =  this.isSignatureURL ? 'SINGURE_URL' : 'CHOOSE_PIC_ONFINISH';
+        const msgData = this.isSignatureURL ? {'data': data} : {url: data.url};
+        this.sendMessage(type, msgData);
     };
 
     _toStartSingatureURL = (data) => {
-        this.sendMessage('START_SIGNATURE_URL_ACTION', {data: data});
+        this.isSignatureURL && this.sendMessage('START_SIGNATURE_URL_ACTION', {data: data});
     }
 }
 
@@ -262,6 +265,7 @@ WebViewQuillEditor.propTypes = {
     toChoosePic: PropTypes.func,
     showAddLinkDialog: PropTypes.func,
     toStartSignatureUrl: PropTypes.func,
+    isSignatureURL: PropTypes.bool
 };
 
 // Specifies the default values for props:
